@@ -63,7 +63,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=GLPGYKSK
+DocumentUniqueId=URKVGUJS
 
 [Document2]
 DocumentPath=PCB_layout.PcbDoc
@@ -80,7 +80,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=DOUVOXJL
+DocumentUniqueId=HVSRWWJT
 
 [Configuration1]
 Name=Sources
@@ -869,7 +869,7 @@ Type67=1
 Type68=1
 
 [Electrical Rules Check]
-Type1=0
+Type1=1
 Type2=1
 Type3=2
 Type4=1
