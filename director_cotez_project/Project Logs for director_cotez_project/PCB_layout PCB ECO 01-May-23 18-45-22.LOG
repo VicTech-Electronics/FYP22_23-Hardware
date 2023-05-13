@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=gsm_rx Pin=U2-4
+Removed Pin From Net: NetName=gsm_tx Pin=U2-5
+Added Pin To Net: NetName=gsm_rx Pin=U2-5
+Added Pin To Net: NetName=gsm_tx Pin=U2-6
