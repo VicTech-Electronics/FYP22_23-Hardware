@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=ph_sensor Pin=U4-23
+Removed Pin From Net: NetName=dht_sensor Pin=U4-24
+Added Pin To Net: NetName=ph_sensor Pin=U4-25
+Added Pin To Net: NetName=dht_sensor Pin=U4-26
+Added Member To Class: ClassName=schematic Member=Component C3 10uF
