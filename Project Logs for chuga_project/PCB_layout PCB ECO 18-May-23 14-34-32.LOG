@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=pump2 Pin=U2-24
+Removed Pin From Net: NetName=pump1 Pin=U2-25
+Removed Pin From Net: NetName=valve2 Pin=U2-26
+Removed Pin From Net: NetName=valve1 Pin=U2-27
+Added Pin To Net: NetName=pump1 Pin=U2-24
+Added Pin To Net: NetName=pump2 Pin=U2-25
+Added Pin To Net: NetName=valve1 Pin=U2-26
+Added Pin To Net: NetName=valve2 Pin=U2-27
