@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=sense Pin=U2-25
+Change Component Designator: OldDesignator=    NewDesignator=J3
+Change Component Designator: OldDesignator=    NewDesignator=K1
+Added Pin To Net: NetName=sense Pin=U2-6
+Added Member To Class: ClassName=schematic Member=Component J3 TBlock 4
