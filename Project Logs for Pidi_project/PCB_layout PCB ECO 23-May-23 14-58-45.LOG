@@ -1,0 +1,14 @@
+Removed Pin From Net: NetName=NetD2_A Pin=J2-1
+Removed Pin From Net: NetName=GND Pin=J2-3
+Removed Member From Class: ClassName=schematic Member=J2
+Added Component: Designator=J?(691111710002)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Wurth Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691111710002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691111710002/Wurth%20Electronics%20Inc./view-part/1195092/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetD2_A Pin=J?-1
+Added Pin To Net: NetName=GND Pin=J?-2
+Added Member To Class: ClassName=schematic Member=Component J? TBlock 2
