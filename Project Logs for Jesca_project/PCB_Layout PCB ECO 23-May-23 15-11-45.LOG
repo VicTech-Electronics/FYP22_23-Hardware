@@ -1,0 +1,23 @@
+Removed Pin From Net: NetName=GND Pin=J1-1
+Removed Pin From Net: NetName=NetD1_A Pin=J1-3
+Change Component Footprint: Designator=J1 Old Footprint=691214110003 New Footprint=691111710002
+Change Component Footprint: Designator=D1 Old Footprint=DIOAD1060W70L435D230 New Footprint=DIOAD1060W80L520D270
+Change Component Comment : Designator=D1 Old Comment=1N4745A New Comment=1N4007
+Change Component Comment : Designator=J1 Old Comment=TBlock 3 New Comment=TBlock 2
+Change component parameters: Designator = "D1" ("D1"); Footprint = "DIOAD1060W70L435D230"; UniqueID = "\KHIECSMM" ("\KHIECSMM")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "1N4007"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Change component parameters: Designator = "J1" ("J1"); Footprint = "691214110003"; UniqueID = "\LXDCYOSM" ("\LXDCYOSM")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = "Wurth Electronics"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "691111710002"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691111710002/Wurth%20Electronics%20Inc./view-part/1195092/?ref=snap"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetD1_A Pin=J1-1
+Added Pin To Net: NetName=GND Pin=J1-2
