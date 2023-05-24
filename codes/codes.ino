@@ -3,6 +3,7 @@
  * This is program codes for distance project VTE22
  * FYP2022/23 (Diploma project)
  */
+#include <HCSR04.h>
 #include <LiquidCrystal.h>
 #define rs 8
 #define en 9
@@ -10,12 +11,15 @@
 #define d5 11
 #define d6 12
 #define d7 13
+#define trig 6
+#define echo 7
 
 // Initialize the objects
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+UltraSonicDistanceSensor ultrasonic(trig, echo);
 
 // Decralation of other useful pins
-const uint8_t buzzer_pin = 5, btn_pin = 3, trig_pin = 6, echo_pin = 7,
+const uint8_t buzzer_pin = 5, btn_pin = 3,
               indicator_pin = A1, backlight_pin = A0;
 
 
@@ -51,29 +55,10 @@ void state(){
   digitalWrite(buzzer_pin, LOW);
 }
 
-// Method to handle distance measurements
-float getDistance(){
-   // Clear the trigger pin
-  digitalWrite(trig_pin, LOW);
-  delayMicroseconds(2);
 
-  // Send a 10 microsecond pulse to trigger the ultrasonic sensor
-  digitalWrite(trig_pin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trig_pin, LOW);
-
-  // Measure the duration of the pulse on the echo pin
-  long duration = pulseIn(echo_pin, HIGH);
-
-  // Calculate the distance based on the speed of sound
-  // (343 meters/second at room temperature)
-  return distance = duration * 0.0343 / 2;
-}
 
 ///////////////// Default methods /////////////////////
 void setup() {
-  pinMode(echo_pin, INPUT);
-  pinMode(trig_pin, OUTPUT);
   pinMode(buzzer_pin, OUTPUT);
   pinMode(btn_pin, INPUT_PULLUP);
   pinMode(indicator_pin, OUTPUT);
@@ -87,7 +72,7 @@ void setup() {
 
 void loop() {
   if(measure) {
-    distance = getDistance();
+    distance = ultrasonic.measureDistanceCm();
     digitalWrite(indicator_pin, HIGH);
     digitalWrite(backlight_pin, HIGH);
   }else{
@@ -95,6 +80,6 @@ void loop() {
     digitalWrite(backlight_pin, LOW);
   }
 
-  lcd_print("Distance Measure", "D: " + String(distance) + " cm.");
+  lcd_print("Distance Measure", "Dist: " + String(distance) + " cm.");
   delay(500);
 }
