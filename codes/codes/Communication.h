@@ -3,8 +3,7 @@
 #define esp_tx 6
 #define gps_rx 18
 #define gps_tx 19
-#define bluetooth_rx 21
-#define bluetooth_tx 20
+
 
 // Decralation of useful variables
 String data;
