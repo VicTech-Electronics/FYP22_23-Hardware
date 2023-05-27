@@ -7,15 +7,13 @@
 
 #include "Operation.h"
 
-// Definition of pin connection
-const uint8_t btn1_pin=2, btn2_pin=3;
-
 // Method to handle Interrupt functions
-void measure(){
-
+void measurement(){
+  measure = !measure;
+  delayMicroseconds(16e3);
 }
-void calibrate(){
-
+void calibiration(){
+  calibirate = true;
 }
 
 void setup() {
@@ -26,11 +24,22 @@ void setup() {
   pinMode(btn1_pin, INPUT_PULLUP);
   pinMode(btn2_pin, INPUT_PULLUP);
 
-  attachInterrupt(digitalPinToInterrupt(btn1_pin), measure, FALLING);
-  attachInterrupt(digitalPinToInterrupt(btn2_pin), calibrate, FALLING);
+  Serial.begin(9600);
+  dht.begin();
+
+  attachInterrupt(digitalPinToInterrupt(btn1_pin), measurement, FALLING);
+  attachInterrupt(digitalPinToInterrupt(btn2_pin), calibiration, FALLING);
+
+  // get proportionality constant for the last calibiration
+  EEPROM.get(pc_address, proportionality_constant);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  if(calibirate) startCalibiration();
+  if(measure){
+    Serial.println("In measurement mode");
+    lcdPrint("Moisture: " + String(getMoisturePercentage()) + "%", "T: " + String(getTemperatureAndHumidity().temperature) + "  H: " + String(getTemperatureAndHumidity().humidity));
+  }else{
+    lcdPrint("Cashew nut", "Moisture sensor");
+  }
 }
