@@ -17,7 +17,7 @@ char listenBT(){
     Serial.print("Data ");
     Serial.println(data);
     return data;
-  } return '0';
+  } return 'n';
 }
 
 // Function to control car wheels
@@ -34,10 +34,10 @@ void whilesControl(bool en_left, bool en_right, bool l1, bool l2, bool r1, bool 
 // Function to control car motion
 void motionControl(){
   data = listenBT();
-  if(data == 'f') whilesControl(true, true, true, false, true, false);
-  else if(data == 'b') whilesControl(true, true, false, true, false, true);
-  else if(data == 'l') whilesControl(false, true, true, false, true, false);
-  else if(data == 'r') whilesControl(true, false, true, false, true, false);
+  if(data == 'F') whilesControl(true, true, true, false, true, false);
+  else if(data == 'B') whilesControl(true, true, false, true, false, true);
+  else if(data == 'L') whilesControl(false, true, true, false, true, false);
+  else if(data == 'R') whilesControl(true, false, true, false, true, false);
   else if(data == 's') whilesControl(false, false, true, false, true, false);
 }
 
