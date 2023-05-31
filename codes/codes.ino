@@ -14,7 +14,6 @@ void setup() {
   serialGPS.begin(9600);
   serialGSM.begin(9600);
 
-  configureGPRS();
   attachInterrupt(digitalPinToInterrupt(btn_pin), listenBtn, FALLING);
   attachInterrupt(digitalPinToInterrupt(flowrate_pin), countPulse, RISING);
 }

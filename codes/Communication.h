@@ -1,16 +1,9 @@
 #include <SoftwareSerial.h>
 #include <TinyGPS++.h>
-#include <GSM.h>
 #define gps_rx 8
 #define gps_tx 9
 #define gsm_rx 10
 #define gsm_tx 11
-
-
-
-GSM gsmAccess;
-GSMClient gsmClient;
-GPRS gprs;
 
 TinyGPSPlus gps;
 SoftwareSerial serialGSM(gsm_rx, gsm_tx);
@@ -26,56 +19,6 @@ void flashBuffer() {
     Serial.write(serialGSM.read());
     delay(50);
   }
-}
-
-// Methode to configure GPRS communication
-void configureGPRS(){
-  // Start GSM connection
-  Serial.println("Initializing GSM module");
-  while (gsmAccess.begin("", serialGSM) != GSM_READY) {
-    Serial.println("GSM initialization failed");
-    delay(5000);
-  } Serial.println("GSM module initialized for GPRS connection");
-
-  // Connect to GPRS network
-  Serial.println("Connecting to GPRS network");
-  while (gprs.attachGPRS("internet") != GPRS_READY) {
-    Serial.println("GPRS connection failed");
-    delay(5000);
-  } Serial.println("GPRS network connected");
-}
-
-
-// Method to send HTTPS post request
-String postRequest(String jsonData, String endPoint){
-    // Make an HTTP POST request
-  if (gsmClient.connect("gee-fyp2022-23.herokuapp.com", 443)) {  // Replace with your API endpoint
-    Serial.println("Connected to server");
-
-    // Send HTTP headers and body
-    gsmClient.println("POST " + endPoint + " HTTP/1.1");
-    gsmClient.println("Host: gee-fyp2022-23.herokuapp.com");  // Replace with your API endpoint
-    gsmClient.println("Content-Type: application/json");
-    gsmClient.println("Content-Length: " + String(jsonData.length()));
-    gsmClient.println();
-    gsmClient.println(jsonData);  // Replace with your JSON payload
-
-    // Wait for server response
-    String response = "";
-    while (gsmClient.connected()) {
-      if (gsmClient.available()) {
-        response += String(gsmClient.read());
-        Serial.print(response);
-      }
-    }
-    // Disconnect from server
-    gsmClient.stop();
-    Serial.println("Disconnected from server");
-    return response;
-  }
-
-  Serial.println("Connection failed");
-  return "";
 }
 
 // Method to initialize sms mode
@@ -132,11 +75,10 @@ void getLocation(){
   while (serialGPS.available()) {
     char c = serialGPS.read();      // Read GPS data character by character
     if (gps.encode(c)) {
-      if (gps.location.isValid()) {
+      if (gps.location.isValid()){
         latitude = gps.location.lat();
         longitude = gps.location.lng();
       }
     }
   }
 }
-
