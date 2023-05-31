@@ -4,6 +4,7 @@
 
 // Definition of pin connection
 const uint8_t ph_pin=A5, valve_pin1=A3, valve_pin2=A4, pump1_pin=A1, pump2_pin=A2;
+String condition, valve_condtion;
 
 // Method to control solenoid valve
 void valve(bool state){
@@ -25,9 +26,15 @@ void operation(){
     valve(CLOSE);
     digitalWrite(pump1_pin, HIGH);
     digitalWrite(pump2_pin, HIGH);
+    condition = "ON";
+    valve_condtion = "OFF";
   }else{
     valve(OPEN);
     digitalWrite(pump1_pin, LOW);
     digitalWrite(pump2_pin, LOW);
+    condition = "OFF";
+    valve_condtion = "ON";
   }
+
+  lcdPrint("PH Value: " + String(getPHValue()), "Valve: " + valve_condtion, "Peristalitic: " + condition, "Pump: " + condition); 
 }
