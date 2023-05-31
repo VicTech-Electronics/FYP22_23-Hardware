@@ -17,6 +17,7 @@ void calibiration(){
 }
 
 void setup() {
+  pinMode(sense_pin, OUTPUT);
   pinMode(buzzer_pin, OUTPUT);
   pinMode(red_ind_pin, OUTPUT);
   pinMode(green_ind_pin, OUTPUT);
@@ -34,15 +35,17 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(btn1_pin), measurement, FALLING);
   attachInterrupt(digitalPinToInterrupt(btn2_pin), calibiration, FALLING);
 
+  startCalibiration();
+
   // get proportionality constant for the last calibiration
   EEPROM.get(pc_address, proportionality_constant);
 }
 
 void loop() {
-  if(calibirate) startCalibiration();
+  // if(calibirate) startCalibiration();
   if(measure){
     Serial.println("In measurement mode");
-    lcdPrint("Moisture: " + String(getMoisturePercentage()) + "%", "T:" + String(getTemperatureAndHumidity().temperature) + "  H:" + String(getTemperatureAndHumidity().humidity));
+    lcdPrint("Moisture:" + String(getMoisturePercentage()) + "%", "T:" + String(getTemperatureAndHumidity().temperature) + "  H:" + String(getTemperatureAndHumidity().humidity));
   }else{
     lcdPrint("Cashew nut", "Moisture sensor");
   }
