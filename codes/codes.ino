@@ -34,6 +34,5 @@ void setup() {
 }
 
 void loop() {
-  if(active) operation();
-  else lcdPrint("","System", "DEACTIVATED", "");
+  operation();
 }
