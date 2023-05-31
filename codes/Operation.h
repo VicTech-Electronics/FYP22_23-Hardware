@@ -9,7 +9,7 @@ const uint8_t btn1_pin=2, btn2_pin=3, buzzer_pin=5, red_ind_pin=6, green_ind_pin
 
 // Declaration of useful variables
 bool measure, calibirate;
-float proportionality_constant;
+float proportionality_constant, moisture;
 int pc_address = 0;
 
 void startCalibiration(){
@@ -51,6 +51,9 @@ void startCalibiration(){
 }
 
 float getMoisturePercentage(){
-  float resistance = (5 * calibiration_resistor_value / (analogRead(sense_pin) * 5/1023)) - calibiration_resistor_value;
-  return (proportionality_constant * getTemperatureAndHumidity().humidity) / (getTemperatureAndHumidity().temperature * resistance);
+  float resistance = (5 * calibiration_resistor_value / (analogRead(sense_pin) * 5/1023);
+  if(((5 * calibiration_resistor_value / (analogRead(sense_pin) * 5/1023)) - calibiration_resistor_value) <= 0.0) return 100.0;
+  else moisture = (proportionality_constant * getTemperatureAndHumidity().humidity) / (getTemperatureAndHumidity().temperature * resistance) * 100.0;
+  Serial.println("Moisture: " + String(moisture));
+  return moisture;
 }

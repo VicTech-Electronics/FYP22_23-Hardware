@@ -26,6 +26,10 @@ void setup() {
 
   Serial.begin(9600);
   dht.begin();
+  lcd.begin(16, 2);
+
+  lcdPrint("Welcome", ""); delay(1e3);
+  lcdPrint("Cashewnut", "Meter"); delay(2e3);
 
   attachInterrupt(digitalPinToInterrupt(btn1_pin), measurement, FALLING);
   attachInterrupt(digitalPinToInterrupt(btn2_pin), calibiration, FALLING);
@@ -38,8 +42,10 @@ void loop() {
   if(calibirate) startCalibiration();
   if(measure){
     Serial.println("In measurement mode");
-    lcdPrint("Moisture: " + String(getMoisturePercentage()) + "%", "T: " + String(getTemperatureAndHumidity().temperature) + "  H: " + String(getTemperatureAndHumidity().humidity));
+    lcdPrint("Moisture: " + String(getMoisturePercentage()) + "%", "T:" + String(getTemperatureAndHumidity().temperature) + "  H:" + String(getTemperatureAndHumidity().humidity));
   }else{
     lcdPrint("Cashew nut", "Moisture sensor");
   }
+
+  if(measure) digitalWrite(backlight_pin, HIGH);
 }
