@@ -8,7 +8,7 @@
 SoftwareSerial serialESP(12, 11);
 
 // Defition of pin connections
-const uint8_t req_ind_pin, res_ind_pin, req_btn_pin, res_btn_pin, buzzer_pin;
+const uint8_t req_ind_pin=7, res_ind_pin=6, req_btn_pin=2, res_btn_pin=3, buzzer_pin=8;
 
 /////////////////// Custom methods ///////////////////
 // Method the handle request interrupt
