@@ -30,9 +30,9 @@ void setup() {
   
   pulseSensor.analogInput(hear_rate_pin);
   pulseSensor.setThreshold(550); // Adjust this value to your pulse sensor
-//  if(pulseSensor.begin()){
-//    Serial.println("Fail to begin Heartbeat sensor");
-//  }
+ if(pulseSensor.begin()){
+   Serial.println("Fail to begin Heartbeat sensor");
+ }
 
   
   

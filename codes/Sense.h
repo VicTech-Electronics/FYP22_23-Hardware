@@ -1,7 +1,7 @@
 #include <PulseSensorPlayground.h>
 
 // Definition of pin connections
-const uint8_t hear_rate_pin=A0, temp_pin=A1;
+const uint8_t hear_rate_pin=2, temp_pin=A1;
 
 PulseSensorPlayground pulseSensor;
 
@@ -9,15 +9,13 @@ PulseSensorPlayground pulseSensor;
 const int referenceResistor = 10000; // Resistance value of the reference resistor (in ohms)
 const float referenceVoltage = 5.0; // Reference voltage (in volts)
 
-float getHeartRate(){return -1;}
-
-//// Method to measerue heart reate
-//float getHeartRate(){
-//  if (pulseSensor.sawStartOfBeat()){
-//    return float(pulseSensor.getBeatsPerMinute());
-//  }else return -1;
-//  
-//}
+// Method to measerue heart reate
+float getHeartRate(){
+ if (pulseSensor.sawStartOfBeat()){
+   return float(pulseSensor.getBeatsPerMinute());
+ }else return -1;
+ 
+}
 
 // Method to measure temperature
 float getTemperature(){
