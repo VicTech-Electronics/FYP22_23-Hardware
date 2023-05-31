@@ -33,6 +33,7 @@ void setup() {
 
 void loop() {
   lcdPrint("PAD Vanding", "Machine");
-  if(confirm) service();
+  // if(confirm) service();
+  service();
   delay(1e3);
 }
