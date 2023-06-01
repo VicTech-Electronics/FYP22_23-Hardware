@@ -6,5 +6,5 @@
 // Method to handle operation
 void operation(){
   pressure_used = getPressureUsed();
-  lcdPrint("Pressure meter", "Used: " + String(pressure_used) + " psi");
+  lcdPrint("Gas meter", "Used: " + String(pressure_used) + " psi");
 }

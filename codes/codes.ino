@@ -14,7 +14,7 @@ void setup() {
   lcd.backlight();
 
   lcdPrint("Welcome", ""); delay(1e3);
-  lcdPrint("Gas Vending", "Machine"); delay(2e3);
+  lcdPrint("Gas Vending", "System"); delay(2e3);
 
   // Calculate Intital pressure
   initial_pressure = 0.0;
