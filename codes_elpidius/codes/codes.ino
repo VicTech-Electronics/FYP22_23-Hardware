@@ -18,6 +18,7 @@ void setup(){
   serialGSM.begin(9600);
   serialGPS.begin(9600);
 
+  delay(5e3);
   // Method to calibirate touch sensor
   touch_calibiration_value = 0.0;
   for(int i=0; i<100; i++) touch_calibiration_value += analogRead(touch_pin);
