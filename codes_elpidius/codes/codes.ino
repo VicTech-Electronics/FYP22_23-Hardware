@@ -23,13 +23,15 @@ void setup(){
   for(int i=0; i<100; i++) touch_calibiration_value += analogRead(touch_pin);
   touch_calibiration_value /= 100;
 
-  EEPROM.get(password_address, password);
-  EEPROM.get(lock_address, lock_status);
-  enterPassword(owner_phone_number);
+  Serial.println("Calibiration: " + String(touch_calibiration_value));
+
+  // EEPROM.get(password_address, password);
+  // EEPROM.get(lock_address, lock_status);
+  // enterPassword(owner_phone_number);
 }
 
 void loop(){
-  changePassword();
+  // changePassword();
 
   if(isTouched()){
     digitalWrite(buzzer_pin, HIGH);
@@ -38,4 +40,7 @@ void loop(){
 
   if(!lock_status && digitalRead(switch_pin) == LOW) digitalWrite(motor_pin, HIGH);
   else digitalWrite(motor_pin, LOW);
+
+  Serial.println("Reading: " + String(analogRead(touch_pin)));
+  delay(1e3);
 }
