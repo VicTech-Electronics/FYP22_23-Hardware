@@ -1,5 +1,5 @@
 // Definition of pin connection
-const uint8_t sensorPins[] = {A0, A1, A2, A3, A4};
+cons t uint8_t sensorPins[] = {A0, A1, A2, A3, A4};
 float calibirationValues[] = {0.0, 0.0, 0.0, 0.0, 0.0};
 float sensorValues[] = {0.0, 0.0, 0.0, 0.0, 0.0};
 bool packingStatus[] = {false, false, false};

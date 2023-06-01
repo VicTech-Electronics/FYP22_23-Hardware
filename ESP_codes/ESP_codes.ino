@@ -1,6 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <FirebaseArduino.h>
-#include <Arduino_JSON.h>
+#include <ArduinoJson.h>
+#include <FirebaseHttpClient.h>
+#include <Firebase.h>
 
 // Set your Firebase credentials
 #define FIREBASE_HOST "your-firebase-project.firebaseio.com"
