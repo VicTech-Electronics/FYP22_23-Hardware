@@ -12,19 +12,21 @@ void openValve(bool state){
   if(state){
     digitalWrite(valve_pin1, HIGH);
     digitalWrite(valve_pin2, LOW);
+    digitalWrite(green_pin, HIGH);
   }else{
     digitalWrite(valve_pin1, HIGH);
     digitalWrite(valve_pin2, LOW);
+    digitalWrite(green_pin, LOW);
   }
 }
 
-
 // Operation of the whole circuit start here
 void operation(){
+  float distance = ultrasonic.measureDistanceCm();
   if(digitalRead(sensor1_pin) == HIGH){ // No water in the tank
    alerting(true, true);
    sendNRF('X');
-   sendSMS();
+  //  sendSMS();
   }
   if(digitalRead(sensor2_pin) == LOW){
     alerting(false, false);
@@ -32,6 +34,7 @@ void operation(){
     sendNRF('Y');
   }
 
-  if(ultrasonic.measureDistanceCm() <= 70) openValve(true);
+  if(distance <= 70) openValve(true);
   else openValve(false);
+  Serial.println("Distance: " + String(distance));
 }
