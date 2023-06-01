@@ -41,7 +41,4 @@ void loop(){
 
   if(!lock_status && digitalRead(switch_pin) == LOW) digitalWrite(motor_pin, HIGH);
   else digitalWrite(motor_pin, LOW);
-
-  Serial.println("Reading: " + String(analogRead(touch_pin)));
-  delay(1e3);
 }
