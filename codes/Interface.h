@@ -1,13 +1,11 @@
 #include <LiquidCrystal.h>
-LiquidCrystal lcd(13, 12, 11, 10, 9, 7);
-
-// Definition of pin connection
-const uint8_t led_pin=5, buzzer_pin=6, backlight=8;
+LiquidCrystal lcd(13, 12, 11, 10, 9, 9);
 
 // Methode to Cut String 
 String cutString(String str, int col) {
   return str.substring(0, col);
 }
+
 // Function to simplify the printing on LCD
 void lcdPrint(String str0, String str1) {
   lcd.clear();  const int columns = 16;
@@ -19,16 +17,5 @@ void lcdPrint(String str0, String str1) {
 
   lcd.setCursor(pre_space0, 0); lcd.print(str0);
   lcd.setCursor(pre_space1, 1); lcd.print(str1);
-  delay(100);
-}
-
-// Method to handle alerting
-void alert(bool status){
-  if(status){
-    digitalWrite(led_pin, HIGH);
-    digitalWrite(buzzer_pin, HIGH);
-  }else{
-    digitalWrite(led_pin, LOW);
-    digitalWrite(buzzer_pin, LOW);
-  }
+  delay(1e3);
 }

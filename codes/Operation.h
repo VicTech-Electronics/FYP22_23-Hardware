@@ -1,34 +1,39 @@
 #include "Interface.h"
+#include "Communication.h"
 
-// Definition of pin connectios
-const uint8_t motor_pin=3, sensor_pin=A2;
+// Definition of pin connection
+const uint8_t sensor1_pin=A3, sensor2_pin=A4, buzzer_pin=7, button_pin=3;
 
-// Decralation of usefull variables
-int number_of_sample=100, pulse_value;
+// Decralation of useful variables
+bool alert;
+String location, phone_number="+255";
 
-// Method to control motor rotation
-void motorControl(uint8_t percentage_of_rotation){
-  percentage_of_rotation = map(percentage_of_rotation, 0, 100, 0, 255);
-  analogWrite(motor_pin, percentage_of_rotation);
+// Method to handle stop alert interrupt
+void stopAlert(){
+  alert = false;
 }
 
-// Method to measure heatBeat pulses
-int getPulse(){
-  int total = 0;
-  for (int i = 0; i < number_of_sample; i++) {
-    total += analogRead(sensor_pin);
-    delay(10);
-  }
-  return map((total / number_of_sample), 0, 1023, 30, 220); // Return beat per minute
+// Method to handle alert
+void alerting(){
+  if(alert) digitalWrite(buzzer_pin, HIGH);
+  else digitalWrite(buzzer_pin, LOW);
 }
 
-// Method to handle the whole operation
-void operation(){
-  pulse_value = getPulse();
-  float motor_speed = map(pulse_value, 30, 220, 255, 100);
-  analogWrite(motor_pin, motor_speed);
-  lcdPrint("TREADMILL", "S: " + String(motor_speed) + " P: " + String(pulse_value));
+// Method to handle all operations
+void operaion(){
+  
+  if(digitalRead(sensor1_pin)==LOW){
+    location = "Location A";
+    alert = true;
+  }else if(digitalRead(sensor2_pin) == LOW){
+    location = "Location A";
+    alert = true;
+  }else alert = false;
 
-  if(pulse_value > 75) alert(true);
-  else alert(false);
+  if(digitalRead(sensor1_pin)==LOW || digitalRead(sensor2_pin)==LOW){
+    sendSMS(phone_number, "Falt detected at " + location);
+    lcdPrint("Fault detected", "Area: " + location);
+  }else lcdPrint("SAFE", "Transimition.");
+
+  alerting();
 }
