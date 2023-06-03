@@ -26,13 +26,21 @@ void setup(){
 
   Serial.println("Calibiration: " + String(touch_calibiration_value));
 
-  // EEPROM.get(password_address, password);
-  // EEPROM.get(lock_address, lock_status);
-  // enterPassword(owner_phone_number);
+  EEPROM.get(password_address, password);
+  EEPROM.get(lock_address, lock_status);
+
+  /*
+    Procedure to follow
+    power system start without password
+    power of motorvehicle start depends on system password
+    system can be off while rider complete process of switching the vehicle and riding
+
+    NOTE: Switching system
+  */
 }
 
 void loop(){
-  // changePassword();
+  changePassword();
 
   if(isTouched()){
     digitalWrite(buzzer_pin, HIGH);
