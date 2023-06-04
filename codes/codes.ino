@@ -14,6 +14,7 @@ void setup() {
   pinMode(motor_pin, OUTPUT);
 
   Serial.begin(9600);
+  lcd.begin(16, 2);
 
   // Welcome message
   digitalWrite(backlight, HIGH);

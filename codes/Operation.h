@@ -25,9 +25,9 @@ int getPulse(){
 // Method to handle the whole operation
 void operation(){
   pulse_value = getPulse();
-  float motor_speed = map(pulse_value, 30, 220, 255, 100);
+  int motor_speed = map(pulse_value, 30, 220, 255, 100);
   analogWrite(motor_pin, motor_speed);
-  lcdPrint("TREADMILL", "S: " + String(motor_speed) + " P: " + String(pulse_value));
+  lcdPrint("TREADMILL", "S:" + String(motor_speed) + "    P:" + String(pulse_value));
 
   if(pulse_value > 75) alert(true);
   else alert(false);
