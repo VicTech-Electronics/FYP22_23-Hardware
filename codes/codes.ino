@@ -1,27 +1,28 @@
-/* 
+/*
   VicTech Electronics
-  Rehema Project
-  Mbegani (Diploma)
+  Frank Project
+  Mbegani (Bagamoyo)
   FYP2022/23
-  VTE34
+  VTE37
 */
-#include "Operation.h"
+
+// Definition of pin connection
+const uint8_t ind_pin=7, pump_pin=9, sensor_pin=8;
 
 void setup() {
-  pinMode(switch_pin, OUTPUT);
-  pinMode(voltage_pin, INPUT);
+  pinMode(ind_pin, OUTPUT);
+  pinMode(pump_pin, OUTPUT);
+  pinMode(sensor_pin, INPUT);
 
   Serial.begin(9600);
-
-  servo.attach(servo_pin);
-  servo.write(0);
-  EEPROM.get(timeAddress, time);
-  EEPROM.get(sizeAddress, size);
-
-  attachInterrupt(digitalPinToInterrupt(btn1_pin), settingsInterrupt, FALLING);
-  attachInterrupt(digitalPinToInterrupt(btn2_pin), confirmationInterrupt, FALLING);
 }
 
 void loop() {
-  operation();
+  if(digitalRead(sensor_pin) == LOW){
+    digitalWrite(ind_pin, HIGH);
+    digitalWrite(pump_pin, HIGH);
+  }else(
+    digitalWrite(ind_pin, HIGH);
+    digitalWrite(pump_pin, HIGH);
+  )
 }
