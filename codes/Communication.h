@@ -23,7 +23,7 @@ void intializeSMS(){
 }
 
 // Method to sendSMS
-void sendSMS(String phone, String message){
+void sendSMS(String phone, String message){ 
   gsmCommand("AT+CMGS=\"" + phone + "\"");
   gsmCommand(message);
   serialGSM.println(char(26));

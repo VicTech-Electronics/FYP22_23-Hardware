@@ -1,5 +1,5 @@
 #include <LiquidCrystal.h>
-LiquidCrystal lcd(13, 12, 11, 10, 9, 9);
+LiquidCrystal lcd(13, 12, 11, 10, 9, 8);
 
 // Methode to Cut String 
 String cutString(String str, int col) {

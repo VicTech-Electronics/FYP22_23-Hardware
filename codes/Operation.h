@@ -5,12 +5,13 @@
 const uint8_t sensor1_pin=A3, sensor2_pin=A4, buzzer_pin=7, button_pin=3;
 
 // Decralation of useful variables
-bool alert;
+bool alert, button false;
 String location, phone_number="+255";
 
 // Method to handle stop alert interrupt
 void stopAlert(){
   alert = false;
+  button = !button;
 }
 
 // Method to handle alert
@@ -35,5 +36,7 @@ void operaion(){
     lcdPrint("Fault detected", "Area: " + location);
   }else lcdPrint("SAFE", "Transimition.");
 
-  alerting();
+  
+  if(button);
+  else alerting();
 }

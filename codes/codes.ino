@@ -15,10 +15,11 @@ void setup() {
 
   Serial.begin(9600);
   serialGSM.begin(9600);
+  lcd.begin(16, 2);
 
   attachInterrupt(digitalPinToInterrupt(button_pin), stopAlert, FALLING);
   lcdPrint("Welcome", ""); delay(2e3);
-  lcdPrint("Transimition", "Fault detector"); delay(3e3);
+  lcdPrint("Transimition", "Fault detector");
   intializeSMS();
 }
 
