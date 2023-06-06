@@ -35,7 +35,9 @@ void operation(){
     }else if(charKey == '#') break;
   }
 
-  if(password = correct_password){
+  password.trim();
+
+  if(password == correct_password){
     lcdPrint("SUCCESS", ""); delay(2e3);
     lcdPrint("Opening...", "");
     servo.write(90);
@@ -50,7 +52,7 @@ void operation(){
     servo.write(0);
     delay(3e3);
   }else{
-    lcdPrint("Incorect Password", "");
+    lcdPrint("Incorect...", "");
     digitalWrite(buzzer_pin, HIGH);
     delay(3e3);
     digitalWrite(buzzer_pin, LOW);

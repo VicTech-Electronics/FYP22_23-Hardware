@@ -14,8 +14,8 @@ void setup() {
   servo.attach(servo_pin);
 
   // Welcome message
-  lcdPrint("Welcome", ""); delay(1e3);
-  lcdPrint("Door password", "System"); delay(2e3);
+  lcdPrint("Welcome", ""); delay(2e3);
+  lcdPrint("Door password", "System"); delay(3e3);
 }
 
 void loop() {
