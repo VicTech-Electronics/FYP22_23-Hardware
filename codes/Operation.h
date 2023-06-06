@@ -27,6 +27,7 @@ void changeOver(){
 
 // Method to control settings
 void getSettings(){
+  digitalWrite(backlight, HIGH);
   confirm = false;
   while(!confirm){
     time = map(analogRead(pot_pin), 0, 1023, 0, 5);
@@ -41,7 +42,7 @@ void getSettings(){
 
   EEPROM.put(timeAddress, time);
   EEPROM.put(sizeAddress, size);
-
+  digitalWrite(backlight, LOW);
   setting = false;
 }
 

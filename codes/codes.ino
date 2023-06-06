@@ -24,4 +24,5 @@ void setup() {
 
 void loop() {
   operation();
+  changeOver();
 }
