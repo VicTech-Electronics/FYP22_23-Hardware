@@ -11,6 +11,8 @@ void setup() {
   pinMode(switch_pin, OUTPUT);
   pinMode(voltage_pin, INPUT);
   pinMode(backlight, OUTPUT);
+  pinMode(btn1_pin, INPUT_PULLUP);
+  pinMode(btn2_pin, INPUT_PULLUP);
 
   Serial.begin(9600);
   lcd.begin(16, 2);

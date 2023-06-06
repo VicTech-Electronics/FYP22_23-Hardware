@@ -14,9 +14,11 @@ uint8_t time, size, timeAddress=0, sizeAddress=0;
 // Method to handle Interrupts
 void settingsInterrupt(){
   setting = true;
+  Serial.println("Setting button is pressed");
 }
 void confirmationInterrupt(){
   confirm = true;
+  Serial.println("Confirm button is pressed");
 }
 
 // Method to control automatic change over
@@ -30,14 +32,18 @@ void getSettings(){
   digitalWrite(backlight, HIGH);
   confirm = false;
   while(!confirm){
-    time = map(analogRead(pot_pin), 0, 1023, 0, 5);
+    time = map(analogRead(pot_pin), 0, 1023, 0, 10);
     lcdPrint("SETTING", "Time: " + String(time) + " min");
+    delay(100);
   }
+
+  delay(2e3);
   
   confirm = false;
   while(!confirm){
     size = map(analogRead(pot_pin), 0, 1023, 0, 100);
-    lcdPrint("SETTING", "Size: " + String(size) + " min");
+    lcdPrint("SETTING", "Size: " + String(size) + "%");
+    delay(100);
   }
 
   EEPROM.put(timeAddress, time);
@@ -50,9 +56,9 @@ void getSettings(){
 // Method to handle the whole operation
 void operation(){
   if(setting) getSettings();
-  
+  lcdPrint("Automatic", "Fish fider");
   unsigned long initial_time = millis();
-  while(millis() - initial_time > (time)); // Wait for time to pass
+  while(millis() - initial_time > (time * 60000.)); // Wait for time to pass
 
   servo.write(90);
   delay(map(size, 0, 100, 0, 5000));
