@@ -21,8 +21,8 @@ void loop() {
   if(digitalRead(sensor_pin) == LOW){
     digitalWrite(ind_pin, HIGH);
     digitalWrite(pump_pin, HIGH);
-  }else(
-    digitalWrite(ind_pin, HIGH);
-    digitalWrite(pump_pin, HIGH);
-  )
+  }else{
+    digitalWrite(ind_pin, LOW);
+    digitalWrite(pump_pin, LOW);
+  }
 }
