@@ -1,5 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
+#include <Arduino_JSON.h>
 
 const char* ssid = "VicTech Electronics";
 const char* password = "#Electronics98";
@@ -9,8 +10,11 @@ const int httpsPort = 443;
 
 WiFiClientSecure client;
 
+// Decralation of useful variables
+String serial_data;
+
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
@@ -43,15 +47,16 @@ void loop() {
       // Read and print the response
       while (client.available()) {
         String line = client.readStringUntil('\r');
-        Serial.print(line);
+        if(line.indexOf("{") != -1) serial_data = line;
       }
+
+      JSONVar jsonObject = JSON.parse(serial_data);
+      serial_data = (const char*)jsonObject["state"];
+      Serial.println(serial_data);
       
       client.stop();
     }
-    else {
-      Serial.println("Connection failed");
-    }
   }
   
-  delay(5000); // Wait for 5 seconds before sending the next request
+  delay(3e3); // Wait for 5 seconds before sending the next request
 }

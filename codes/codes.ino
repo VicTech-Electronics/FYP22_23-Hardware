@@ -25,7 +25,7 @@ void loop() {
   esp_serial_data.toUpperCase();
 
   if(esp_serial_data == "ON") state = true;
-  else state = false;
+  else if(esp_serial_data == "OFF") state = false;
 
   digitalWrite(ind_pin, state);
   digitalWrite(switch_pin, state);
