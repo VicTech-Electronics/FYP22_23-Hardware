@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 #define esp_rx 10
 #define esp_tx 11
-SoftwareSerial serialESP(esp_rx, rsp_tx);
+SoftwareSerial serialESP(esp_rx, esp_tx);
 
 // Definition of pin connection
 const uint8_t ind_pin=7, switch_pin=A0;
@@ -20,7 +20,6 @@ void setup() {
 
 void loop() {
   while(!serialESP.available());
-
   esp_serial_data = serialESP.readString();
   esp_serial_data.trim();
   esp_serial_data.toUpperCase();
