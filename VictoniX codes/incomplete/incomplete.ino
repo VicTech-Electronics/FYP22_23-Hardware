@@ -1,5 +1,6 @@
 #include <SoftwareSerial.h>
 
+SoftwareSerial serial();
 SoftwareSerial serialBT(10, 11);
 
 // Definition of useful pins
@@ -38,7 +39,9 @@ void motionControl(){
   else if(data == 'B') whilesControl(true, true, false, true, false, true);
   else if(data == 'L') whilesControl(false, true, true, false, true, false);
   else if(data == 'R') whilesControl(true, false, true, false, true, false);
-  else if(data == 's') whilesControl(false, false, true, false, true, false);
+  else if(data == 'S') whilesControl(false, false, true, false, true, false);
+  else if(data == 'V') serial.println("horn_on");
+  else if(data == 'v') serial.println("horn_off");
 }
 
 
@@ -51,6 +54,7 @@ void setup() {
   pinMode(left1, OUTPUT);
   pinMode(left2, OUTPUT);
 
+  serial.begin(9600);
   Serial.begin(9600);
   serialBT.begin(9600);
 

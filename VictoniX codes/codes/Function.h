@@ -30,7 +30,7 @@ void motionControl(){
     digitalWrite(indicator_pin, HIGH);
     delay(2e3);
     digitalWrite(indicator_pin, LOW);
-    
+
   }
   
 }
