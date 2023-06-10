@@ -13,7 +13,7 @@ WiFiClientSecure client;
 // Decralation of useful varibles
 JSONVar json_object, modified_json_object;
 String serial_data, json_string, endPoint, requestBody, server_response;
-String responses[] = {"Detected", "SUCCESS", "FAIL", "Vehicle not registered"};
+String responses[4] = {"\"Detected\"", "\"SUCCESS\"", "\"FAIL\"", "\"Vehicle not registered\""};
 
 // Method to receive server response
 String serverResponse(){
@@ -25,15 +25,15 @@ String serverResponse(){
     // Read and print the response
     while (client.available()) {
       String line = client.readStringUntil('\r');
-      for(byte i=0; i<responses.length(); i++)
-        if(responses[i] == line) server_response = line;
-      Serial.print(server_response);
-      return server_response;
+      line.trim();
+      for(byte i=0; i<4; i++){
+        if(responses[i] == line){
+          server_response = line;
+          break;
+        }
+      }
     }client.stop();
-  }else {
-    Serial.println("Connection failed");
   }
-
   return server_response;
 }
 
@@ -83,23 +83,20 @@ void setup() {
 }
 
 void loop() {
-  // while(!Serial.available()); // Wait for the data in serial buffer
-  // serial_data = Serial.readString();
-  // serial_data.trim();
+  while(!Serial.available()); // Wait for the data in serial buffer
+  serial_data = Serial.readString();
+  serial_data.trim();
   
-  // if(serial_data.indexOf("{") != 0){
-  //   json_object = JSON.parse(serial_data);
-  //   JSONVar keys = json_object.keys(); // Get the keys of the original JSON object
-  //   for(byte i=0; i<json_object.length(); i++){
-  //     String key = keys[i];
-  //     if(key != "endpoint")
-  //       modified_json_object[key] = json_object[key];
-  //     else endPoint = (const char*)json_object["endpoint"];
-  //   }
-  //   json_string = JSON.stringify(modified_json_object);
-  //   postJSONData(endPoint, json_string);
-  // }else postDeleteRequest(serial_data);
-
-  postGETRequest("/api/");
-  delay(3e3);
+  if(serial_data.indexOf("{") != 0){
+    json_object = JSON.parse(serial_data);
+    JSONVar keys = json_object.keys(); // Get the keys of the original JSON object
+    for(byte i=0; i<json_object.length(); i++){
+      String key = keys[i];
+      if(key != "endpoint")
+        modified_json_object[key] = json_object[key];
+      else endPoint = (const char*)json_object["endpoint"];
+    }
+    json_string = JSON.stringify(modified_json_object);
+    postJSONData(endPoint, json_string);
+  }else postDeleteRequest(serial_data);
 }

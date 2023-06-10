@@ -55,14 +55,23 @@ void confirm(){
     jsonObject["vehicle"] = vehicle_number;
     jsonObject["latitude"] = latitude;
     jsonObject["longitude"] = longitude;
+    json_string = JSON.stringify(jsonObject);
 
     serialESP.listen();
-    if(serialESP.isListening())
-      serialESP.println(JSON.stringify(jsonObject));
+    if(serialESP.isListening()){
+      serialESP.println(json_string);
+      while(!serialESP.available())
+        Serial.println("Wait for ESP response");
+
+      serial_data = serialESP.readString();
+      serial_data.trim();
+      Serial.println("serialESP data: " + serial_data);
+      if(serial_data.indexOf("SUCCESS") != -1) digitalWrite(buzzer_pin, HIGH);
+    }
 
     // Print into the serial
     Serial.println("Acident confirmed");
-    Serial.println("Data " + JSON.stringify(jsonObject));
+    Serial.println("Data " + json_string);
   }
 }
 void cancel(){ 
@@ -115,7 +124,7 @@ void postAccientData(){
       serial_data = serialESP.readString();
       serial_data.trim();
       Serial.println("serialESP data: " + serial_data);
-      if(serial_data == "detected") digitalWrite(buzzer_pin, HIGH);
+      if(serial_data.indexOf("Detected") != -1) digitalWrite(buzzer_pin, HIGH);
     }
 
     // Print into the serial
