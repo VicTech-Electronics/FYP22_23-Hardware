@@ -95,6 +95,7 @@ void postAccientData(){
     if (roll > pitch) gyrospcopic_data = roll;
     else gyrospcopic_data = pitch;
 
+    jsonObject["endpoint"] = "/api/create/";
     jsonObject["vehicle"] = vehicle_number;
     jsonObject["flame"] = digitalRead(flame_pin);
     jsonObject["smoke"] = analogSensor(smoke_pin);
