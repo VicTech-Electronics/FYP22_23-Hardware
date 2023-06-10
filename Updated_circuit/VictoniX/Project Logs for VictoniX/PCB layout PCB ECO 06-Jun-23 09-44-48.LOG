@@ -1,5 +1,0 @@
-Removed Pin From Net: NetName=VCC Pin=J8-1
-Removed Pin From Net: NetName=GND Pin=J8-4
-Change Component Designator: OldDesignator=   NewDesignator=U2
-Added Pin To Net: NetName=GND Pin=J8-1
-Added Pin To Net: NetName=VCC Pin=J8-4

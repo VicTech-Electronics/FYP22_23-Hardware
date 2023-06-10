@@ -1,6 +1,0 @@
-Removed Pin From Net: NetName=motor_enable1 Pin=U6-23
-Removed Pin From Net: NetName=motor_enable2 Pin=U6-24
-Removed Pin From Net: NetName=motor_pin1 Pin=U6-25
-Added Pin To Net: NetName=motor_enable2 Pin=U6-23
-Added Pin To Net: NetName=motor_pin1 Pin=U6-24
-Added Pin To Net: NetName=motor_enable1 Pin=U6-25
