@@ -2,8 +2,8 @@
 #include <WiFiClientSecure.h>
 #include <Arduino_JSON.h>
 
-const char* ssid = "VictoniX's hotspot";
-const char* password = "#ToniXPoint98";
+const char* ssid = "VicTech Electronics";
+const char* password = "#Electronics98";
 
 const char* server = "victonix-fyp.herokuapp.com";
 const int httpsPort = 443;
@@ -12,24 +12,29 @@ WiFiClientSecure client;
 
 // Decralation of useful varibles
 JSONVar json_object, modified_json_object;
-String serial_data, json_string, endPoint, requestBody;
+String serial_data, json_string, endPoint, requestBody, server_response;
+String responses[] = {"Detected", "SUCCESS", "FAIL", "Vehicle not registered"};
 
 // Method to receive server response
 String serverResponse(){
+  server_response = "";
   // Make the HTTPS request
-    if (client.connect(server, httpsPort)) {
-      client.print(requestBody);
-      delay(500);
-      // Read and print the response
-      while (client.available()) {
-        String line = client.readStringUntil('\r');
-        Serial.print(line);
-      }client.stop();
-    }else {
-      Serial.println("Connection failed");
-    }
+  if (client.connect(server, httpsPort)) {
+    client.print(requestBody);
+    delay(500);
+    // Read and print the response
+    while (client.available()) {
+      String line = client.readStringUntil('\r');
+      for(byte i=0; i<responses.length(); i++)
+        if(responses[i] == line) server_response = line;
+      Serial.print(server_response);
+      return server_response;
+    }client.stop();
+  }else {
+    Serial.println("Connection failed");
+  }
 
-    return "";
+  return server_response;
 }
 
 // Method to post json data to the server
@@ -70,31 +75,31 @@ void setup() {
     delay(1000);
     Serial.println("Connecting to WiFi...");
   }Serial.println("Connected to WiFi");
+
+  Serial.println("Project start");
   
   // Set up the client
   client.setInsecure(); // Allow connections to SSL sites without valid certificates
 }
 
 void loop() {
-  while(!Serial.available()); // Wait for the data in serial buffer
-  serial_data = Serial.readString();
-  serial_data.trim();
+  // while(!Serial.available()); // Wait for the data in serial buffer
+  // serial_data = Serial.readString();
+  // serial_data.trim();
   
-  if(serial_data.indexOf("{") != 0){
-    json_object = JSON.parse(serial_data);
+  // if(serial_data.indexOf("{") != 0){
+  //   json_object = JSON.parse(serial_data);
+  //   JSONVar keys = json_object.keys(); // Get the keys of the original JSON object
+  //   for(byte i=0; i<json_object.length(); i++){
+  //     String key = keys[i];
+  //     if(key != "endpoint")
+  //       modified_json_object[key] = json_object[key];
+  //     else endPoint = (const char*)json_object["endpoint"];
+  //   }
+  //   json_string = JSON.stringify(modified_json_object);
+  //   postJSONData(endPoint, json_string);
+  // }else postDeleteRequest(serial_data);
 
-    
-    JSONVar keys = json_object.keys(); // Get the keys of the original JSON object
-    
-    for(byte i=0; i<json_object.length(); i++){
-      String key = keys[i];
-      
-      if(key != "endpoint")  
-        modified_json_object[key] = json_object[key];
-      else endPoint = (const char*)json_object["endpoint"];
-    }
-    json_string = JSON.stringify(modified_json_object);
-
-    postJSONData(endPoint, json_string);
-  }else postDeleteRequest(serial_data);
+  postGETRequest("/api/");
+  delay(3e3);
 }

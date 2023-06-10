@@ -3,7 +3,6 @@
 #include <SoftwareSerial.h>
 
 #define ACCIDENT "detected"
-
 ////////////////////////////////////
 String vehicle_number = "T123-ABC";
 ////////////////////////////////////
