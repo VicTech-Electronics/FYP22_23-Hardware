@@ -45,6 +45,9 @@ void flushGSM(){
 }
 
 void initializeGSM(){
+  serialGSM.println("AT");
+  delay(1e3);
+  flushGSM();
   serialGSM.println("AT+CMGF=1");
   delay(1e3);
   flushGSM();
