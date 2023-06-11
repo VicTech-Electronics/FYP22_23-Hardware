@@ -12,6 +12,8 @@ void setup() {
 
   lcd.begin(16, 2);
   servo.attach(servo_pin);
+  servo.write(0);
+  Serial.begin(9600);
 
   // Welcome message
   lcdPrint("Welcome", ""); delay(2e3);

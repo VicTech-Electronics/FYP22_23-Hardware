@@ -40,17 +40,26 @@ void operation(){
   if(password == correct_password){
     lcdPrint("SUCCESS", ""); delay(2e3);
     lcdPrint("Opening...", "");
-    servo.write(90);
-    delay(3e3);
-
+    
+    Serial.println("Opening...");
+    for(byte i=0; i<90; i++){
+      servo.write(i);
+      delay(20);
+    }
+    
+    Serial.println("Waiting...");
     for(byte i=5; i>0; i--){
       lcdPrint("Remaing time:", String(i) + " sec.");
       delay(1e3);
     }
-
+    
     lcdPrint("Closing...", "");
-    servo.write(0);
-    delay(3e3);
+    Serial.println("Closing...");
+    for(byte i=90; i>0; i--){
+      servo.write(i);
+      delay(20);
+    }
+    
   }else{
     lcdPrint("Incorect...", "");
     digitalWrite(buzzer_pin, HIGH);
