@@ -38,6 +38,8 @@ void setup() {
   lcdPrint("Welcome", "");
   lcdPrint("Mobile Phone", "Charging Machine");
   delay(1e3);
+
+  digitalWrite(backlight_pin, HIGH);
 }
 
 void loop() {
