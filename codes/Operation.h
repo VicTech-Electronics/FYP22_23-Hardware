@@ -60,7 +60,7 @@ void operation(){
   unsigned long initial_time = millis();
   while(millis() - initial_time > (time * 60000.)); // Wait for time to pass
 
-  servo.write(90);
+  servo.write(90); delay(10);
   delay(map(size, 0, 100, 0, 5000));
-  servo.write(0);
+  servo.write(0); delay(10);
 }
