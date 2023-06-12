@@ -24,8 +24,8 @@ void setup() {
   pinMode(btn_pin, INPUT_PULLUP);
 
   Serial.begin(9600);
+  serialGPS.begin(9600);
   serialESP.begin(9600);
-  serialGPS.begin(4800);
   
   pulseSensor.analogInput(hear_rate_pin);
   pulseSensor.setThreshold(550); // Adjust this value to your pulse sensor
@@ -37,4 +37,5 @@ void setup() {
 
 void loop() {
   operation();
+  delay(3e3);
 }

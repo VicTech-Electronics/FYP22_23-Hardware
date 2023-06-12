@@ -1,4 +1,5 @@
-#include <PulseSensorPlayground.h>
+#define USE_ARDUINO_INTERRUPTS true    // Set-up low-level interrupts for most acurate BPM math.
+#include <PulseSensorPlayground.h>     // Includes the PulseSensorPlayground Library
 
 // Definition of pin connections
 const uint8_t hear_rate_pin=2, temp_pin=A1;
@@ -11,10 +12,7 @@ const float referenceVoltage = 5.0; // Reference voltage (in volts)
 
 // Method to measerue heart reate
 float getHeartRate(){
- if (pulseSensor.sawStartOfBeat()){
-   return float(pulseSensor.getBeatsPerMinute());
- }else return -1;
- 
+  return float(pulseSensor.getBeatsPerMinute());
 }
 
 // Method to measure temperature
