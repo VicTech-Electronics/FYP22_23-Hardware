@@ -17,7 +17,6 @@ void alerting(){
   delayMicroseconds(15e3);
 }
 
-
 ///////////////////// Default methods /////////////////////
 void setup() {
   pinMode(ind_pin, OUTPUT);
@@ -30,12 +29,9 @@ void setup() {
   
   pulseSensor.analogInput(hear_rate_pin);
   pulseSensor.setThreshold(550); // Adjust this value to your pulse sensor
- if(pulseSensor.begin()){
-   Serial.println("Fail to begin Heartbeat sensor");
- }
-
-  
-  
+  if(pulseSensor.begin())
+    Serial.println("Fail to begin Heartbeat sensor");
+ 
   attachInterrupt(digitalPinToInterrupt(btn_pin), alerting, FALLING);
 }
 
