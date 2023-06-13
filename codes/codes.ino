@@ -20,10 +20,8 @@ void setup() {
   pinMode(sense_pin, OUTPUT);
   pinMode(buzzer_pin, OUTPUT);
   pinMode(red_ind_pin, OUTPUT);
-  pinMode(green_ind_pin, OUTPUT);
   pinMode(backlight_pin, OUTPUT);
   pinMode(btn1_pin, INPUT_PULLUP);
-  pinMode(btn2_pin, INPUT_PULLUP);
 
   Serial.begin(9600);
   dht.begin();
@@ -33,10 +31,6 @@ void setup() {
   lcdPrint("", "Cashewnut", "Meter", "", false); delay(2e3);
 
   attachInterrupt(digitalPinToInterrupt(btn1_pin), measurement, FALLING);
-  startCalibiration();
-
-  // get proportionality constant for the last calibiration
-  EEPROM.get(pc_address, proportionality_constant);
 }
 
 void loop() {
@@ -46,7 +40,7 @@ void loop() {
     temp = getTemperatureAndHumidity().temperature;
     hum = getTemperatureAndHumidity().humidity;
     moist = getMoisturePercentage();
-    lcdPrint("MEASUREMENTS", "Moisture:" + String(moist) + "%", "Temp: " + String(temp), "Hum: " + String(hum), true);
+    lcdPrint("MEASUREMENTS", "Moisture: " + String(moist) + "%", "Temp: " + String(temp), "Hum: " + String(hum), true);
 
     if(moist >= 30) alert(true);
     else alert(false);
@@ -62,4 +56,5 @@ void loop() {
     delay(3e3);
     digitalWrite(backlight_pin, LOW);
   }
+  delay(1e3);
 }
