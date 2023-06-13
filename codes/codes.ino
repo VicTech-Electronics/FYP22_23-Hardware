@@ -7,13 +7,13 @@
 
 #include "Operation.h"
 
+// Decralation of useful variables
+float temp, hum, moist;
+
 // Method to handle Interrupt functions
 void measurement(){
   measure = !measure;
-  delayMicroseconds(16e3);
-}
-void calibiration(){
-  calibirate = true;
+  delayMicroseconds(15e3);
 }
 
 void setup() {
@@ -27,14 +27,12 @@ void setup() {
 
   Serial.begin(9600);
   dht.begin();
-  lcd.begin(16, 2);
+  lcd.begin(20, 4);
 
-  lcdPrint("Welcome", ""); delay(1e3);
-  lcdPrint("Cashewnut", "Meter"); delay(2e3);
+  lcdPrint("","Welcome", "", "", false); delay(1e3);
+  lcdPrint("", "Cashewnut", "Meter", "", false); delay(2e3);
 
   attachInterrupt(digitalPinToInterrupt(btn1_pin), measurement, FALLING);
-  attachInterrupt(digitalPinToInterrupt(btn2_pin), calibiration, FALLING);
-
   startCalibiration();
 
   // get proportionality constant for the last calibiration
@@ -45,10 +43,23 @@ void loop() {
   // if(calibirate) startCalibiration();
   if(measure){
     Serial.println("In measurement mode");
-    lcdPrint("Moisture:" + String(getMoisturePercentage()) + "%", "T:" + String(getTemperatureAndHumidity().temperature) + "  H:" + String(getTemperatureAndHumidity().humidity));
+    temp = getTemperatureAndHumidity().temperature;
+    hum = getTemperatureAndHumidity().humidity;
+    moist = getMoisturePercentage();
+    lcdPrint("MEASUREMENTS", "Moisture:" + String(moist) + "%", "Temp: " + String(temp), "Hum: " + String(hum), true);
+
+    if(moist >= 30) alert(true);
+    else alert(false);
   }else{
-    lcdPrint("Cashew nut", "Moisture sensor");
+    lcdPrint("", "Cashewnut Moisture", "Digital meter", "", false);
+    alert(false);
   }
 
+  
+
   if(measure) digitalWrite(backlight_pin, HIGH);
+  else{
+    delay(3e3);
+    digitalWrite(backlight_pin, LOW);
+  }
 }

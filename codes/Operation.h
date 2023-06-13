@@ -12,12 +12,23 @@ bool measure, calibirate;
 float proportionality_constant=0, moisture;
 int pc_address = 0;
 
+// Method to 
+void alert(bool state){
+  if(state){
+    digitalWrite(red_ind_pin, HIGH);
+    digitalWrite(buzzer_pin, HIGH);
+  }else{
+    digitalWrite(red_ind_pin, LOW);
+    digitalWrite(buzzer_pin, LOW);
+  }
+}
+
 void startCalibiration(){
   digitalWrite(backlight_pin, HIGH);
   // lcdPrint("Insert 100%", "Wet cashew nut");
   // while(analogRead(sense_pin) == 0.0 || digitalRead(btn2_pin) == HIGH){ Serial.println("Wait for cashew nut for Calibiration");}
 
-  lcdPrint("***", "Calibirating...");
+  lcdPrint("","***", "Calibirating...","", false);
 
   float res_cal_value = 0.0;
   float hum_cal_value = 0.0;
@@ -39,7 +50,7 @@ void startCalibiration(){
   // Calculate proportionality constant
   proportionality_constant = (100.0 * temp_cal_value * res_cal_value) / hum_cal_value;
   EEPROM.put(pc_address, proportionality_constant);
-  lcdPrint("Complete", "");
+  lcdPrint("", "Complete", "", "", false);
   calibirate = false;
 
   Serial.println("Resistance: " + String(res_cal_value));
@@ -50,20 +61,14 @@ void startCalibiration(){
   digitalWrite(backlight_pin, LOW);
 }
 
-// float getMoisturePercentage(){
-//   float sense_voltage = analogRead(sense_pin) * 5./1023.;
-//   float resistance = ((5 * calibiration_resistor_value) / sense_voltage)  - calibiration_resistor_value;
-
-//   Serial.println("Constant: " + String(proportionality_constant));
-
-//   if(resistance <= 0.0) moisture = 100.0;
-//   else moisture = (proportionality_constant * getTemperatureAndHumidity().humidity) / (getTemperatureAndHumidity().temperature * resistance) * 100.0;
-//   Serial.println("Moisture: " + String(moisture));
-//   return moisture;
-// }
-
-// To remove
 float getMoisturePercentage(){
-  if(digitalRead(sense_pin) == 0) return 100;
-  else return 0;
+  float sense_voltage = analogRead(sense_pin) * 5./1023.;
+  float resistance = ((5 * calibiration_resistor_value) / sense_voltage)  - calibiration_resistor_value;
+
+  Serial.println("Constant: " + String(proportionality_constant));
+
+  if(resistance <= 0.0) moisture = 100.0;
+  else moisture = (proportionality_constant * getTemperatureAndHumidity().humidity) / (getTemperatureAndHumidity().temperature * resistance) * 100.0;
+  Serial.println("Moisture: " + String(moisture));
+  return moisture;
 }

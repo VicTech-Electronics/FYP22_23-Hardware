@@ -17,7 +17,7 @@ dhtStruct getTemperatureAndHumidity(){
 
   if(isnan(dhtValues.temperature) || isnan(dhtValues.humidity)){
     Serial.println("Fail to read temperature and Humidity");
-    lcdPrint("Error:", "DHT fail");
+    lcdPrint("", "Error:", "DHT fail", "", false);
     dhtValues.temperature = -1;
     dhtValues.humidity = -1;
     return dhtValues;
