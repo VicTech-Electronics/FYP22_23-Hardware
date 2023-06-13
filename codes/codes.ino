@@ -11,16 +11,19 @@ void setup() {
   pinMode(buzzer_pin, OUTPUT);
   pinMode(sensor1_pin, INPUT);
   pinMode(sensor2_pin, INPUT);
-  pinMode(button_pin, INPUT_PULLUP);
 
   Serial.begin(9600);
   serialGSM.begin(9600);
   lcd.begin(16, 2);
 
-  attachInterrupt(digitalPinToInterrupt(button_pin), stopAlert, FALLING);
+  Serial.println("Project start");
   lcdPrint("Welcome", ""); delay(2e3);
-  lcdPrint("Transimition", "Fault detector");
+  lcdPrint("Transimition", "Fault detector"); delay(2e3);
+  lcdPrint("Intializing...", ""); delay(5e3);
+  Serial.println("Initialize SMS mode");
   intializeSMS();
+  Serial.println("DONE");
+
 }
 
 void loop() {
