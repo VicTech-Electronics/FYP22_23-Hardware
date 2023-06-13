@@ -8,12 +8,13 @@
 #include "Interface.h"
 
 // Decralation of usefull variables
-bool old_state, change = false;
+bool change = false;
+uint8_t old_state;
 
 // Method to handle backlight operation
 void backlightControl(){
   digitalWrite(backlight_pin, !backlight_state);
-  delayMicroseconds(16e3);
+  delayMicroseconds(15e3);
 }
 
 
@@ -27,6 +28,7 @@ void setup() {
   pinMode(backlight_pin, OUTPUT);
 
   lcd.begin(16, 2);
+  Serial.begin(9600);
   
   old_state = digitalRead(sense_pin);
   attachInterrupt(digitalPinToInterrupt(btn_pin), backlightControl, FALLING);
@@ -54,4 +56,6 @@ void loop() {
     digitalWrite(buzzer_pin, LOW);
     change = false;
   }
+
+  Serial.println("New serial: " + String(digitalRead(sense_pin)));
 }
