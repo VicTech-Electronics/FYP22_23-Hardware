@@ -8,7 +8,7 @@
 SoftwareSerial serialESP(12, 11);
 
 // Defition of pin connections
-const uint8_t req_ind_pin=7, res_ind_pin=6, req_btn_pin=2, res_btn_pin=3, buzzer_pin=8;
+const uint8_t req_ind_pin=7, res_ind_pin=6, req_btn_pin=3, res_btn_pin=2, buzzer_pin=8;
 
 /////////////////// Custom methods ///////////////////
 // Method the handle request interrupt
@@ -48,4 +48,8 @@ void setup() {
 }
 
 void loop() {
+  while(serialESP.available()){
+    String serial_data = serialESP.readString();
+    Serial.println(serial_data);
+  }
 }
