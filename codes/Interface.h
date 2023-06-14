@@ -1,14 +1,17 @@
 #include <LiquidCrystal.h>
+#include <Arduino_JSON.h>
 
+JSONVar json_object;
 LiquidCrystal lcd(A5, A4, A3, A2, A1, A0);
 
 // Decralation of pin configurations
-const int buzzer_pin = 6, button_pin = 7,
-	  volume_sensor_pin = A0, flowrate_sensor_pin = A1;
+const int buzzer_pin = 6, button_pin = 2,
+	volume_sensor_pin = A0, flowrate_sensor_pin = 3;
 
 // Decralation of usefull variable
 bool button;
 String phone = "+255744952269";
+String device_number = "12345";
 
 // Methode to Cut String 
 String cutString(String str, int col) {

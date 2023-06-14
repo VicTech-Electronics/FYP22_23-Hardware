@@ -8,24 +8,33 @@
 
 void setup() {
   pinMode(flowrate_pin, INPUT);
-  pinMode(btn_pin, INPUT_PULLUP);
+  pinMode(button_pin, INPUT_PULLUP);
 
   Serial.begin(9600);
   serialGPS.begin(9600);
   serialGSM.begin(9600);
 
-  attachInterrupt(digitalPinToInterrupt(btn_pin), listenBtn, FALLING);
+  lcd.begin(16, 2);
+  lcdPrint("Fuel tank", "Security System");
+  
+  // Initialize GSM module
+  modem.restart(); delay(3e3);
+  modem.init(); delay(1e3);
+  while (!modem.isNetworkConnected()) {
+    lcdPrint("Intializing...", "");
+    Serial.println("GSM modem try to connect to the Network");
+    delay(100);
+  }
+  initializeSMS();
+  intializeGPRS();
+  initial_volume = getVolume();
+
+  lcdPrint("Done", "");
+
+  attachInterrupt(digitalPinToInterrupt(button_pin), listenBtn, FALLING);
   attachInterrupt(digitalPinToInterrupt(flowrate_pin), countPulse, RISING);
 }
 
 void loop() {
-
-  // Listen to GSM
-  while(serialGSM.available()){
-    gsm_data = serialGSM.readString();
-    gsm_data.trim();  
-    gsm_data.toUpperCase();
-    if(gsm_data.indexOf("RING") != -1) receiveCall();
-    else receiveSMS();
-  }
+  operation();
 }
