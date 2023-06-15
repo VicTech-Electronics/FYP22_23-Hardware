@@ -1,7 +1,11 @@
-#include "Communication.h"
+#include <SoftwareSerial.h>
+#include <Arduino_JSON.h>
+
+// Objects
+SoftwareSerial serialBT(6, 7);
 
 // Definition of useful pins
-const uint8_t enabel_left=A0, enabel_right=A1, left1=A2, left2=A3, right1=A4, right2=A5;
+const uint8_t enabel_left=A2, enabel_right=A0, left1=A1, left2=A3, right1=A4, right2=A5;
 
 // Declaration of useful variables
 char bluetooth_data;
@@ -38,7 +42,7 @@ void motionControl(){
   bluetooth_data = listenBT();
   if(bluetooth_data == 'F') whilesControl(true, true, true, false, true, false);
   else if(bluetooth_data == 'B') whilesControl(true, true, false, true, false, true);
-  else if(bluetooth_data == 'L') whilesControl(false, true, true, false, true, false);
-  else if(bluetooth_data == 'R') whilesControl(true, false, true, false, true, false);
-  else if(bluetooth_data == 'S') whilesControl(false, false, true, false, true, false);
+  else if(bluetooth_data == 'L') whilesControl(false, true, false, false, true, false);
+  else if(bluetooth_data == 'R') whilesControl(true, false, true, false, false, false);
+  else if(bluetooth_data == 'S') whilesControl(false, false, false, false, false, false);
 }
