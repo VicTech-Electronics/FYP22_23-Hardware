@@ -18,15 +18,15 @@ void alerting(){
 // Method to handle all operations
 void operaion(){
   
-  if(digitalRead(sensor1_pin)==LOW){
+  if(digitalRead(sensor1_pin) == LOW){
     location = "Location A";
     alert = true;
   }else if(digitalRead(sensor2_pin) == LOW){
-    location = "Location A";
+    location = "Location B";
     alert = true;
   }else alert = false;
 
-  if(digitalRead(sensor1_pin)==LOW || digitalRead(sensor2_pin)==LOW){
+  if(digitalRead(sensor1_pin) == LOW || digitalRead(sensor2_pin) == LOW){
     sendSMS(phone_number, "Fault detected at " + location);
     lcdPrint("Fault detected", "Area: " + location);
   }else lcdPrint("SAFE", "Transimition.");
