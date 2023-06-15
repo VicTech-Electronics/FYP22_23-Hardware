@@ -15,9 +15,13 @@ void setup(){
   if (!SD.begin(chip_selector_pin)) {
     Serial.println("SD card initialization failed!");
     while (true);
-  }
+  } Serial.println("SD card initialization SUCCESS");
 }
 
 void loop() {
   readData();
+  while(serialESP.available()){
+    String serial_data = serialESP.readString();
+    Serial.println(serial_data);
+  }
 }

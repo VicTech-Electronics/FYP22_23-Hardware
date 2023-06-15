@@ -53,8 +53,9 @@ void readData(){
   if(roll > 45 || pitch > 45 ||
     vibration_value >= 50 ||
     smoke_value >= 50 ||
-    digitalRead(flame_pin) == HIGH
+    digitalRead(flame_pin) ==HIGH
   ){
+    Serial.println("Send data");
     getLocation();
     json_object["vehicle_number"] = vehicle_number;
     json_object["latitude"] = latitude;
