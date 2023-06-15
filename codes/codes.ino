@@ -24,4 +24,6 @@ void setup() {
 
 void loop() {
   operation();
+  Serial.println("Reading: " + String(analogRead(sensor_pin)));
+  delay(5e3);
 }
