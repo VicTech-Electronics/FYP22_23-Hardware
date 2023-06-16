@@ -3,22 +3,23 @@
 #include "Communication.h"
 
 // Definition of usefull pin connection
-const uint8_t step1_pin, step2_pin, dir1_pin, dir2_pin;
+const uint8_t step1_pin=A1, step2_pin=A3, dir1_pin=A0, dir2_pin=A2;
 
 JSONVar json_object;
 
 // Decralation of usefull variables
-uint8_t number_of_pads, steps_per_value = 20, pad_type;
-float amount, amout_per_pad = 500;
+uint8_t number_of_pads, steps_per_value = 230, pad_type;
+int amount, amout_per_pad = 500;
 bool confirm, cancel;
-String response;
-
+String response, pad_name;
 
 // Method to handle confirmation and cancelation Interrupts
 void confirmation(){
+  Serial.println("Confirm buttons in pressed");
   confirm = true;
 }
 void cancelation(){
+  Serial.println("Cancel buttons in pressed");
   cancel = true;
 }
 
@@ -31,11 +32,11 @@ void padOut(byte type, byte value){
   uint8_t steps = value * steps_per_value;
   for(byte i=0; i<steps; i++){
     digitalWrite(pin, HIGH);
-    delayMicroseconds(500);
+    delayMicroseconds(5e3);
     digitalWrite(pin, LOW);
-    delayMicroseconds(500);
+    delayMicroseconds(5e3);
 
-    if(i%steps_per_value==0) delay(2e3); // Wait for Pad to drop
+    if(i % steps_per_value == 0) delay(2e3); // Wait for Pad to drop
   }
 }
 
@@ -44,12 +45,17 @@ String sendRequest(){
   json_object["card_number"] = card_number;
   json_object["amount"] = amount;
   json_object["details"] = "Purchase " + String(number_of_pads) + " pads";
+  String json_string = JSON.stringify(json_object);
 
-  serialESP.println(JSON.stringify(json_object));
+  serialESP.println(json_string);
 
   // Wait for the response
-  while(!serialESP.available()){}
-  return serialESP.readString();
+  unsigned long initial_time = millis();
+  while(millis() - initial_time >= 5000){
+    if(serialESP.available())
+      return serialESP.readString();
+  }
+  return "time_out";
 }
 
 
@@ -66,7 +72,9 @@ void service(){
   // Chose pad type
   confirm = false;
   while(!confirm){
-    lcdPrint("Pad type", "Choice: " + String(pad_type) + " Pads");
+    if(pad_type==1) pad_name = "Softcare";
+    else pad_name = "HC";
+    lcdPrint("Pad type", "Choice: " + String(pad_name) + " Pads");
     if(cancel){
       if(pad_type == 1) pad_type = 2;
       else pad_type = 1;
@@ -91,6 +99,7 @@ void service(){
   lcdPrint("Confirm payment", String(number_of_pads) + "Pads, " + String(amount) + "Tsh.");
   bool wait = true;
   while(wait){
+    Serial.println("Waiting");
     if(confirm){
       lcdPrint("Please wait", "...");
       response = sendRequest();
@@ -102,7 +111,7 @@ void service(){
         lcdPrint("Sorry", "Out of balance");
       else if(response == "FAIL")
         lcdPrint("Sorry", "Operation failed");
-      else lcdPrint("ERROR", "Unknown error");
+      else lcdPrint("NETWORK ERROR", "Timeout");
 
       wait = false;
     }else if(cancel){
@@ -113,4 +122,5 @@ void service(){
 
   confirm = false;
   cancel = false;
+  delay(3e3);
 }

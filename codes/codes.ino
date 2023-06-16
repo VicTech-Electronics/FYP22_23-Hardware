@@ -24,16 +24,15 @@ void setup() {
   lcd.backlight();
 
   // set Motor directions
-  digitalWrite(dir1_pin, HIGH);
-  digitalWrite(dir2_pin, HIGH);
+  digitalWrite(dir1_pin, LOW);
+  digitalWrite(dir2_pin, LOW);
   
   attachInterrupt(digitalPinToInterrupt(btn1_pin), confirmation, FALLING);
-  attachInterrupt(digitalPinToInterrupt(btn1_pin), cancelation, FALLING);
+  attachInterrupt(digitalPinToInterrupt(btn2_pin), cancelation, FALLING);
 }
 
 void loop() {
   lcdPrint("PAD Vanding", "Machine");
-  // if(confirm) service();
-  service();
+  if(confirm) service();
   delay(1e3);
 }
