@@ -1,8 +1,6 @@
 #include <SoftwareSerial.h>
 #include <NRFLite.h>
 #include <SPI.h>
-#define gsm_rx A2
-#define gsm_tx A3
 
 // Definition of usefull terms
 const static uint8_t RADIO_ID = 7;
@@ -17,7 +15,7 @@ struct RadioPacket{
 };
 
 // Initilization of objects
-SoftwareSerial serialGSM(gsm_rx, gsm_tx);
+SoftwareSerial serialGSM(A4, A5);
 NRFLite radio;
 RadioPacket radioData;
 
@@ -37,7 +35,10 @@ void sendNRF(char radio_message){
 }
 
 
-void flushGSM(){
+void gsmCommand(String command){
+  serialGSM.println(command);
+  delay(1e3);
+
   while(serialGSM.available()){
     Serial.write(serialGSM.read());
     delay(50);
@@ -45,25 +46,14 @@ void flushGSM(){
 }
 
 void initializeGSM(){
-  serialGSM.println("AT");
-  delay(1e3);
-  flushGSM();
-  serialGSM.println("AT+CMGF=1");
-  delay(1e3);
-  flushGSM();
-  serialGSM.println("AT+CNMI=1,2,0,0,0");
-  delay(1e3);
-  flushGSM();
+  gsmCommand("AT");
+  gsmCommand("AT+CMGF=1");
+  gsmCommand("AT+CNMI=1,2,0,0,0");
 }
 
 void sendSMS(){
-  serialGSM.println("AT+CMGS=\"" + phone_number + "\"");
-  delay(1e3);
-  flushGSM();
-  serialGSM.println(message);
-  delay(1e3);
-  flushGSM();
+  gsmCommand("AT+CMGS=\"" + phone_number + "\"");
+  gsmCommand(message);
   serialGSM.write(26);
   delay(1e3);
-  flushGSM();
 }

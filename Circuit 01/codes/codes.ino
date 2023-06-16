@@ -16,13 +16,14 @@ void setup() {
   // Initialize the objects
   Serial.begin(9600);
   serialGSM.begin(9600);
+  Serial.println("Start GSM intialization");
   initializeGSM();
 
   // Initialization of NRF communication module
   if (!radio.init(RADIO_ID, PIN_RADIO_CE, PIN_RADIO_CSN)){
     Serial.println("Cannot communicate with radio");
     while (true); // Wait here forever.
-  }
+  }Serial.println("NRF inititalized successfully");
   radioData.FromRadioId = RADIO_ID;
 }
 
