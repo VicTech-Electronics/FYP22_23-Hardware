@@ -17,7 +17,7 @@ void openValve(bool state){
     if(digitalRead(sensor2_pin) == HIGH){
       alerting(true, true);
       sendNRF('Y');
-      delay(5e3);
+      sendSMS();
     }
   }else{
     digitalWrite(valve_pin1, HIGH);

@@ -4,6 +4,7 @@
 #include "Operation.h"
 
 void setup() {
+  delay(10e3);
   // pinConfigurations
   pinMode(red_pin, OUTPUT);
   pinMode(green_pin, OUTPUT);
