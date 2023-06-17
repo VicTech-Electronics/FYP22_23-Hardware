@@ -15,13 +15,16 @@ void setup() {
   pinMode(sensor_pin, INPUT);
 
   Serial.begin(9600);
+  Serial.println("Program start");
 }
 
 void loop() {
   if(digitalRead(sensor_pin) == LOW){
+    Serial.println("ON");
     digitalWrite(ind_pin, HIGH);
     digitalWrite(pump_pin, HIGH);
   }else{
+    Serial.println("OFF");
     digitalWrite(ind_pin, LOW);
     digitalWrite(pump_pin, LOW);
   }
