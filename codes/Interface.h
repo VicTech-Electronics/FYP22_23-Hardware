@@ -1,26 +1,33 @@
-#include <Wire.h> 
-#include <LiquidCrystal_I2C.h>
+// Define the DIR and STEP pin numbers
+const int DIR_PIN = 2;
+const int STEP_PIN = 3;
 
-// Definition of pin connection
-const uint8_t btn1_pin=2, btn2_pin=3, buzzer_pin=9;
-
-LiquidCrystal_I2C lcd(0x27,20,4);
-
-// Methode to Cut String 
-String cutString(String str, int col) {
-  return str.substring(0, col);
+void setup() {
+  // Set the DIR and STEP pins as outputs
+  pinMode(DIR_PIN, OUTPUT);
+  pinMode(STEP_PIN, OUTPUT);
 }
 
-// Function to simplify the printing on LCD
-void lcdPrint(String str0, String str1) {
-  lcd.clear();  const int columns = 16;
-  if (str0.length() > columns) str0 = cutString(str0, columns);
-  if (str1.length() > columns) str1 = cutString(str1, columns);
+void loop() {
+  // Rotate the stepper motor clockwise
+  digitalWrite(DIR_PIN, HIGH); // Set direction to clockwise
+  for (int i = 0; i < 200; i++) {
+    digitalWrite(STEP_PIN, HIGH);
+    delayMicroseconds(500); // Adjust step duration as needed
+    digitalWrite(STEP_PIN, LOW);
+    delayMicroseconds(500); // Adjust step duration as needed
+  }
 
-  int pre_space0 = int((columns - str0.length()) / 2),
-      pre_space1 = int((columns - str1.length()) / 2);
+  delay(1000); // Delay between rotations
 
-  lcd.setCursor(pre_space0, 0); lcd.print(str0);
-  lcd.setCursor(pre_space1, 1); lcd.print(str1);
-  delay(1e3);
+  // Rotate the stepper motor counterclockwise
+  digitalWrite(DIR_PIN, LOW); // Set direction to counterclockwise
+  for (int i = 0; i < 200; i++) {
+    digitalWrite(STEP_PIN, HIGH);
+    delayMicroseconds(500); // Adjust step duration as needed
+    digitalWrite(STEP_PIN, LOW);
+    delayMicroseconds(500); // Adjust step duration as needed
+  }
+
+  delay(1000); // Delay between rotations
 }
