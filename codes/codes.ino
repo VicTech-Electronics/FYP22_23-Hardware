@@ -8,7 +8,7 @@ void checkPower(){
   float voltage = analogRead(batter_level);
   voltage = map(voltage, 0, 1023, 0, 100);
 
-  if(voltage < 20){
+  if(voltage <= 75){
     digitalWrite(buzzer_pin, HIGH);
     digitalWrite(indicator_pin, HIGH);
   }else{
