@@ -4,8 +4,6 @@
 #define espRx 10
 #define espTx 9
 SoftwareSerial serialESP(espRx, espTx);
-
-String path = "127.0.0.1:8000/predict-app/process_data/";
 int deviceID = 900;
 
 // Method to correct data to send
@@ -31,11 +29,15 @@ String collectData(){
 // Method to send data to ESP
 void sendToESP(){
   mod.listen(); delay(500);
-  String full_path_to_request = path + collectData();
-  Serial.println("Full path: " + full_path_to_request);
+  String data = collectData();
+  Serial.println(data);
+  data.trim();
   delay(1e3);
 
   serialESP.listen(); delay(500);
-  serialESP.println(full_path_to_request);
+  serialESP.println(data);
+  while(!serialESP.available());
+  String esp_data = serialESP.readString();
+  Serial.println("Data: " + data);
   delay(1e3);
 }
