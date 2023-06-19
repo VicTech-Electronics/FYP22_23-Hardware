@@ -19,7 +19,7 @@ void control(){
   message = received_sms();
   
   if(message == "UNITS")
-    send_sms(phone, "Remained units: " + String(kWh));
+    send_sms(phone_number, "Remained units: " + String(kWh));
   else{
     payment = message.toInt();
     Serial.println("Payment message received: '" + message + "'");
@@ -46,7 +46,7 @@ void consumption(){
 
   current = current / 2.;
   Serial.println("Average currents used");
-  Serial.println("Load: " + String(current));
+  Serial.println("Load: " + String(current, 15));
 
   // Measurement is taken in Watts second (Ws)
   float Ws = (((220. * current) / 100.) * 2.); 

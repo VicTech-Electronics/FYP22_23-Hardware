@@ -3,7 +3,7 @@ const uint8_t sensor_pin = A3, load_pin=7;
 
 // Decralation of useful variables
 float mVolt_per_amp = 185.0;
-float calibiration_value = 0.08;
+float calibiration_value = 0.0093392525;
 float unit_price = 200.0;
 float kWh, units_addr = 0;
 

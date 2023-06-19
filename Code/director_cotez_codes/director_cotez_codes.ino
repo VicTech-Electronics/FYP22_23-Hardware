@@ -10,11 +10,12 @@ void setup() {
   lcd.begin(16, 2);
   digitalWrite(backlight_pin, HIGH);
 
-  lcdPrint("Welcome", ""); delay(1e3);
-  lcdPrint("UDSM Student", "2019-04-11366"); delay(1e3);
-  lcdPrint("Energy Meter", "-------------"); delay(1e3);
+  lcdPrint("Welcome", ""); delay(2e3);
+  lcdPrint("UDSM Student", "2019-04-11366"); delay(2e3);
+  lcdPrint("Energy Meter", "-------------"); delay(2e3);
 
-  lcdPrint("Initializing...", "");
+  lcdPrint("Initializing...", ""); delay(3e3);
+  EEPROM.get(units_addr, kWh);
   initialize_sms();
 }
 
