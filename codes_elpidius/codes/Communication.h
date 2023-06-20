@@ -14,20 +14,15 @@ TinyGPSPlus gps;
 
 // Decralation of usefull variables
 String latitude, longitude;
-String sms, phone_number, owner_phone_number = "+255";
+String sms, phone_number, owner_phone_number = "+255787651007";
 
-// Method to switch listening of softwareSerial
-void serialListen(String serial_type){
-  if(serial_type == GSM){
-    serialGPS.stopListening();
-    serialGSM.listen();
-  }else if(serial_type == GPS){
-    serialGPS.stopListening();
-    serialGSM.listen();
-  }
-}
+float latitudes[5] = {-6.81423, -6.81442, -6.81449, -6.81428, -6.81436};
+float longitudes[5] = {39.28034, 39.28036, 39.28019, 39.28047, 39.28092};
 
-void flushGSM(){
+void gsmCommand(String command){
+  serialGSM.println(command);
+  delay(1e3);
+
   while(serialGSM.available()){
     Serial.write(serialGSM.read());
     delay(50);
@@ -36,24 +31,20 @@ void flushGSM(){
 
 
 void initializeGSM(){
-  serialGSM.println("AT+CMGF=1");
-  delay(1e3);
-  flushGSM();
-  serialGSM.println("AT+CNMI=1,2,0,0,0");
-  delay(1e3);
-  flushGSM();
+  gsmCommand("AT");
+  gsmCommand("AT+CMGF=1");
+  gsmCommand("AT+CNMI=1,2,0,0,0");
 }
 
 void sendSMS(String number, String message){
-  serialGSM.println("AT+CMGS=\"" + number + "\"");
-  delay(1e3);
-  flushGSM();
-  serialGSM.println(message);
-  delay(1e3);
-  flushGSM();
+  gsmCommand("AT+CMGS=\"" + number + "\"");
+  gsmCommand(message); delay(2e3);
   serialGSM.write(26);
   delay(1e3);
-  flushGSM();
+  while(serialGSM.available()){
+    Serial.write(serialGSM.read());
+    delay(50);
+  }
 }
 
 String receivedSMS() {
@@ -65,7 +56,10 @@ String receivedSMS() {
     sms.trim();
     sms.toUpperCase();
     Serial.println("SMS Received. \n SMS: " + sms);
-    flushGSM();
+    while(serialGSM.available()){
+      Serial.write(serialGSM.read());
+      delay(50);
+    }
   
     return sms;
   } return "";
@@ -73,15 +67,8 @@ String receivedSMS() {
 
 
 // Method to get GPS location
-void findLocation(){
-  serialListen(GPS); delay(3e3);
-  gps.encode(serialGPS.read());
-
-  if(gps.location.isValid()){
-    latitude = gps.location.lat();
-    longitude = gps.location.lng();
-  }else{
-    latitude = "INVALID";
-    longitude = "INVALID";
-  }
+void getLocation(){
+  int index = random(0, 5);
+  latitude = latitudes[index];
+  longitude = longitudes[index];
 }
