@@ -9,6 +9,7 @@
 void setup() {
   pinMode(dir_pin, OUTPUT);
   pinMode(step_pin, OUTPUT);
+  pinMode(laser_pin, OUTPUT);
   pinMode(motor_pin, OUTPUT);
   pinMode(buzzer_pin, OUTPUT);
   pinMode(solenoid_pin, OUTPUT);
@@ -19,5 +20,5 @@ void setup() {
 }
 
 void loop() {
-  if(is_started) completeOperation();
+  completeOperation();
 }
