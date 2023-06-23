@@ -29,7 +29,7 @@ void openValve(bool state){
 
 // Operation of the whole circuit start here
 void operation(){
-  if(digitalRead(sensor1_pin) == LOW){ // No water in the tank
+  if(digitalRead(sensor1_pin) == HIGH){ // No water in the tank
    alerting(true, true);
    sendNRF('X');
    sendSMS();
