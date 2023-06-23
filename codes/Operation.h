@@ -6,7 +6,7 @@
 const uint8_t ind_pin=9, btn_pin=2, buzzer_pin=10;
 
 // Decralation of useful variable
-String device_number = "123456789";
+String device_number = "12345";
 
 // Method to create json variable
 String locationJSON(float lt, float ln, float rate, float temp){

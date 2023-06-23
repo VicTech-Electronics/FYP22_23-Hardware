@@ -41,4 +41,5 @@ void setup() {
 
 void loop() {
   operation();
+  delay(5e3);
 }
