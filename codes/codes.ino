@@ -40,6 +40,7 @@ void setup() {
 
   Serial.begin(9600);
   serialESP.begin(9600);
+  digitalWrite(res_ind_pin, HIGH);
   
   attachInterrupt(digitalPinToInterrupt(req_btn_pin), sendRequest, FALLING);
   attachInterrupt(digitalPinToInterrupt(res_btn_pin), sendResponse, FALLING);
