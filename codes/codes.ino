@@ -17,6 +17,7 @@ void alerting(){
   delayMicroseconds(15e3);
 }
 
+
 ///////////////////// Default methods /////////////////////
 void setup() {
   pinMode(ind_pin, OUTPUT);
@@ -24,18 +25,20 @@ void setup() {
   pinMode(btn_pin, INPUT_PULLUP);
 
   Serial.begin(9600);
-  serialGPS.begin(9600);
   serialESP.begin(9600);
+  serialGPS.begin(4800);
   
   pulseSensor.analogInput(hear_rate_pin);
   pulseSensor.setThreshold(550); // Adjust this value to your pulse sensor
-  if(pulseSensor.begin())
-    Serial.println("Fail to begin Heartbeat sensor");
- 
+//  if(pulseSensor.begin()){
+//    Serial.println("Fail to begin Heartbeat sensor");
+//  }
+
+  
+  
   attachInterrupt(digitalPinToInterrupt(btn_pin), alerting, FALLING);
 }
 
 void loop() {
   operation();
-  delay(3e3);
 }

@@ -6,7 +6,7 @@
 const uint8_t ind_pin=9, btn_pin=2, buzzer_pin=10;
 
 // Decralation of useful variable
-String device_number = "12345";
+String device_number = "123456789";
 
 // Method to create json variable
 String locationJSON(float lt, float ln, float rate, float temp){
@@ -21,12 +21,6 @@ String locationJSON(float lt, float ln, float rate, float temp){
 
 // Methode that combine all operation of the system
 void operation(){
-  serialGPS.listen();
   getLocation();
-
-  String data_to_send = locationJSON(latitude, longitude, getHeartRate(), getTemperature());
-
-  serialESP.listen();
-  serialESP.println(data_to_send);
-  Serial.println("Data: " + data_to_send);
+  serialESP.println(locationJSON(latitude, longitude, getHeartRate(), getTemperature()));
 }
