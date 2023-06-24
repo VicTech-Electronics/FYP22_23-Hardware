@@ -14,10 +14,6 @@ WiFiClientSecure client;
 JSONVar json_object, modified_json_object;
 String serial_data, endPoint, requestBody;
 
-// Method to receive server response
-void serverResponse(){
-  
-}
 
 // Method to post json data to the server
 void postJSONData(String json_data){
@@ -64,6 +60,5 @@ void loop() {
   while(!Serial.available()); // Wait for the data in serial buffer
   serial_data = Serial.readString();
   serial_data.trim();
-
   postJSONData(serial_data);
 }

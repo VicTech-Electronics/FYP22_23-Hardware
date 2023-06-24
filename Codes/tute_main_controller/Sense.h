@@ -5,7 +5,6 @@ const uint8_t smoke_pin=A0, flame_pin=A1, vibration_pin=A2, alcohol_pin=A3;
 const int MPU_addr=0x68;  // I2C address of the MPU-6050
 
 // Decralation of useful variables
-float old_smoke_value, old_vibration_value, old_alcohol_value;
 float smoke_value, vibration_value, alcohol_value;
 bool flame_status;
 
