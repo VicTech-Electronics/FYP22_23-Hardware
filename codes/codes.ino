@@ -3,7 +3,6 @@
  * Spona project
  * FYP2022/23
  */
- 
 #include "Operation.h"
 
 // Decralation of usefull variable
@@ -26,20 +25,13 @@ void setup() {
 
   Serial.begin(9600);
   serialESP.begin(9600);
-  serialGPS.begin(4800);
-  
-  pulseSensor.analogInput(hear_rate_pin);
-  pulseSensor.setThreshold(550); // Adjust this value to your pulse sensor
-//  if(pulseSensor.begin()){
-//    Serial.println("Fail to begin Heartbeat sensor");
-//  }
-
-  
-  
   attachInterrupt(digitalPinToInterrupt(btn_pin), alerting, FALLING);
+
+  delay(10e3);
 }
 
 void loop() {
   operation();
-  delay(5e3);
+  delay(10e3);
 }
+

@@ -22,5 +22,15 @@ String locationJSON(float lt, float ln, float rate, float temp){
 // Methode that combine all operation of the system
 void operation(){
   getLocation();
-  serialESP.println(locationJSON(latitude, longitude, getHeartRate(), getTemperature()));
+  String data = locationJSON(latitude, longitude, getHeartRate(), getTemperature());
+  data.trim();
+  Serial.println("Data: " + data);
+  serialESP.println(data); delay(2e3);
+
+  while(!serialESP.available());
+  while(serialESP.available()){
+    String payload = serialESP.readStringUntil('\r');
+    Serial.println("Payload: " + payload);
+  }
+  
 }

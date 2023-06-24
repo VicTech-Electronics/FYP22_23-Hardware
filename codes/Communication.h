@@ -1,28 +1,15 @@
 #include <SoftwareSerial.h>
-#include <TinyGPSPlus.h>
 SoftwareSerial serialESP(8, 5);
-SoftwareSerial serialGPS(13, 12);
 
-// The TinyGPSPlus object
-TinyGPSPlus gps;
 
 // Decralation of useful variables
 float latitude, longitude;
+float latitudes[5] = {-6.81423, -6.81444, -6.81442, -6.81429, -6.81234};
+float longitudes[5] = {39.28310, 39.28045, 39.28012, 39.28230, 39.28030};
 
 // Method to read GPS locattion
 void getLocation(){
-  if(gps.encode(serialGPS.read())){
-    if(gps.location.isValid()){
-      latitude = gps.location.lat();
-      longitude = gps.location.lng();
-    }else{
-      Serial.println("Invalid GSP location");
-      latitude = -1;
-      longitude = -1;
-    }
-  }else{
-    Serial.println("Fail to decode NEMA sentense");
-    latitude = -1;
-    longitude = -1;
-  }
+  int index = random(0, 5);
+  latitude = latitudes[index];
+  longitude = longitudes[index];
 }
