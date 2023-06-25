@@ -7,7 +7,10 @@ SoftwareSerial serialGSM(gsm_rx, gsm_tx);
 // Decralation of usefull variables
 String phone_number, sms;
 
-void flashBuffer() {
+void gsmCommand(String command) {
+  serialGSM.println(command);
+  delay(1e3);
+
   while (serialGSM.available()) {
     Serial.write(serialGSM.read());
     delay(50);
@@ -15,26 +18,22 @@ void flashBuffer() {
 }
 
 void initializeSMS() {
-  serialGSM.println("AT"); // Attention
-  delay(1e3);
-  flashBuffer();
-  serialGSM.println("AT+CMGF=1"); // Initialize sms mode
-  delay(1e3);
-  flashBuffer();
-  serialGSM.println("AT+CNMI=2,2,0,0,0"); // Read sms directly
-  delay(1e3);
-  flashBuffer();
+  gsmCommand("AT");
+  gsmCommand("AT+CMGF=1");
+  gsmCommand("AT+CNMI=2,2,0,0,0");
 }
 
 void sendSMS(String phone, String message) {
-  serialGSM.println("AT+CMGS=\"" + phone + "\"");
-  delay(1e3);
-  flashBuffer();
+  gsmCommand("AT+CMGS=\"" + phone + "\"");
   serialGSM.println(message);
   delay(3e3);
   serialGSM.println(char(26));
   delay(1e3);
-  flashBuffer();
+
+  while (serialGSM.available()) {
+    Serial.write(serialGSM.read());
+    delay(50);
+  }
 }
 
 String receivedSMS() {
