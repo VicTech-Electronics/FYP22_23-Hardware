@@ -9,7 +9,7 @@ void gsmCommand(String command) {
   delay(1e3);
 
   while (serialGSM.available()) {
-    Serial.write(serialGSM.read());
+    Serial.print(serialGSM.read());
     delay(50);
   }
 }

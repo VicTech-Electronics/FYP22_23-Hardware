@@ -39,8 +39,6 @@ void consumption(){
   
   for(int8_t i=1; i<=2; i++){
     current =+ get_Irms();
-
-    Serial.println("1Reading" + String(i) + ": " + String(current));
     delay(1e3);
   }
 
