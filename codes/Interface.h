@@ -25,7 +25,7 @@ void lcdPrint(String str0, String str1) {
 
   lcd.setCursor(pre_space0, 0); lcd.print(str0);
   lcd.setCursor(pre_space1, 1); lcd.print(str1);
-  delay(100);
+  delay(1e3);
 }
 
 // Method for temperature settings
@@ -39,10 +39,11 @@ void setting(){
       lcdPrint("Settings", "Temp: " + String(temperature) + "C");
 
       if(cancel){
+        lcdPrint("Settings", "CANCELED");
         delay(1e3); // Wait for deboucing of the button
-        confirm = true;
         temperature = initial_temperature;
         cancel = false;
+        return;
       }
     }delay(1e3); // Wait for deboucing of the button
 

@@ -33,13 +33,28 @@ void getTemperature(String level){
   }
 }
 
+// float measureTemperature() {
+//   // Read the raw ADC value from the thermistor pin
+//   int rawADC = analogRead(thermistor_pin);
+
+//   // Convert the raw ADC value to resistance
+//   float resistance = ((1023.0 / rawADC) - 1.0) * thermistorNominal;
+
+//   // Calculate the temperature using the simplified linear PTC equation
+//   float temperatureValue = (resistance - referenceResistance) / temperatureCoefficient;
+
+//   lcdPrint("PTC Thermistor", "Temp: " + String(temperatureValue) + "C");
+//   return temperatureValue;
+// }
+
 // Method to measure temperaure
 float measureTemperature(){
   // Read the raw ADC value from the thermistor pin
   int rawADC = analogRead(thermistor_pin);
 
   // Convert the raw ADC value to resistance
-  float resistance = thermistorNominal / (1023.0 / rawADC - 1.0);
+  // float resistance = thermistorNominal / (1023.0 / rawADC - 1.0);
+  float resistance = ((1023.0 / rawADC) - 1.0) * thermistorNominal;
 
   // Calculate the temperature using the Steinhart-Hart equation
   float steinhart;
@@ -51,7 +66,7 @@ float measureTemperature(){
   float temperatureValue = steinhart - 273.15;                 // Convert to Celsius
 
   lcdPrint("Peltier vaccine", "Temp: " + String(temperatureValue) + "C");
-  return temperatureValue;
+  return temperatureValue;  
 }
 
 // Method to handle operation
