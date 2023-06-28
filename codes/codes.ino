@@ -32,6 +32,6 @@ void setup() {
 
 void loop() {
   operation();
-  delay(10e3);
+  delay(5e3);
 }
 

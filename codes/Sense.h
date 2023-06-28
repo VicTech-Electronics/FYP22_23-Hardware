@@ -31,5 +31,5 @@ float getTemperature(){
   // Convert temperature to Celsius
   float temperatureCelsius = temperatureKelvin - 273.15;
 
-  return temperatureCelsius;
+  return temperatureCelsius + 5;
 }
