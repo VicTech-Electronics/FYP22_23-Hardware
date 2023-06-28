@@ -15,12 +15,15 @@ void setup() {
 
   lcdPrint("Welcome", ""); delay(1e3);
   lcdPrint("Gas Vending", "System"); delay(2e3);
+  lcdPrint("Initializing...", "");
 
   // Calculate Intital pressure
   initial_pressure = 0.0;
   for(byte i=0; i<100; i++)
     initial_pressure += getPressure();
   initial_pressure /= 100;
+
+  initializeSMS();
 }
 
 void loop() {
