@@ -10,7 +10,14 @@ bool service_required, is_port1, is_port2, is_port3;
 int number_of_phone_charged = 0, amount_received = 0;
 unsigned long initial_time1=0, initial_time2=0, initial_time3=0;
 unsigned long charging_time1=0, charging_time2=0, charging_time3=0;
+int pulse_counter, coin_value, charging_time;
+unsigned long count_rate;
 
+// Method to handle the interrupt pulse counter
+void coutingPulseISR(){
+  pulse_counter++;
+  count_rate=0;
+}
  
  // Method to handle port to switch
  void switchPort(int port, boolean state){
@@ -71,4 +78,27 @@ void calculateChargingTime(){
       switchPort(3, LOW);
       initial_time3 = 0;
     }
+}
+
+// Method to check the coin inserted
+void getCoinValue(){
+  pulse_counter = 0;
+  switch(pulse_counter){
+    case 2:
+      coin_value = 50;
+      break;
+    case 3:
+      coin_value = 100;
+      break;
+
+    case 4:
+      coin_value = 200;
+      break;
+    case 5:
+      coin_value = 500;
+      break;
+    default:
+      coin_value = 0;
+      break;
+  }
 }
