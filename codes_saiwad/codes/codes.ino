@@ -30,9 +30,11 @@ void setup() {
 }
 
 void loop() {
-  service();
+  count_rate++;
+  if(count_rate<=30 && pulse_counter>1) service();
   calculateChargingTime();
-  lcdPrint("Mobile Phone", "Charging service");
-  lcdPrint("Press button", "to get service");
-  delay(3e3);
+
+  if(available_port > 0)
+    lcdPrint("Mobile Phone", "Charging service");
+  else lcdPrint("No service", "Ports are full");
 }
