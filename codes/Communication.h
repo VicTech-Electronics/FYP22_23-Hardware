@@ -6,6 +6,7 @@ SoftwareSerial serialGSM(gsm_Rx, gsm_Tx);
 String host = "http://161.35.210.153:5500";
 
 // Decralation of useful variables
+boolean alert;
 String sms, phone_number;
 float latitude, longitude;
 float latitudes[5] = {-6.80458, -6.80433, -6.80538, -6.80464, -6.80434};
@@ -72,6 +73,8 @@ void getResponse(String res_command){
   if(serialGSM.available()) payload = serialGSM.readString();
   payload = payload.substring(payload.indexOf(res_command)+13, payload.indexOf(res_command)+20);
   payload.trim();
+
+  if(payload.indexOf("true")) alert = true;
   Serial.println("Payload: " + payload);
 }
 

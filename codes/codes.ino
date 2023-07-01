@@ -28,4 +28,9 @@ void loop() {
 
   postRequest(end_point, data);
   delay(3e3);
+
+  if(alert){
+    sendSMS("+255689361469", "Sorry Owner, your pet is outside the geofence!");
+    alert = false;
+  }
 }
