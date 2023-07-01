@@ -10,7 +10,7 @@ const int baudRate = 9600; //constant integer to set the baud rate for serial mo
 const int sensorreadDelay = 250; //constant integer to set the sensor read delay in milliseconds
 
 // Decralation of useful variables
-float initial_pressure, pressure_used;
+float initial_pressure;
 
 float getPressure(){
   float reading = analogRead(pressure_pin);
@@ -19,5 +19,7 @@ float getPressure(){
 
 // Methode to calculate pressure used
 float getPressureUsed(){
-  return initial_pressure - getPressure();
+  float used_pressure = initial_pressure - getPressure();
+  initial_pressure = getPressure();
+  return used_pressure;
 }

@@ -1,6 +1,9 @@
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
 
+// Definition of pin connections
+const uint8_t format_btn=2;
+
 LiquidCrystal_I2C lcd(0x27,16,2);
 
 String cutString(String str, int col) {

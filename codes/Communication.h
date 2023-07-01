@@ -37,7 +37,6 @@ void sendSMS(String phone, String message) {
 }
 
 String receivedSMS() {
-  Serial.println("In received sms function");
   while (serialGSM.available()) {
     sms = serialGSM.readString();
     phone_number = sms.substring(sms.indexOf("CMT") + 6, sms.indexOf("CMT") + 19);
@@ -45,8 +44,6 @@ String receivedSMS() {
     sms.trim();
     sms.toUpperCase();
     Serial.println("SMS Received. \n SMS: " + sms);
-    flashBuffer();
-  
     return sms;
   } return "";
 }
