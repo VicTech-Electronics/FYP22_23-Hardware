@@ -9,7 +9,6 @@ String end_point = "/api/v1/pet-location";
 void setup() {
   Serial.begin(9600);
   serialGSM.begin(9600);
-
   
   commandGSM("AT+CFUN=1,1"); // Reset GSM
   Serial.println("Waiting...");
@@ -19,6 +18,7 @@ void setup() {
   initializeGSM();
   connectGPRS();
 }
+
 void loop() {
   getLocation();
   json_object["device_number"] = device_number;
