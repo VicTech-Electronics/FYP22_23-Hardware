@@ -20,8 +20,10 @@ void formatUsageISR(){
 // Method to post data to webserver
 String postData(String data_to_post, String purpose){
   String end_point;
-  if(purpose == "usage") end_point = "/api/usage";
-  else end_point = "/api/notification";
+  if(purpose == "usage") end_point = "/api/usage/";
+  else end_point = "/api/notification/";
+  postRequest(end_point, data_to_post);
+  return "";
 }
 
 // Method to handle operation

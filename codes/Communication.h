@@ -1,8 +1,8 @@
 #include <SoftwareSerial.h>
-#define gsm_rx 9
-#define gsm_tx 10
+SoftwareSerial serialGSM(9, 10);
 
-SoftwareSerial serialGSM(gsm_rx, gsm_tx);
+// Server connection data
+String host = "https://likulike-fyp22-23-0a6c988d5ed9.herokuapp.com";
 
 // Decralation of usefull variables
 String phone_number, sms;
@@ -46,4 +46,38 @@ String receivedSMS() {
     Serial.println("SMS Received. \n SMS: " + sms);
     return sms;
   } return "";
+}
+
+// Methode to Connect GPRS connection
+void connectGPRS(){
+  gsmCommand("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
+  gsmCommand("AT+SAPBR=3,1,\"APN\",\"internet\"");
+  gsmCommand("AT+SAPBR=1,1");
+  gsmCommand("AT+SAPBR=2,1");
+  gsmCommand("AT+HTTPINIT");
+  gsmCommand("AT+HTTPSSL=1");
+}
+
+
+// Methode to get response from the Server
+void getResponse(String res_command){
+  String payload;
+  if(serialGSM.available()) payload = serialGSM.readString();
+  payload = payload.substring(payload.indexOf(res_command)+13, payload.indexOf(res_command)+20);
+  payload.trim();
+  Serial.println("Payload: " + payload);
+}
+
+// Methode to send HTTP request
+void postRequest(String path, String json_data){
+  Serial.println("Data: " + json_data); delay(1e3);
+  gsmCommand("AT+HTTPPARA=\"CID\",1");
+  gsmCommand("AT+HTTPPARA=\"URL\",\"" + host + path + "\"");
+  gsmCommand("AT+HTTPPARA=\"CONTENT\",\"application/json\"");
+  gsmCommand("AT+HTTPDATA=" + String(json_data.length()) + ",100000");
+  gsmCommand(json_data);
+  gsmCommand("AT+HTTPACTION=1"); delay(20e3);
+  gsmCommand("AT+HTTPREAD"); delay(2e3);
+  getResponse("+HTTPREAD:");
+  gsmCommand("AT+HTTPTERM");
 }
