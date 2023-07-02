@@ -9,7 +9,7 @@ JSONVar json_object;
 
 // Decralation of usefull variables
 uint8_t number_of_pads, steps_per_value = 230, pad_type;
-int amount, amout_per_pad = 500;
+int amount, amout_per_pad = 300;
 bool confirm, cancel;
 String response, pad_name;
 
@@ -42,12 +42,18 @@ void padOut(byte type, byte value){
 
 // Method to send request to the server
 String sendRequest(){
+  Serial.println("In send request function");
   json_object["card_number"] = card_number;
   json_object["amount"] = amount;
   json_object["details"] = "Purchase " + String(number_of_pads) + " pads";
   String json_string = JSON.stringify(json_object);
+  Serial.println("Data: " + json_string);
 
   serialESP.println(json_string);
+  while(!serialESP.available()){
+    Serial.println("Waiting for the data from the network");
+    delay(1e3);
+  }
 
   // Wait for the response
   unsigned long initial_time = millis();
@@ -101,8 +107,10 @@ void service(){
   while(wait){
     Serial.println("Waiting");
     if(confirm){
-      lcdPrint("Please wait", "...");
+      lcdPrint("Please wait", "..."); delay(1e3);
       response = sendRequest();
+
+      Serial.println("Response: " + response);
 
       if(response.indexOf("SUCCESS") != -1){
         padOut(pad_type, number_of_pads);

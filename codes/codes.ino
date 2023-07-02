@@ -17,6 +17,7 @@ void setup() {
   pinMode(btn2_pin, INPUT_PULLUP);
 
   Serial.begin(9600);
+  serialESP.begin(9600);
   SPI.begin(); 
   mfrc522.PCD_Init();
 
@@ -29,10 +30,13 @@ void setup() {
   
   attachInterrupt(digitalPinToInterrupt(btn1_pin), confirmation, FALLING);
   attachInterrupt(digitalPinToInterrupt(btn2_pin), cancelation, FALLING);
+  Serial.println("Start");
 }
 
 void loop() {
-  lcdPrint("PAD Vanding", "Machine");
-  if(confirm) service();
-  delay(1e3);
+//   lcdPrint("CHIC CHICLETS", "Vending machine");
+//   if(confirm) service();
+//   delay(1e3);
+
+  if()
 }

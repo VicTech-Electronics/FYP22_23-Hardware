@@ -1,13 +1,11 @@
 #include <SPI.h>
 #include <MFRC522.h>
 #include <SoftwareSerial.h>
-#define esp_rx 10
-#define esp_tx 5
 #define SS_PIN 8
 #define RST_PIN 4
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);
-SoftwareSerial serialESP(esp_rx, esp_tx);
+SoftwareSerial serialESP(5, 10);
 
 // Decralation of usefull variable
 String card_number;

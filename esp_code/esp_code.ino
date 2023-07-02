@@ -28,13 +28,9 @@ String postData(String data){
           String response = client.readStringUntil('\r');
           if(response.indexOf("\"") != -1) return response;
         }
-      }
-      // Disconnect from the server
-      client.stop();
+      } client.stop();
     }
-  }
-
-  return "Fail";
+  } return "Fail";
 }
 
 void setup() {
@@ -47,10 +43,7 @@ void setup() {
     delay(1000);
     Serial.println("Connecting to WiFi...");
   }
-
   Serial.println("Connected to WiFi");
-
-  // Allow insecure HTTPS connection
   client.setInsecure();
 }
 
@@ -59,13 +52,6 @@ void loop() {
     String serial_data = Serial.readString();
     serial_data.trim();
     String payload = postData(serial_data);
-
-    unsigned long initial_time = millis();
-    while(millis() - initial_time >= 5000){
-      if(payload != "Fail")
-        Serial.println(payload);
-      else
-        payload = postData(serial_data);
-    }
+    Serial.println(payload);
   }
 }
