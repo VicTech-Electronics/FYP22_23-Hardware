@@ -12,12 +12,10 @@ float temp, hum, moist;
 
 // Method to handle Interrupt functions
 void measurement(){
-  measure = !measure;
-  delayMicroseconds(15e3);
+  measure = true;
 }
 
 void setup() {
-  pinMode(sense_pin, OUTPUT);
   pinMode(buzzer_pin, OUTPUT);
   pinMode(red_ind_pin, OUTPUT);
   pinMode(backlight_pin, OUTPUT);
@@ -34,27 +32,25 @@ void setup() {
 }
 
 void loop() {
-  // if(calibirate) startCalibiration();
   if(measure){
-    Serial.println("In measurement mode");
-    temp = getTemperatureAndHumidity().temperature;
-    hum = getTemperatureAndHumidity().humidity;
-    moist = getMoisturePercentage();
-    lcdPrint("MEASUREMENTS", "Moisture: " + String(moist) + "%", "Temp: " + String(temp), "Hum: " + String(hum), true);
-
-    if(moist >= 30) alert(true);
-    else alert(false);
+    delay(2e3);
+    measure = false;
+    while(!measure){
+      Serial.println("In measurement mode");
+      temp = getTemperatureAndHumidity().temperature;
+      hum = getTemperatureAndHumidity().humidity;
+      moist = getMoisturePercentage();
+      digitalWrite(backlight_pin, HIGH);
+      lcdPrint("MEASUREMENTS", "Moisture: " + String(moist) + "%", "Temp: " + String(temp), "Hum: " + String(hum), true);
+      if(moist >= 30) alert(true);
+      else alert(false);
+      delay(1e3);
+    }
+    delay(2e3);
+    measure = false;
   }else{
     lcdPrint("", "Cashewnut Moisture", "Digital meter", "", false);
+    digitalWrite(backlight_pin, LOW);
     alert(false);
   }
-
-  
-
-  if(measure) digitalWrite(backlight_pin, HIGH);
-  else{
-    delay(3e3);
-    digitalWrite(backlight_pin, LOW);
-  }
-  delay(1e3);
 }

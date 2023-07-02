@@ -24,5 +24,7 @@ void alert(bool state){
 
 float getMoisturePercentage(){
   float sense_reading = analogRead(sense_pin);
-  return map(sense_reading, 0, 1023, 0, 100);
+  sense_reading = map(sense_reading, 600, 1000, 0, 100);
+  if(sense_reading <= 3.0) sense_reading = 0.0;
+  return sense_reading;
 }
