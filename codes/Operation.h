@@ -104,12 +104,12 @@ void service(){
       lcdPrint("Please wait", "...");
       response = sendRequest();
 
-      if(response == "SUCCESS"){
+      if(response.indexOf("SUCCESS") != -1){
         padOut(pad_type, number_of_pads);
         lcdPrint("SUCCESS", "");
-      }else if(response == "Insufficient balance")
+      }else if(response.indexOf("Insufficient balance") != -1)
         lcdPrint("Sorry", "Out of balance");
-      else if(response == "FAIL")
+      else if(response.indexOf("FAIL") != -1)
         lcdPrint("Sorry", "Operation failed");
       else lcdPrint("NETWORK ERROR", "Timeout");
 
