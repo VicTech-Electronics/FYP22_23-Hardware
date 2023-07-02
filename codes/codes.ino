@@ -10,8 +10,8 @@ void setup() {
   Serial.begin(9600);
   serialGSM.begin(9600);
   
-  commandGSM("AT+CFUN=1,1"); // Reset GSM
   Serial.println("Waiting...");
+  commandGSM("AT+CFUN=1,1"); // Reset GSM
   delay(5e3);
   Serial.println("Done");
 

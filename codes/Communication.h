@@ -71,10 +71,9 @@ void connectGPRS(){
 void getResponse(String res_command){
   String payload;
   if(serialGSM.available()) payload = serialGSM.readString();
-  payload = payload.substring(payload.indexOf(res_command)+13, payload.indexOf(res_command)+20);
   payload.trim();
 
-  if(payload.indexOf("true")) alert = true;
+  if(payload.indexOf("true") != -1) alert = true;
   Serial.println("Payload: " + payload);
 }
 
