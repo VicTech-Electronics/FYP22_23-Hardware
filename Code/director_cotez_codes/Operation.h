@@ -4,7 +4,7 @@
 #include "Communication.h"
 
 // Decralation of useful constants and variables
-bool sent;
+bool sent, zero_sent;
 int payment;
 String message;
 
@@ -74,14 +74,22 @@ void switching(){
 
   if(kWh < 5.0){
     if(!sent){
-      send_sms(phone, "TAARIFA \nUnit zilizobaki ni chini ya Unit 5.0");
+      send_sms(phone, "System is below 5 units, please recharge");
       delay(2e3);
       send_sms(phone, "Tsh." + String(unit_price) + " = 1unit");
       sent = true; 
     }
   }
-  if(kWh >= 5.0) sent = false;
   
   if(kWh > 0.0) digitalWrite(load_pin, HIGH);
-  else digitalWrite(load_pin, LOW);
+  else {
+    if(!zero_sent){
+      send_sms(phone, "0.0 units, please recharge");
+      zero_sent = true;
+    }
+    digitalWrite(load_pin, LOW);
+  }
+
+  if(kWh >= 5.0) sent = false;
+  if(kWh <= 0.0) zero_sent = false;
 }
