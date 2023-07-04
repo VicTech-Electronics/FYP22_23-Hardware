@@ -4,7 +4,8 @@ import numpy as np
 import easyocr
 import imutils
 
-def plateNumberRecorgnition(image):
+def plateNumberRecorgnition(image_path):
+    image = cv.imread(image_path)
     gray_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     # plt.imshow(cv.cvtColor(gray_image, cv.COLOR_BGR2RGB))
 
@@ -43,13 +44,18 @@ def plateNumberRecorgnition(image):
     #Use Easy OCR to read text
     reader = easyocr.Reader(['en'])
     result = reader.readtext(cropped_image)
-    # print(result) #Print results
+    print(result) #Print results
 
     #Render result
-    plate_number = result[0][-2]
-    font = cv.FONT_HERSHEY_SCRIPT_SIMPLEX
-    res = cv.putText(image, text=plate_number, org=(approx[0][0][0], approx[1][0][1]+60), fontFace=font, fontScale=1, color=(0, 255, 0), thickness=2, lineType=cv.LINE_AA)
-    res = cv.rectangle(image, tuple(approx[0][0]), tuple(approx[2][0]), (0, 255, 0), 3)
+    if len(result) > 0:
+        print('Plate number result obtained form the Image')
+        plate_number = result[0][-2]
+    else:
+        print('No plate number result obtained from the Image')
+        plate_number = 'Undefined'
+    # font = cv.FONT_HERSHEY_SCRIPT_SIMPLEX
+    # res = cv.putText(image, text=plate_number, org=(approx[0][0][0], approx[1][0][1]+60), fontFace=font, fontScale=1, color=(0, 255, 0), thickness=2, lineType=cv.LINE_AA)
+    # res = cv.rectangle(image, tuple(approx[0][0]), tuple(approx[2][0]), (0, 255, 0), 3)
     # plt.imshow(cv.cvtColor(res, cv.COLOR_BGR2RGB))
 
     return plate_number
