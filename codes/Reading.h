@@ -7,40 +7,28 @@ const uint8_t flex1_pin=A2, flex2_pin=A3, flex3_pin=A4, flex4_pin=A5;
 bool check_value;
 bool check_data[4];
 uint8_t flex_values[4];
-uint8_t A[] = {12, 133, 3, 34};
-uint8_t B[] = {12, 133, 3, 34};
-uint8_t C[] = {12, 133, 3, 34};
-uint8_t D[] = {12, 133, 3, 34};
-uint8_t E[] = {12, 133, 3, 34};
-uint8_t F[] = {12, 133, 3, 34};
-uint8_t G[] = {12, 133, 3, 34};
-uint8_t H[] = {12, 133, 3, 34};
-uint8_t I[] = {12, 133, 3, 34};
-uint8_t J[] = {12, 133, 3, 34};
-uint8_t K[] = {12, 133, 3, 34};
-uint8_t L[] = {12, 133, 3, 34};
-uint8_t M[] = {12, 133, 3, 34};
-uint8_t N[] = {12, 133, 3, 34};
-uint8_t O[] = {12, 133, 3, 34};
-uint8_t P[] = {12, 133, 3, 34};
-uint8_t Q[] = {12, 133, 3, 34};
-uint8_t R[] = {12, 133, 3, 34};
-uint8_t S[] = {12, 133, 3, 34};
-uint8_t T[] = {12, 133, 3, 34};
-uint8_t U[] = {12, 133, 3, 34};
-uint8_t V[] = {12, 133, 3, 34};
-uint8_t W[] = {12, 133, 3, 34};
-uint8_t X[] = {12, 133, 3, 34};
-uint8_t Y[] = {12, 133, 3, 34};
-uint8_t Z[] = {12, 133, 3, 34};
-uint8_t space[] = {12, 133, 3, 34};
-uint8_t del[] = {12, 133, 3, 34};
+bool A[] = {true, true, true, true};
+bool B[] = {false, false, false, false};
+bool H[] = {false, false, true, true};
+bool I[] = {true, true, true, false};
+bool del[] = {true, false, false, true};
+bool sound[] = {false, true, true, true};
 
-uint8_t* alphabet[] = {A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, space, del};
-char character[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', '-'};
+bool current_reading[4];
+char character;
 
 // Other variables
 uint8_t max_allowed_error = 3;
+
+
+bool equalArray(bool arr1[], bool arr2[], int size) {
+  for (byte i=0; i < size; i++) {
+    if (arr1[i] != arr2[i]) {
+      return false;
+    }
+  }
+  return true;
+}
 
 // Method to read sensor values
 void readSensors(){
@@ -51,50 +39,37 @@ void readSensors(){
 }
 
 char getCharacter(){
-  for(byte i=0; i<28; i++){ // Loop across the alphabet arrays
-    uint8_t* current_alphabet = alphabet[i];
-    for(byte j=0; j<4; j++){ // Check the individual data
-      if(abs(flex_values[j] - current_alphabet[j]) <= max_allowed_error) check_data[j] = true;
-      else check_data[j] = false;
-    }
+  readSensors();
+  Serial.print("Reading: ");
+  for(byte i=0; i<4; i++){
+    if(flex_values[i] < 100) current_reading[i] = true;
+    else current_reading[i] = false;
+    Serial.print(current_reading[i]);
+  }
+  Serial.println();
+  
 
-    for(byte k=0; k<4; k++){
-      if(check_data[k] == false){
-        check_value = false;
-        break;
-      }else check_value = true;
-    }
-
-    if(check_value) return character[i];
-  } return '0';
+  if(equalArray(current_reading, A, 4)) return 'A';
+  else if(equalArray(current_reading, B, 4)) return 'B';
+  else if(equalArray(current_reading, H, 4)) return 'H';
+  else if(equalArray(current_reading, I, 4)) return 'I';
+  else if(equalArray(current_reading, del, 4)) return '-';
+  else return ' ';
 }
 
 
-// Check sounds
-uint8_t sound1[] = {12, 133, 3, 34};
-uint8_t sound2[] = {12, 133, 3, 34};
-uint8_t sound3[] = {12, 133, 3, 34};
-uint8_t sound4[] = {12, 133, 3, 34};
-uint8_t sound5[] = {12, 133, 3, 34};
-
-uint8_t* sound[] = {sound1, sound2, sound3, sound4, sound5};
-
 // Method to play sound
 byte playSound(){
-  for(byte i=0; i<5; i++){ // Loop across the alphabet arrays
-    uint8_t* current_sound = sound[i];
-    for(byte j=0; j<4; j++){ // Check the individual data
-      if(abs(flex_values[j] - current_sound[j]) <= max_allowed_error) check_data[j] = true;
-      else check_data[j] = false;
-    }
+  readSensors();
+  Serial.print("Reading: ");
+  for(byte i=0; i<4; i++){
+    if(flex_values[i] < 100) current_reading[i] = true;
+    else current_reading[i] = false;
+    Serial.print(current_reading[i]);
+  }
+  Serial.println();
+  
 
-    for(byte k=0; k<4; k++){
-      if(check_data[k] == false){
-        check_value = false;
-        break;
-      }else check_value = true;
-    }
-
-    if(check_value) return i+1;
-  } return 0;
+  if(equalArray(current_reading, sound, 4)) return 1;
+  else return 0;
 }

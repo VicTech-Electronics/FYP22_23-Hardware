@@ -8,7 +8,7 @@ String cutString(String str, int col) {
 
 void lcdPrint(String str0, String str1){
   digitalWrite(backlight_pin, HIGH);
-  lcd.clear();  const int columns = 16;
+  lcd.clear(); const int columns = 16;
   if (str0.length() > columns) str0 = cutString(str0, columns);
   if (str1.length() > columns) str1 = cutString(str1, columns);
 

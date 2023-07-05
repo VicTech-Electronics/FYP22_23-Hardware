@@ -10,7 +10,7 @@ void setup() {
   Serial.println("Initializing DFPlayer");
   if (!DFPlayer.begin(serialDFPlayer)) {  //Use softwareSerial to communicate with mp3.
     Serial.println("Fail to initialize DFPlayer");
-    // while(true);
+    while(true);
   }
   Serial.println(F("DFPlayer Mini online."));
   DFPlayer.setTimeOut(500); //Set serial communictaion time out 500ms
@@ -18,6 +18,7 @@ void setup() {
   DFPlayer.EQ(DFPLAYER_EQ_NORMAL);
   DFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
 
+  Serial.println("Done");
   // Welcome messages
   lcdPrint("Welcome", ""); delay(2e3);
   lcdPrint("HAND TALK", "System"); delay(2e3);
@@ -25,4 +26,5 @@ void setup() {
 
 void loop() {
   operation();
+  delay(1e3);
 }

@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 #include <DFRobotDFPlayerMini.h>
 
-SoftwareSerial serialDFPlayer(10, 11); // RX, TX
+SoftwareSerial serialDFPlayer(5, 6); // RX, TX
 DFRobotDFPlayerMini DFPlayer;
 
 // Method to play a sound
