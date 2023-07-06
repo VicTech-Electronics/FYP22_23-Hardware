@@ -26,7 +26,7 @@ String postData(String data){
       while (client.connected()) {
         if (client.available()) {
           String response = client.readStringUntil('\r');
-          if(response.indexOf("\"") != -1) return response;
+          if(response.indexOf("[") != -1) return response;
         }
       } client.stop();
     }
@@ -35,7 +35,6 @@ String postData(String data){
 
 void setup() {
   Serial.begin(9600);
-  delay(100);
 
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
@@ -48,10 +47,9 @@ void setup() {
 }
 
 void loop() {
-  while(!Serial.available()){
-    String serial_data = Serial.readString();
-    serial_data.trim();
-    String payload = postData(serial_data);
-    Serial.println(payload);
-  }
+  while(!Serial.available()){};
+  String serial_data = Serial.readString();
+  serial_data.trim();
+  String payload = postData(serial_data);
+  Serial.println(payload);
 }

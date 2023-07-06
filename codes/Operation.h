@@ -53,15 +53,10 @@ String sendRequest(){
   while(!serialESP.available()){
     Serial.println("Waiting for the data from the network");
     delay(1e3);
-  }
-
-  // Wait for the response
-  unsigned long initial_time = millis();
-  while(millis() - initial_time >= 5000){
-    if(serialESP.available())
-      return serialESP.readString();
-  }
-  return "time_out";
+  } 
+  String esp_response = serialESP.readString();
+  Serial.println("Response: " + esp_response);
+  return esp_response;
 }
 
 

@@ -16,10 +16,10 @@ void setup() {
   pinMode(btn1_pin, INPUT_PULLUP);
   pinMode(btn2_pin, INPUT_PULLUP);
 
-  Serial.begin(9600);
-  serialESP.begin(9600);
   SPI.begin(); 
   mfrc522.PCD_Init();
+  Serial.begin(9600);
+  serialESP.begin(9600);
 
   lcd.init();
   lcd.backlight();
@@ -34,9 +34,7 @@ void setup() {
 }
 
 void loop() {
-//   lcdPrint("CHIC CHICLETS", "Vending machine");
-//   if(confirm) service();
-//   delay(1e3);
-
-  if()
+  lcdPrint("CHIC CHICLETS", "Vending machine");
+  if(confirm) service();
+  delay(1e3);
 }
