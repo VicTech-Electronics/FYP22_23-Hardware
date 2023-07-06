@@ -2,7 +2,7 @@
 LiquidCrystal lcd(13, 12, 11, 10, 9, 8);
 
 // Definition of usefull pins 
-const uint8_t btn_pin=3, buzzer_pin=6, backlight_pin=7,
+const uint8_t btn_pin=3, buzzer_pin=6, backlight_pin=7, relay_pin = 5,
               main_ind_pin=A3, inv_ind_pin=A4, sense_pin=4;
 
 // Decralation of usefull variable and constants

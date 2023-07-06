@@ -21,6 +21,7 @@ void backlightControl(){
 // Default methods
 void setup() {
   pinMode(sense_pin, INPUT);
+  pinMode(relay_pin, OUTPUT);
   pinMode(buzzer_pin, OUTPUT);
   pinMode(inv_ind_pin, OUTPUT);
   pinMode(main_ind_pin, OUTPUT);
@@ -30,18 +31,21 @@ void setup() {
   lcd.begin(16, 2);
   Serial.begin(9600);
   
+  digitalWrite(backlight_pin, HIGH);
   old_state = digitalRead(sense_pin);
   attachInterrupt(digitalPinToInterrupt(btn_pin), backlightControl, FALLING);
 }
 
 void loop() {
   if(digitalRead(sense_pin) == HIGH){
+    digitalWrite(relay_pin, HIGH);
     digitalWrite(inv_ind_pin, LOW);
     digitalWrite(main_ind_pin, HIGH);
     lcdPrint("Auto Changeover:", "MAIN SUPPLY");   
   }else{
     digitalWrite(inv_ind_pin, HIGH);
     digitalWrite(main_ind_pin, LOW);
+    digitalWrite(relay_pin, LOW);
     lcdPrint("Auto Changeover:", "INVERTER");
   } 
 
