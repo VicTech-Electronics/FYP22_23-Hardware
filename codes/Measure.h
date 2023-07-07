@@ -1,11 +1,4 @@
-#include "Arduino.h"
-#include <Arduino_JSON.h>
-#include <SoftwareSerial.h>
-#define tft_rx 12
-#define tft_tx 11
-
-SoftwareSerial serialTFT(tft_rx, tft_tx);
-JSONVar json_object;
+#include "Communication.h"
 
 // Definition of pin connection
 const uint8_t freq_pin=2, siginal_pin=A2, input_signal_pin=A4;
@@ -32,10 +25,20 @@ float measureFrequence(){
 }
 
 // Method to measure signal
-void measureSignal(){
-  json_object["signal"] = float(analogRead(siginal_pin));
-  json_object["frequence"] =  measureFrequence();
+void siginalProcesing(){
+  float  peak_value=0.0;
+  for(byte i=0; i<100; i++){
+    float frequence = measureFrequence();
+    float signal = map(analogRead(siginal_pin), 0, 1023, 0, 255);
 
-  String data = JSON.stringify(json_object);
-  serialTFT.println(data);
+    if(signal > peak_value) peak_value = signal;
+
+    String frequence_data = "t0.txt=\"Feq: " + String(frequence) + "Hz\"";
+    String siginal_data = "add 1,0," + String(signal);
+    sendData(siginal_data);
+    sendData(frequence_data);
+  }
+  peak_value = map(peak_value, 0, 255, 0, 12);
+  String peak_data = "t1.txt=\"Peak: " + String(peak_value) + "V\"";
+  sendData(peak_data);
 }

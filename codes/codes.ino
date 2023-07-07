@@ -7,20 +7,28 @@
 
 #include "Measure.h"
 
+// Definition of usefull variable
+String serial_data = "pause";
+
 // Definition of usefull variables
-float default_input_signal, min_allowed_error = 10;
+float default_input_signal;
 
 void setup() {
   pinMode(freq_pin, INPUT);
-  serialTFT.begin(115200);
-  
-  // Calibirate default input signal
-  default_input_signal = 0;
-  for(byte i=0; i<100; i++) default_input_signal += analogRead(input_signal_pin);
-  default_input_signal /= 100;
+  serialTFT.begin(9600);
+  Serial.println(9600);
   attachInterrupt(digitalPinToInterrupt(freq_pin), countPulse, RISING);
 }
 
 void loop() {
-  if(abs(analogRead(input_signal_pin) - default_input_signal) > min_allowed_error) measureSignal();
+
+  if(serialTFT.available()){
+    serial_data = "";
+    delay(50);
+    while(serialTFT.available()){
+      serial_data += char(serialTFT.read());
+    }
+  }
+  
+  if(serial_data == "play") siginalProcesing();
 }
