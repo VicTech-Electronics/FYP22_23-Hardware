@@ -15,6 +15,7 @@ unsigned long count_rate;
 
 // Method to handle the interrupt pulse counter
 void coutingPulseISR(){
+  Serial.println("In counting Pulse after inserting coin");
   pulse_counter++;
   count_rate=0;
 }
@@ -45,19 +46,22 @@ int getCoinValue(){
       coin_value = 0;
       break;
   }
+
+  Serial.println("Coin value: " + String(coin_value));
   return coin_value;
 }
 
 // Method to handle product choice
 void service(){
   if(getCoinValue() > 0){
-    lcdPrint("Available", "Port " + String(available_port) + "is free");
-    // Calculate charging time
     if(coin_value == 50) charging_time = 10e3;
     else if(coin_value == 100) charging_time = 30e3;
     else if(coin_value == 200) charging_time = 60e3;
     else if(coin_value == 500) charging_time = 150e3;
     else charging_time = 0;
+
+    lcdPrint("Receive " + String(coin_value) + "Tsh.", "Time: " + String(charging_time / 1000) + "sec"); delay(3e3);
+    lcdPrint("Available port", "Port " + String(available_port)); delay(3e3);
 
     if(available_port == 1){
       initial_time1 = millis();
@@ -75,7 +79,7 @@ void service(){
       amount_received += coin_value;
       number_of_phone_charged++;
 
-      lcdPrint("Enjoy service", "Port: " + String(available_port));
+      lcdPrint("Enjoy service", "Port: " + String(available_port)); delay(3e3);
       available_port ++;
       if(available_port > 3) available_port = 0;
     }

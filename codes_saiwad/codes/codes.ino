@@ -27,6 +27,7 @@ void setup() {
   delay(1e3);
 
   digitalWrite(backlight_pin, HIGH);
+  Serial.println("Done");
 }
 
 void loop() {
