@@ -1,12 +1,5 @@
-#define TINY_GSM_MODEM_SIM800 // Define the modem model you are using
-
 #include <SoftwareSerial.h>
-#include <TinyGPS++.h>
-#include <TinyGsmClient.h>
-#include <ArduinoHttpClient.h>
 #include <SoftwareSerial.h>
-#define gps_rx 8
-#define gps_tx 9
 #define gsm_rx 10
 #define gsm_tx 11
 
@@ -16,12 +9,7 @@ String phone_to_receive_sms = "+255626691059";
 #define SERVER_ADDRESS "gee-fyp22-23.herokuapp.com" // HTTPS server address
 #define SERVER_PORT 443 // HTTPS server port
 
-TinyGPSPlus gps;
-SoftwareSerial serialGPS(gps_rx, gps_tx);
 SoftwareSerial serialGSM(gsm_rx, gsm_tx);
-TinyGsm modem(serialGSM);
-TinyGsmClient gsmClient(modem);
-HttpClient http(gsmClient, SERVER_ADDRESS, SERVER_PORT);
 
 // Decralation of usefull variables
 String gsm_data, phone_number, sms;
@@ -97,15 +85,16 @@ String receiveSMS(){
 // Method to check available call
 void receiveCall(){
   // Extract caller's number
-  button = false;
-  int index1 = gsm_data.indexOf("\"");
-  int index2 = gsm_data.indexOf("\"", index1 + 1);
-  if (index1 != -1 && index2 != -1)
+  button = false; delay(1e3);
   lcdPrint("Ringing...", "");
 
   bool accept_call_status = true;
-  while(!button);
-  if(button) gsmCommand("ATA");
+  while(!button){
+    Serial.println("Wait for call to receive");
+  }
+  if(button){
+    gsmCommand("ATA");
+  } 
 
   json_object["device"] = device_number;
   json_object["phone"] = phone_number;
@@ -119,12 +108,4 @@ void getLocation(){
   uint8_t index = random(0, 5);
   latitude = latitudes[index];
   longitude = longitudes[index];
-
-  serialGPS.listen(); delay(1e3);
-  if(gps.encode(serialGPS.read())){
-    if (gps.location.isValid()){
-      latitude = gps.location.lat();
-      longitude = gps.location.lng();
-    }
-  }
 }

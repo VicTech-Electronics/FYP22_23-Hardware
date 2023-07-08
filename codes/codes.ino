@@ -10,7 +10,6 @@ void setup() {
   pinMode(flowrate_pin, INPUT);
   pinMode(button_pin, INPUT_PULLUP);
   Serial.begin(9600);
-  serialGPS.begin(9600);
   serialGSM.begin(9600);
 
   lcd.begin(16, 2);
@@ -27,6 +26,9 @@ void setup() {
   // }
   initializeSMS();
   // intializeGPRS();
+  initial_volume = getVolume();
+  initial_volume = getVolume();
+  initial_volume = getVolume();
   initial_volume = getVolume();
 
   lcdPrint("Done", "");
