@@ -42,23 +42,48 @@ float getCurrent(uint8_t sensor_number){
   return current;
 }
 
+
 // Method to handle condition for switching loads
+void switches(bool state1, bool state2, bool state3){
+  digitalWrite(switch1_pin, state1);
+  digitalWrite(switch2_pin, state2);
+  digitalWrite(switch3_pin, state3);
+}
+
 void switchLoads(){
-  if(current1.toInt() > 2 || ac_voltage < 207 || ac_voltage > 265){
-    digitalWrite(switch1_pin, LOW);
-    digitalWrite(buzzer_pin, HIGH);
-    current1 = "--";
+
+  // Voltage variation 
+ 
+  if(ac_voltage < 100){ // All devices goes OFF
+    switches(false, false, false);
+  }else if(ac_voltage >= 100 && ac_voltage < 210){ // Switch ON only low voltage load
+    switches(true, false, false);
+  }else if(ac_voltage >= 210 && ac_voltage < 239){ // All loads comes ON
+    switches(true, true, true);
+  }else if(ac_voltage >= 240 && ac_voltage < 250){ // Switch ON only high voltage load
+    switches(false, false, true);
+  }else if(ac_voltage >= 250){ // All devices goes OFF
+    switches(false, false, false);
   }
-  if(current2.toInt() > 4 || ac_voltage < 207 || ac_voltage > 252){
-    digitalWrite(switch2_pin, LOW);
-    digitalWrite(buzzer_pin, HIGH);
-    current2 = "--";
-  }
-  if(current3.toInt() > 4 || ac_voltage < 100 || ac_voltage > 252){
-    digitalWrite(switch3_pin, LOW);
-    digitalWrite(buzzer_pin, HIGH);
-    current3 = "--";
-  }
+
+
+
+
+  // if(current1.toInt() > 2 || ac_voltage < 207 || ac_voltage > 265){
+  //   digitalWrite(switch1_pin, LOW);
+  //   digitalWrite(buzzer_pin, HIGH);
+  //   current1 = "--";
+  // }
+  // if(current2.toInt() > 4 || ac_voltage < 207 || ac_voltage > 252){
+  //   digitalWrite(switch2_pin, LOW);
+  //   digitalWrite(buzzer_pin, HIGH);
+  //   current2 = "--";
+  // }
+  // if(current3.toInt() > 4 || ac_voltage < 100 || ac_voltage > 252){
+  //   digitalWrite(switch3_pin, LOW);
+  //   digitalWrite(buzzer_pin, HIGH);
+  //   current3 = "--";
+  // }
 
 
   // Button reset system codes
