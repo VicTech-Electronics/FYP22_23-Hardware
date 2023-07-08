@@ -17,6 +17,8 @@ void setup() {
   lcdPrint("", "Welcome", "", ""); delay(2e3);
   lcdPrint("", "Automatic protection", "System", ""); delay(2e3);
   lcdPrint("", "Initializing...", "", "");
+
+  digitalWrite(backlight_pin, HIGH);
 }
 
 void loop() {

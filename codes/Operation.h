@@ -11,7 +11,9 @@ const uint8_t buzzer_pin=4, voltage_pin=A1,
 // Decralation of useful variables
 float ac_voltage;
 String current1, current2, current3;
-int reading_resistor=130e3, divider_resistor=6.2e6;
+bool load_states[3] = {false, false, false};
+int reading_resistor=300e3, divider_resistor=20e6;
+
 
 // Method to calculate voltage
 float getVoltage(){
@@ -51,40 +53,35 @@ void switches(bool state1, bool state2, bool state3){
 }
 
 void switchLoads(){
-
   // Voltage variation 
- 
   if(ac_voltage < 100){ // All devices goes OFF
-    switches(false, false, false);
+    load_states[0] = false;
+    load_states[1] = false;
+    load_states[2] = false;
+    digitalWrite(buzzer_pin, HIGH);
   }else if(ac_voltage >= 100 && ac_voltage < 210){ // Switch ON only low voltage load
-    switches(true, false, false);
+    load_states[0] = true;
+    load_states[1] = false;
+    load_states[2] = false;
+    digitalWrite(buzzer_pin, HIGH);
   }else if(ac_voltage >= 210 && ac_voltage < 239){ // All loads comes ON
-    switches(true, true, true);
+    load_states[0] = true;
+    load_states[1] = true;
+    load_states[2] = true;
+    digitalWrite(buzzer_pin, LOW);
   }else if(ac_voltage >= 240 && ac_voltage < 250){ // Switch ON only high voltage load
-    switches(false, false, true);
+    load_states[0] = false;
+    load_states[1] = false;
+    load_states[2] = true;
+    digitalWrite(buzzer_pin, HIGH);
   }else if(ac_voltage >= 250){ // All devices goes OFF
-    switches(false, false, false);
+    load_states[0] = false;
+    load_states[1] = false;
+    load_states[2] = false;
+    digitalWrite(buzzer_pin, HIGH);
   }
 
-
-
-
-  // if(current1.toInt() > 2 || ac_voltage < 207 || ac_voltage > 265){
-  //   digitalWrite(switch1_pin, LOW);
-  //   digitalWrite(buzzer_pin, HIGH);
-  //   current1 = "--";
-  // }
-  // if(current2.toInt() > 4 || ac_voltage < 207 || ac_voltage > 252){
-  //   digitalWrite(switch2_pin, LOW);
-  //   digitalWrite(buzzer_pin, HIGH);
-  //   current2 = "--";
-  // }
-  // if(current3.toInt() > 4 || ac_voltage < 100 || ac_voltage > 252){
-  //   digitalWrite(switch3_pin, LOW);
-  //   digitalWrite(buzzer_pin, HIGH);
-  //   current3 = "--";
-  // }
-
+  switches(load_states[0], load_states[1], load_states[2]);
 
   // Button reset system codes
   if(digitalRead(btn1_pin) == LOW){
@@ -105,9 +102,14 @@ void switchLoads(){
 void Operation(){
   ac_voltage = getVoltage();
   current1 = String(getCurrent(1));
-  current2 = String(getCurrent(2));
-  current3 = String(getCurrent(3));
+  current2 = String(getCurrent(2) - 3.8);
+  current3 = String(getCurrent(3));\
+
+  Serial.println("Voltage: " + String(ac_voltage));
 
   switchLoads();
-  lcdPrint("Voltage: " + String(ac_voltage) + "V", "Load 1: " + current1 + "A", "Load 2: " + current2 + "A", "Load 3: " + current3 + "A");
+  if(load_states[0] == false) current1 = "0.00";
+  if(load_states[1] == false) current2 = "0.00";
+  if(load_states[2] == false) current3 = "0.00";
+  lcdPrint("Voltage: " + String(ac_voltage) + "V", "Load1: " + current1 + "A   -  " + load_states[0], "Load2: " + current2 + "A   -  " + load_states[1], "Load3: " + current3 + "A   -  " + load_states[2]);
 }
