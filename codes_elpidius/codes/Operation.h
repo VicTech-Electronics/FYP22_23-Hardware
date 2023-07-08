@@ -6,7 +6,7 @@ const uint8_t touch_pin=A0, buzzer_pin=8, switch_pin=7, motor_pin=6;
 
 // Decralation of usefull variables
 const uint8_t password_address = 1, lock_address = 0;
-float touch_calibiration_value, mini_accepted_value = 20;
+float touch_calibiration_value, mini_accepted_value = 3;
 String password, new_password;
 bool lock_status, start=false;
 

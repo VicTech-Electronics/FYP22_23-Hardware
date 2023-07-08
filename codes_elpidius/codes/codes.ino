@@ -42,6 +42,7 @@ void setup(){
 void loop(){
   receiveCommand();
   if(!lock_status){
+    Serial.println("Lock status");
     if(start) digitalWrite(motor_pin, HIGH);
     else digitalWrite(motor_pin, LOW);
   }else{
@@ -53,4 +54,5 @@ void loop(){
       }
     }else digitalWrite(buzzer_pin, LOW);
   }
+  delay(1e3);
 }
