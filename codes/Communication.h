@@ -31,8 +31,10 @@ float longitudes[5] = {39.28010, 39.27433, 39.28342, 39.26234, 39.28054};
 
 // Method to flush Serial buffer
 void gsmCommand(String command) {
+  Serial.println(command);
   serialGSM.println(command); 
   delay(1e3);
+
   while (serialGSM.available()) {
     Serial.write(serialGSM.read());
     delay(50);
@@ -88,8 +90,8 @@ String receiveSMS(){
   json_object["device"] = device_number;
   json_object["phone"] = phone_number;
   json_object["content"] = sms;
-
   String json_string = JSON.stringify(json_object);
+
   postData("/api/message/", json_string);
   return sms;
 }

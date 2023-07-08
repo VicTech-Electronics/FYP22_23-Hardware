@@ -29,7 +29,7 @@ void operation(){
     postData("/api/report/", json_string);
     sendSMS("WARNING: \n Emergence detected \n gee-fyp22-23.herokuapp.com");
 
-  }else lcdPrint("SAFE", "FR: " + String(flowrate_data) + " VC: " + String(volume_change));
+  }else lcdPrint("SAFE", "FR:" + String(flowrate_data) + " VC:" + String(volume_change));
 
   serialGSM.listen();
   while(serialGSM.available()){
