@@ -5,7 +5,7 @@ UltraSonicDistanceSensor ultrasonic(12, 13);
 const uint8_t flowrate_pin = 3;
 
 // Decralation of usefull variables
-float lenght = 10, width = 10, flowRate = 0.0;
+float flowRate = 0.0;
 volatile int flowCount = 0;
 unsigned long currentTime;
 unsigned long previousTime = 0;
@@ -35,5 +35,5 @@ float getVolume(){ // Get deplesion volume in centimeter cube
     height += ultrasonic.measureDistanceCm();
   } height /= 100;
 
-  return lenght * width * height;
+  return 1017.36 * height;
 }

@@ -42,29 +42,29 @@ void gsmCommand(String command) {
 }
 
 // Method to initialize GPRS connetion
-void intializeGPRS(){
-  gsmCommand("AT+CGATT=1");
-  gsmCommand("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
-  gsmCommand("AT+SAPBR=3,1,\"APN\",\"" + String(APN) + "\"");
-  gsmCommand("AT+SAPBR=1,1");
-  gsmCommand("AT+HTTPINIT");
-}
+// void intializeGPRS(){
+//   gsmCommand("AT+CGATT=1");
+//   gsmCommand("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
+//   gsmCommand("AT+SAPBR=3,1,\"APN\",\"" + String(APN) + "\"");
+//   gsmCommand("AT+SAPBR=1,1");
+//   gsmCommand("AT+HTTPINIT");
+// }
 
-// Method to send POST request
-String postData(String end_point, String json_data){
-  // Set HTTP headers and payload
-  http.beginRequest();
-  http.post(end_point);
-  http.sendHeader("Content-Type", "application/json");
-  http.sendHeader("Content-Length", String(json_data.length()));
-  http.beginBody();
-  http.print(json_data);
-  http.endRequest();
-  // Check response
-  int statusCode = http.responseStatusCode();
-  String response = http.responseBody();
-  return response;
-}
+// // Method to send POST request
+// String postData(String end_point, String json_data){
+//   // Set HTTP headers and payload
+//   http.beginRequest();
+//   http.post(end_point);
+//   http.sendHeader("Content-Type", "application/json");
+//   http.sendHeader("Content-Length", String(json_data.length()));
+//   http.beginBody();
+//   http.print(json_data);
+//   http.endRequest();
+//   // Check response
+//   int statusCode = http.responseStatusCode();
+//   String response = http.responseBody();
+//   return response;
+// }
 
 // Method to initialize sms mode
 void initializeSMS() {
@@ -91,38 +91,27 @@ String receiveSMS(){
   json_object["phone"] = phone_number;
   json_object["content"] = sms;
   String json_string = JSON.stringify(json_object);
-
-  postData("/api/message/", json_string);
   return sms;
 }
 
 // Method to check available call
 void receiveCall(){
   // Extract caller's number
+  button = false;
   int index1 = gsm_data.indexOf("\"");
   int index2 = gsm_data.indexOf("\"", index1 + 1);
   if (index1 != -1 && index2 != -1)
-    phone_number = gsm_data.substring(index1 + 1, index2);
-  lcdPrint("Ringing...", phone_number);
-
+  lcdPrint("Ringing...", "");
 
   bool accept_call_status = true;
-  while(!button){
-    // Check if "NO CARRIER" response is received
-    if (serialGSM.find("NO CARRIER")) {
-      lcdPrint("Hangup", "");
-      button = true;
-      accept_call_status = false;
-    }
-  } button = false;
-
+  while(!button);
+  if(button) gsmCommand("ATA");
 
   json_object["device"] = device_number;
   json_object["phone"] = phone_number;
   json_object["response"] = accept_call_status;
 
   String json_string = JSON.stringify(json_object);
-  postData("/api/call/", json_string);
 }
 
 // Method to get location from the GSP

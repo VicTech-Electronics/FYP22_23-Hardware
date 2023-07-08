@@ -17,19 +17,25 @@ void operation(){
   float flowrate_data = getFlowRate();
   float volume_change = abs(getVolume() - initial_volume);
 
-  if(flowrate_data > flowrate_error || volume_change > mini_allowed_error){
-    lcdPrint("FAULT DETECTED", "FR: " + String(flowrate_data) + " VC: " + String(volume_change));
-    json_object["device"] = device_number;
-    json_object["title"] = "FAULT DETECTION";
-    json_object["content"] = "Frowrate: " + String(flowrate_data) + " L/min \n Volume change: " + String(volume_change) + " metercube";
-    json_object["latitude"] = latitude;
-    json_object["longitude"] = longitude;
+  Serial.println("Flowrate data: " + String(flowrate_data));
+  Serial.println("Volume change: " + String(volume_change));
 
-    String json_string = JSON.stringify(json_object);
-    postData("/api/report/", json_string);
-    sendSMS("WARNING: \n Emergence detected \n gee-fyp22-23.herokuapp.com");
+  if(flowrate_data > 0.0 || volume_change > 0.0){
+    getLocation();
+    lcdPrint("Fault detected", ""); delay(2e3);
+    lcdPrint("Flowrate: " + String(flowrate_data), "Volume: " + String(volume_change)); delay(3e3);
 
-  }else lcdPrint("SAFE", "FR:" + String(flowrate_data) + " VC:" + String(volume_change));
+    // json_object["device"] = device_number;
+    // json_object["title"] = "FAULT DETECTION";
+    // json_object["content"] = "Frowrate: " + String(flowrate_data) + " L/min \n Volume change: " + String(volume_change) + " metercube";
+    // json_object["latitude"] = latitude;
+    // json_object["longitude"] = longitude;
+    // String json_string = JSON.stringify(json_object);
+
+    // postData("/api/report/", json_string);
+    sendSMS("WARNING: \nEmergence detected \nLatitude: " + String(latitude, 5) + "\nLongitude: " + String(longitude, 5) + "\ngee-fyp22-23.herokuapp.com");
+
+  }else lcdPrint("Flowrate:" + String(flowrate_data), "Volume:" + String(volume_change));
 
   serialGSM.listen();
   while(serialGSM.available()){
