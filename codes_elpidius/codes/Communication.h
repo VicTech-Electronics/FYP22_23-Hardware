@@ -13,7 +13,7 @@ SoftwareSerial serialGPS(gps_rx, gsm_tx);
 TinyGPSPlus gps;
 
 // Decralation of usefull variables
-String latitude, longitude;
+float latitude, longitude;
 String sms, phone_number, owner_phone_number = "+255787651007";
 
 float latitudes[5] = {-6.81423, -6.81442, -6.81449, -6.81428, -6.81436};

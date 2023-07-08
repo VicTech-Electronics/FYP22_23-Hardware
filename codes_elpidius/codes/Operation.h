@@ -31,7 +31,7 @@ void receiveCommand(){
     digitalWrite(buzzer_pin, LOW);
   }else if(sms == "DATA"){
     getLocation();
-    sendSMS(phone_number, "DATA => Lat: " + String(latitude) + ", Long: " + String(longitude));
+    sendSMS(phone_number, "DATA Location \nLatitude: " + String(latitude, 5) + "\nLongitude: " + String(longitude, 5) + "\nLock status: " + String(lock_status));
   }else if(sms == "LOCK"){
     if(phone_number == owner_phone_number){
       lock_status = true;
@@ -39,6 +39,7 @@ void receiveCommand(){
       sendSMS(phone_number, "System LOCKED");
     }else{
       sendSMS(phone_number, "Sorry: You are not authorized!");
+      sendSMS(owner_phone_number, "Your motorbike is under theft mode \nAttention needed");
     }
   }else if(sms == "UNLOCK"){
     if(phone_number == owner_phone_number){
@@ -47,15 +48,21 @@ void receiveCommand(){
       sendSMS(phone_number, "System UNLOCKED");
     }else{
       sendSMS(phone_number, "Sorry: You are not authorized!");
+      sendSMS(owner_phone_number, "Your motorbike is under theft mode \nAttention needed");
+
     }
   }else if(sms == "PASSWORD"){
     if(phone_number == owner_phone_number){
+      sms = "";
       sendSMS(owner_phone_number, "Enter New password");
       while(sms == ""){
         sms = receivedSMS();
       } // Wait for the password
-
-      new_password = sms; sms="";
+      
+      
+      new_password = sms; delay(1e3);
+      sms = "";
+      delay(1e3);
       sendSMS(owner_phone_number, "Confirm password");
       while(sms == ""){
         sms = receivedSMS();
@@ -73,7 +80,11 @@ void receiveCommand(){
         password = new_password;
       }else sendSMS(owner_phone_number, "Fail to change password");
     }else{
+      digitalWrite(buzzer_pin, HIGH);
       sendSMS(phone_number, "Sorry: You are not authorized!");
+      sendSMS(owner_phone_number, "Your motorbike is under theft mode \nAttention needed");
+      delay(1e3);
+      digitalWrite(buzzer_pin, LOW);
     }
   }
 

@@ -42,7 +42,7 @@ void setup(){
 void loop(){
   receiveCommand();
   if(!lock_status){
-    Serial.println("Lock status");
+    Serial.println("Out of lock status");
     if(start) digitalWrite(motor_pin, HIGH);
     else digitalWrite(motor_pin, LOW);
   }else{
@@ -50,7 +50,7 @@ void loop(){
       delay(1e3);
       if(!serialGSM.available()){
         digitalWrite(buzzer_pin, HIGH);
-        sendSMS(owner_phone_number, "Your bike is touch, Please take action");
+        sendSMS(owner_phone_number, "Your bike is touched, Please take action");
       }
     }else digitalWrite(buzzer_pin, LOW);
   }
