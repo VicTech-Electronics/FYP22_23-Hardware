@@ -8,10 +8,17 @@
 const uint8_t solenoid_pin=8, motor_pin=11, buzzer_pin=A0, button_pin=2, sensor_pin=A3, laser_pin=A5;
 
 // Decralation of useful variable
-float default_ldr_value, allowed_sensitivity=10, paper_out_time=2000;
-bool is_started;
+float default_ldr_value, allowed_sensitivity=30, paper_out_time=2000;
+bool is_started, stamping;
 int half_step_delay_time = 3000;
-int number_of_steps = 60;
+int number_of_steps = 90 * 200 / 360.0;;
+
+// Define the motor steps per revolution
+const int STEPS_PER_REVOLUTION = 200;
+// Define the desired rotation speed in RPM
+const int SPEED_RPM = 60;
+// Calculate the delay between steps based on the desired spee
+const long STEP_DELAY = 60L * 1000L * 1000L / (STEPS_PER_REVOLUTION * SPEED_RPM);
 
 // Method for auto calibration 
 void autoCalibiration(){
@@ -28,11 +35,27 @@ void autoCalibiration(){
   digitalWrite(buzzer_pin, LOW);
 }
 
-// Method to handel Interrupt
+// Metho do handle ISR
 void requestStamping(){
   Serial.println("Button is pressed");
-  is_started = true;
   autoCalibiration();
+  digitalWrite(laser_pin, HIGH);
+  stamping = true;
+}
+
+// Function to rotate the stepper motor a specified number of degrees in a given direction
+void rotateDegrees(float degrees, bool clockwise) {
+  // Calculate the number of steps needed for the desired rotation
+  int steps = degrees * STEPS_PER_REVOLUTION / 360.0;
+  // Set the direction
+  digitalWrite(dir_pin, clockwise ? HIGH : LOW);
+  // Pulse the step pin to perform the steps
+  for (int i = 0; i < steps; i++) {
+    digitalWrite(step_pin, HIGH);
+    delayMicroseconds(STEP_DELAY);
+    digitalWrite(step_pin, LOW);
+    delayMicroseconds(STEP_DELAY);
+  }
 }
 
 // Methods to stamp on the paper
@@ -44,23 +67,10 @@ void solenoid(){
 
 void stamp(){
   solenoid();
-  digitalWrite(dir_pin, HIGH);
-  for(int i=0; i<number_of_steps; i++){
-    digitalWrite(step_pin, HIGH);
-    delayMicroseconds(half_step_delay_time);
-    digitalWrite(step_pin, LOW);
-    delayMicroseconds(half_step_delay_time);
-  }
-
+  rotateDegrees(90, true);
   delay(500);
   solenoid();
-  digitalWrite(dir_pin, LOW);
-  for(int i=0; i<number_of_steps; i++){
-    digitalWrite(step_pin, HIGH);
-    delayMicroseconds(half_step_delay_time);
-    digitalWrite(step_pin, LOW);
-    delayMicroseconds(half_step_delay_time);
-  }
+  rotateDegrees(90, false);
 }
 
 // Method to pull paper
@@ -72,18 +82,16 @@ void pullPaper(){
 
 // Method to complete all operation
 void completeOperation(){
-  // if(abs(analogRead(sensor_pin) - default_ldr_value) < allowed_sensitivity){
-  //   digitalWrite(laser_pin, HIGH);
-  //   stamp();
-  //   pullPaper();
-  // }else {
-  //   digitalWrite(laser_pin, LOW);
-  //   is_started = false;
-  // }
-
-
-
-  digitalWrite(laser_pin, HIGH);
-  stamp();
-  pullPaper();
+  if(stamping){
+    if(abs(analogRead(sensor_pin) - default_ldr_value) > allowed_sensitivity){
+      Serial.println("NO paper");
+      stamping = false;
+      digitalWrite(laser_pin, LOW);
+      delay(1e3);
+    }else {
+      Serial.println("Paper");
+      stamp();
+      pullPaper();
+    }
+  }else Serial.println("No stamping");
 }
