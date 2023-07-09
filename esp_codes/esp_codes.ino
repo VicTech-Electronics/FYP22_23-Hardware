@@ -74,7 +74,7 @@ void setup() {
 
 void loop() {
   while(!Serial.available());
-  String serial_data = Serial.readStringUntil('\r');
+  String serial_data = Serial.readString();
   serial_data.trim();
   sendRequest(serial_data);
 }
