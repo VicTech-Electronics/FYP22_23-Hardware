@@ -16,8 +16,9 @@ float default_input_signal;
 void setup() {
   pinMode(freq_pin, INPUT);
   serialTFT.begin(9600);
-  Serial.println(9600);
+  Serial.begin(9600);
   attachInterrupt(digitalPinToInterrupt(freq_pin), countPulse, RISING);
+  Serial.println("Start");
 }
 
 void loop() {
@@ -30,5 +31,9 @@ void loop() {
     }
   }
   
-  if(serial_data == "play") siginalProcesing();
+  if(serial_data == "play"){
+    Serial.println("In play");
+    siginalProcesing();
+    Serial.read();
+  } 
 }
