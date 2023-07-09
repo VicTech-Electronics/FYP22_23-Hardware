@@ -72,12 +72,18 @@ void pullPaper(){
 
 // Method to complete all operation
 void completeOperation(){
-  if(abs(analogRead(sensor_pin) - default_ldr_value) < allowed_sensitivity){
-    digitalWrite(laser_pin, HIGH);
-    stamp();
-    pullPaper();
-  }else {
-    digitalWrite(laser_pin, LOW);
-    is_started = false;
-  }
+  // if(abs(analogRead(sensor_pin) - default_ldr_value) < allowed_sensitivity){
+  //   digitalWrite(laser_pin, HIGH);
+  //   stamp();
+  //   pullPaper();
+  // }else {
+  //   digitalWrite(laser_pin, LOW);
+  //   is_started = false;
+  // }
+
+
+
+  digitalWrite(laser_pin, HIGH);
+  stamp();
+  pullPaper();
 }
