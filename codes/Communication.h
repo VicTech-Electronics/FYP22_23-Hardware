@@ -29,31 +29,6 @@ void gsmCommand(String command) {
   }
 }
 
-// Method to initialize GPRS connetion
-// void intializeGPRS(){
-//   gsmCommand("AT+CGATT=1");
-//   gsmCommand("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
-//   gsmCommand("AT+SAPBR=3,1,\"APN\",\"" + String(APN) + "\"");
-//   gsmCommand("AT+SAPBR=1,1");
-//   gsmCommand("AT+HTTPINIT");
-// }
-
-// // Method to send POST request
-// String postData(String end_point, String json_data){
-//   // Set HTTP headers and payload
-//   http.beginRequest();
-//   http.post(end_point);
-//   http.sendHeader("Content-Type", "application/json");
-//   http.sendHeader("Content-Length", String(json_data.length()));
-//   http.beginBody();
-//   http.print(json_data);
-//   http.endRequest();
-//   // Check response
-//   int statusCode = http.responseStatusCode();
-//   String response = http.responseBody();
-//   return response;
-// }
-
 // Method to initialize sms mode
 void initializeSMS() {
   gsmCommand("AT");
@@ -101,6 +76,30 @@ void receiveCall(){
   json_object["response"] = accept_call_status;
 
   String json_string = JSON.stringify(json_object);
+}
+
+// Methode to Connect GPRS connection
+void connectGPRS(){
+  gsmCommand("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
+  gsmCommand("AT+SAPBR=3,1,\"APN\",\"internet\"");
+  gsmCommand("AT+SAPBR=1,1");
+  gsmCommand("AT+SAPBR=2,1");
+}
+
+// Methode to send HTTP request
+void postRequest(String host){
+  gsmCommand("AT+HTTPINIT");
+  gsmCommand("AT+HTTPPARA=\"CID\",1");
+
+  // Construct the HTTP GET request
+  String getRequest = "AT+HTTPPARA=\"URL\",\"http://";
+  getRequest += host;
+  getRequest += "\"";
+
+  gsmCommand(getRequest.c_str());
+  gsmCommand("AT+HTTPACTION=1"); delay(20e3);
+  gsmCommand("AT+HTTPREAD"); delay(20e3);
+  gsmCommand("AT+HTTPTERM");
 }
 
 // Method to get location from the GSP
