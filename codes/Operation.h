@@ -16,13 +16,13 @@ void listenBtn(){
 // Method to commbine all operations
 void operation(){
   float flowrate_data = getFlowRate();
-  float volume_change = abs(getVolume() - initial_volume);
+  float volume_change = getVolume();
 
 
   Serial.println("Flowrate data: " + String(flowrate_data));
   Serial.println("Volume change: " + String(volume_change));
 
-  if(flowrate_data > 0.0 || volume_change > 0.0){
+  if(flowrate_data > 0.0){
     getLocation();
     lcdPrint("Fault detected", ""); delay(2e3);
     lcdPrint("Flowrate: " + String(flowrate_data), "Volume: " + String(volume_change)); delay(3e3);
