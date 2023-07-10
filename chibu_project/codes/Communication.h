@@ -16,7 +16,7 @@ const static uint8_t PIN_RADIO_CSN = 7;
 
 struct RadioPacket{
     uint8_t FromRadioId;
-    uint8_t passCode;
+    uint16_t passCode;
     char service;
 };
 

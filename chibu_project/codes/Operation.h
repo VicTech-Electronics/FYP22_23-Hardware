@@ -26,8 +26,10 @@ void cancelation(){
 void operation(){
   lcdPrint("Please", "Scan your card");
   card_number = "";
-  while(card_number == "") // Wait for card to be scanned
+  while(card_number == ""){
     card_number = getCardNumber();
+  } // Wait for card to be scanned
+    
 
   byte counter = 0;
   while(!confirm){
@@ -45,10 +47,11 @@ void operation(){
   jsonObject["customer"] = card_number;
   jsonObject["details"] = "Requested for " + services[counter] + " service";
   jsonObject["amount"] = serviceCost[counter];
+  String serial_data = JSON.stringify(jsonObject);
 
-  String response = espRequest(JSON.stringify(jsonObject));
+  String response = espRequest(serial_data);
 
-  if(response == "SUCCESS"){
+  if(response.indexOf("SUCCESS") != -1){
     // Generate password
     password = random(0, 9999);
     char formated_password[5];
@@ -64,7 +67,7 @@ void operation(){
 
     lcdPrint("Password", String(password));
     delay(5e3);
-  }else if(response == "Cardnumber not exist")
+  }else if(response.indexOf("Cardnumber not exist") != -1)
     lcdPrint("Error", "Cardnumber not exist");
   else
     lcdPrint("Sorry", "Operation failed");
