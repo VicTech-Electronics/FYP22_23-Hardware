@@ -13,6 +13,7 @@ unsigned long initial_time;
 int session_time;
 
 void setup() {
+  pinMode(buzzer_pin, OUTPUT);
   pinMode(value_pin, OUTPUT);
   pinMode(format_btn, INPUT_PULLUP);
 
@@ -33,6 +34,7 @@ void setup() {
 }
 
 void loop() {
+  operation();
   String section = receivedSMS();
   if(section != ""){
     char* endPtr;
@@ -46,7 +48,6 @@ void loop() {
       postData(json_string, "notification");
     }
   }
-  
   if(active_session){
     operation_status = true;
     if(millis() - initial_time >= session_time * 1000){
@@ -55,6 +56,5 @@ void loop() {
       digitalWrite(value_pin, LOW);
     }
   }
-  
   if(operation_status) operation();
 }

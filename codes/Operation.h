@@ -4,6 +4,9 @@
 #include "Communication.h"
 #include <Arduino_JSON.h>
 
+// Pin connection
+const uint8_t buzzer_pin = 11;
+
 // Decralation of usefull variables
 JSONVar json_object;
 uint8_t unit_used_address=0;
