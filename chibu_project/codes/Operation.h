@@ -27,6 +27,7 @@ void operation(){
   lcdPrint("Please", "Scan your card");
   card_number = "";
   while(card_number == ""){
+    Serial.println("Wait for card number");
     card_number = getCardNumber();
   } // Wait for card to be scanned
     
