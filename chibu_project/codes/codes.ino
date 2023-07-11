@@ -16,10 +16,11 @@ void setup() {
 
   SPI.begin();
   mfrc522.PCD_Init();
+  Serial.begin(9600);
 
   if (!radio.init(RADIO_ID, PIN_RADIO_CE, PIN_RADIO_CSN)){
     Serial.println("Cannot communicate with radio");
-    while (true); // Wait here forever.
+    // while (true); // Wait here forever.
   } radioData.FromRadioId = RADIO_ID;
 
   attachInterrupt(digitalPinToInterrupt(btn1_pin), confirmation, FALLING);
