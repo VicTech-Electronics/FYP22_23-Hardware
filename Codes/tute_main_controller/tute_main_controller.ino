@@ -20,7 +20,7 @@ void setup(){
   // Initialize SD card
   if (!SD.begin(chip_selector_pin)) {
     Serial.println("SD card initialization failed!");
-    // while (true);
+    while (true);
   } Serial.println("SD card initialization SUCCESS");
 
   initial_time = millis();
@@ -39,15 +39,32 @@ void loop() {
   ){
     getLocation();
     Serial.println("Send data");
-    data = "{\"vehicle_number\": \"" + vehicle_number + "\"";
-    data += ",\"latitude\": " + String(latitude, 5);
-    data += ",\"longitude\": " + String(longitude, 5);
-    data += ",\"description\": \"Readings\"}";
+
+    // Print data to the serial monitor
+    Serial.print("{\"vehicle_number\": \"");
+    Serial.print(vehicle_number);
+    Serial.print("\"");
+    Serial.print(",\"latitude\": ");
+    Serial.print(latitude, 5);
+    Serial.print(",\"longitude\": ");
+    Serial.print(longitude, 5);
+    Serial.println(",\"description\": \"Readings\"}");
+
+    // Send data to the site
+    serialESP.print("{\"vehicle_number\": \"");
+    serialESP.print(vehicle_number);
+    serialESP.print("\"");
+    serialESP.print(",\"latitude\": ");
+    serialESP.print(latitude, 5);
+    serialESP.print(",\"longitude\": ");
+    serialESP.print(longitude, 5);
+    serialESP.println(",\"description\": \"Readings\"}");
     
-    Serial.println("Data to send: " + data);
-    serialESP.println(data);
     while(!serialESP.available());
-    data = serialESP.readString();
-    Serial.println(data);
+    while(serialESP.available()){
+      data = serialESP.readString();
+      Serial.println("Data from serialESP: " + data);
+    }
+    
   }
 }

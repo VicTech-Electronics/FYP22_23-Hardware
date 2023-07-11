@@ -57,8 +57,14 @@ void setup() {
 }
 
 void loop() {
-  while(!Serial.available()); // Wait for the data in serial buffer
-  serial_data = Serial.readString();
-  serial_data.trim();
-  postJSONData(serial_data);
+
+  if(Serial.available()){
+    serial_data = "";
+    while(Serial.available()){
+      serial_data += Serial.readString();
+    }
+
+    serial_data.trim();
+    postJSONData(serial_data);
+  }
 }

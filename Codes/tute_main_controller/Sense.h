@@ -17,6 +17,7 @@ double old_roll, old_pitch;
 
 //Method to read Gyroscopic data
 void getGyroData() {
+  Serial.println("Read MPU5060 data");
   Wire.beginTransmission(MPU_addr);
   Wire.write(0x3B); // starting with register 0x3B (ACCEL_XOUT_H)
   Wire.endTransmission(false);
