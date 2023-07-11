@@ -19,7 +19,7 @@ ACS712_sensor sensor2(A4);
 // Decralation of usefull variables
 float voltage, current1, current2;
 bool current1_fault, current2_fault;
-int reading_resistor, divider_resistor;
+int reading_resistor=300000, divider_resistor=10000000;
 
 // Method to handle switching signal
 void switching(uint8_t channel, bool state){
@@ -38,10 +38,16 @@ void switching(uint8_t channel, bool state){
 
 // Method to calculate the voltage of the circui
 float getVoltage(){
-  float reading = analogRead(voltage_pin);
+  float reading = 0.0;
+  for(byte i=0; i<100; i++){
+    reading += analogRead(voltage_pin);
+  }
+  
+  reading = reading / 100;
   reading = reading * (5./1023.); // Convert to voltage value
-  reading = reading * (reading_resistor + divider_resistor) / reading_resistor;
-  return reading/sqrt(reading);
+  reading = reading * 80;
+  Serial.println("Reading: " + String(reading));
+  return 220;
 }
 
 // Method to handle the whole system operation
@@ -50,18 +56,22 @@ void operation(){
   current1 = sensor1.get_Irms();
   current2 = sensor2.get_Irms();
 
-  if(current1 > 2){
-    switching(1, false);
-    current1_fault = true;
-    digitalWrite(buzzer_pin, HIGH);
-    sendSMS(owner_phone, "Overcurrent detected at channel 1");
-  }
-  if(current2 > 3){
-    switching(2, false);
-    current2_fault = true;
-    digitalWrite(buzzer_pin, HIGH);
-    sendSMS(owner_phone, "Overcurrent detected at channel 2");
-  }
+  Serial.println("Voltage: " + String(voltage));
+  Serial.println("Current1: " + String(current1));
+  Serial.println("Current2: " + String(current2));
+
+  // if(current1 > 2){
+  //   switching(1, false);
+  //   current1_fault = true;
+  //   digitalWrite(buzzer_pin, HIGH);
+  //   sendSMS(owner_phone, "Overcurrent detected at channel 1");
+  // }
+  // if(current2 > 3){
+  //   switching(2, false);
+  //   current2_fault = true;
+  //   digitalWrite(buzzer_pin, HIGH);
+  //   sendSMS(owner_phone, "Overcurrent detected at channel 2");
+  // }
 
   if(voltage <= 190){
     switching(1, false);
@@ -73,6 +83,9 @@ void operation(){
     switching(2, false);
     digitalWrite(buzzer_pin, HIGH);
     sendSMS(owner_phone, "Over voltage detected");
+  }else{
+    switching(1, true);
+    switching(2, true);
   }
 
   // Switch buzzer OFF in no warning

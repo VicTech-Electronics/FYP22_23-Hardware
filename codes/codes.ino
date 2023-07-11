@@ -13,14 +13,18 @@ void setup() {
 
   Serial.begin(9600); 
   delay(5e3); 
-  digitalWrite(buzzer_pin, HIGH);
   initializeSMS();
-  digitalWrite(buzzer_pin, LOW);
 }
 
 void loop() {
-  if(digitalRead(breaker_pin)){
-    switching(1, false);
-    switching(2, false);
-  }else operation();
+  // if(digitalRead(breaker_pin)){
+  //   Serial.println("Break OFF");
+  //   switching(1, false);
+  //   switching(2, false);
+  // }else{
+  //   Serial.println("Break ON");
+  //   operation();
+  // } 
+
+  operation();
 }
