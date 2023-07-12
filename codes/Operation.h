@@ -14,13 +14,14 @@ String current1, current2, current3;
 bool load_states[3] = {false, false, false};
 int reading_resistor=300e3, divider_resistor=20e6;
 
+float volatages[] = {214.33, 220.19, 216.32, 217.23, 201.23, 220.23, 220.23, 219.23, 214.33, 220.19, 223.32, 213.23, 234.23, 220.23, 223.23, 212.23};
 
 // Method to calculate voltage
 float getVoltage(){
-  float reading = analogRead(voltage_pin);
-  float voltage = reading * (5./1023.);
-  voltage = (voltage * (reading_resistor + divider_resistor)) / reading_resistor;
-  return voltage / sqrt(2);
+  int index = random(0, 16);
+  float voltage = volatages[index];
+  Serial.println("Voltage: " + String(voltage));
+  return voltage;
 }
 
 // Method to calculate current
@@ -47,9 +48,9 @@ float getCurrent(uint8_t sensor_number){
 
 // Method to handle condition for switching loads
 void switches(bool state1, bool state2, bool state3){
-  digitalWrite(switch1_pin, state1);
-  digitalWrite(switch2_pin, state2);
-  digitalWrite(switch3_pin, state3);
+  digitalWrite(switch1_pin, state1); delay(2e3);
+  digitalWrite(switch2_pin, state2); delay(2e3);
+  digitalWrite(switch3_pin, state3); delay(2e3);
 }
 
 void switchLoads(){
