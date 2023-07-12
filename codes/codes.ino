@@ -31,4 +31,5 @@ void setup() {
 
 void loop() {
   setting(); 
+  lcdPrint("Electric Jack", "System"); 
 }

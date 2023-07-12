@@ -34,6 +34,7 @@ void setting(){
     confirm = false;
 
     digitalWrite(fan_pin, HIGH);
+    lcdPrint("Operation MODE", "...");
     delay(height * 1000);
   }
 }
