@@ -21,12 +21,7 @@ void setup() {
   
   digitalWrite(backlight, HIGH);
   lcdPrint("Welcome", ""); delay(2e3);
-  lcdPrint("Electric Jack", "System"); delay(2e3);
-
-  while(!confirm){
-    lcdPrint("Please", "Customize height");
-    delay(1e3);
-  }
+  lcdPrint("DIT - Mechanical", "Project 2022/23"); delay(2e3);
 }
 
 void loop() {

@@ -30,11 +30,13 @@ void setting(){
       }
     }delay(1e3); // Wait for deboucing of the button
 
-    lcdPrint("Settings", "DONE");
+    lcdPrint("Settings", "DONE"); 
     confirm = false;
 
     digitalWrite(fan_pin, HIGH);
     lcdPrint("Operation MODE", "...");
-    delay(height * 1000);
+    int delay_time = map(height, 0, 100, 0, 40000);
+    delay(delay_time);
+    digitalWrite(fan_pin, LOW);
   }
 }
