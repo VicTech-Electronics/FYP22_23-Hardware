@@ -29,7 +29,7 @@ void relay(bool state){
 
 // Method to control soft stater
 float time_period = 200; // 5 sec
-int interval = 10;
+int interval = 120000;
 void softStart(){
   Serial.println("SoftStart");
   digitalWrite(buzzer_pin, HIGH);
