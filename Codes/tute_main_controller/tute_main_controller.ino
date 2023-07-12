@@ -37,6 +37,7 @@ void loop() {
     smoke_value >= 50 ||
     digitalRead(flame_pin) ==HIGH
   ){
+    digitalWrite(buzzer_pin, HIGH);
     getLocation();
     Serial.println("Send data");
 
@@ -60,11 +61,13 @@ void loop() {
     serialESP.print(longitude, 5);
     serialESP.println(",\"description\": \"Readings\"}");
     
+    
     while(!serialESP.available());
     while(serialESP.available()){
       data = serialESP.readString();
       Serial.println("Data from serialESP: " + data);
     }
-    
+
+    digitalWrite(buzzer_pin, LOW);
   }
 }
