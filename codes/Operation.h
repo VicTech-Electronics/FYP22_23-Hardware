@@ -1,70 +1,111 @@
+#include "Interface.h"
 #include <EEPROM.h>
 #include <Arduino_JSON.h>
 #include <SoftwareSerial.h>
-#define ESP_Rx
-#define ESP_Tx
+#define ESP_Rx A1
+#define ESP_Tx A0
+
+// Definition of pin connection
+const uint8_t flowrate_pin=3, valve_pin=6;
 
 // Decralation of objects
-SoftwareSerial serialESP()
+SoftwareSerial serialESP(ESP_Rx, ESP_Tx);
 
 // Decralation of usefull variables
-String token;
+char charKey;
 JSONVar json_object;
+int units_address=0, time_out=30000;
+String token, device_number = "1234567890";
+float frequence, litters_per_min, litters_per_sec, units;
 
 // Methode that calculate usage litters per sec
 float usage() {
-  x = pulseIn(flowrate, HIGH);
-  y = pulseIn(flowrate, LOW);
+  int x = pulseIn(flowrate_pin, HIGH);
+  int y = pulseIn(flowrate_pin, LOW);
 
-  pulse_duration = x - y;
+  int pulse_duration = x - y;
   if(pulse_duration == 0) frequence = 0.00;
   else frequence = 1000000 / pulse_duration;
   litters_per_min = frequence / 7.5;
   litters_per_sec = litters_per_min / 60;
-  
-  Serial.println("Pulse duration: " + String(x) + " - " + String(y) + " = " + String(pulse_duration));
-  Serial.println("Frequence: " + String(frequence));
-  Serial.println("L/s: " + String(litters_per_sec));
+
+  if(litters_per_sec <= 0.0) litters_per_sec = 0.0;
   return litters_per_sec;
+}
+
+// Methode to handle getting Key from the Keypad
+char get_key(){
+  charKey = keypad.getKey();
+  while(!charKey) charKey = keypad.getKey();
+  return charKey;
 }
 
 // Method to handle insertion of token for payment
 void payment(){
-  lcd_print("Enter token:", "");
+  token = "";
+  lcdPrint("Enter token:", "");
   while(true){ // Wait for Customer to Enter Amount
     charKey = get_key();
     if(charKey >= '0' && charKey <= '9'){
       token = token + String(charKey);
-      lcd_print("Enter token:", token);
+      lcdPrint("Enter token:", token);
     }else if(charKey == '*'){
       token = token.substring(0, token.length() - 1);
-      lcd_print("Enter token:", token);
+      lcdPrint("Enter token:", token);
     }
     if(charKey == '#') break;
   }
 
+  lcdPrint("Processing...", "");
 
-  json_object["device"] = device_number;
-  json_object["token"] = token;
+  Serial.println("Prepair data to send");
+  json_object["deviceNo"] = device_number;
+  json_object["token"] = String(token);
   String json_string = JSON.stringify(json_object);
+  Serial.println("Data: " + json_string);
 
   serialESP.println(json_string);
+  Serial.println("Sent");
   
   unsigned long initial_time = millis();
   while(!serialESP.available()){
-    if(millis() - initial_time > time_out){
-      lcdPrint("ERROR", "Time out");
-      Serial.println("Time out");
-      break;
-    }
+    if(millis() - initial_time > time_out) break;
   }
-  String response = serialESP.readString();
-  units += response.toInt();
-
-  EEPROM.put(units_address, units);
+  if(serialESP.available()){
+    Serial.println("Data available");
+    String response;
+    while(serialESP.available()){
+      response = serialESP.readStringUntil('\r');
+      Serial.println("Response: " + response);
+    }
+    
+    if(response.toInt() == 0){
+      lcdPrint("ERROR", "Invalid token");
+      Serial.println("Invalid token");
+    }else{
+      lcdPrint("SUCCESS", "");
+      units += response.toInt();
+      EEPROM.put(units_address, units);
+    }
+  }else{
+    lcdPrint("ERROR", "Time out");
+    Serial.println("Time out");
+  }
+  
 }
 
 
 void operation(){
-  
+  units -= usage()/100;
+  if(units <= 0.0){
+    units = 0.0;
+    digitalWrite(valve_pin, LOW);
+  }else digitalWrite(valve_pin, HIGH);
+
+  EEPROM.put(units_address, units);
+  lcdPrint("Electric meter", "Unit: " + String(units));
+
+  charKey = keypad.getKey();
+  if(charKey == '#') payment();
+  delay(1e3);
 }

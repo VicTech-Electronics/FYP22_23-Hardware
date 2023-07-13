@@ -4,9 +4,6 @@
 #define rows 4
 #define cols 3
 
-// Definition of pin connections in Microcontroller
-int switch1=0, switch2=1, buzzer=5, sensor1=A3, sensor2=A1;
-
 char keys[rows][cols]{
   {'1', '2', '3'},
   {'4', '5', '6'},
@@ -20,8 +17,6 @@ Keypad keypad = Keypad(makeKeymap(keys), row_pins, col_pins, rows, cols);
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 
-// Definition of useful variables
-float pulse_duration, frequence, litters_per_min, litters_per_sec;
 // Methode to Cut String 
 String cutString(String str, int col) {
   return str.substring(0, col);
