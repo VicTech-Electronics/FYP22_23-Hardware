@@ -33,5 +33,5 @@ void lcdPrint(String str0, String str1) {
 
   lcd.setCursor(pre_space0, 0); lcd.print(str0);
   lcd.setCursor(pre_space1, 1); lcd.print(str1);
-  delay(100);
+  delay(1000);
 }

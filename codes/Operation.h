@@ -72,13 +72,13 @@ void payment(){
     if(millis() - initial_time > time_out) break;
   }
   if(serialESP.available()){
-    Serial.println("Data available");
-    String response;
-    while(serialESP.available()){
-      response = serialESP.readStringUntil('\r');
-      Serial.println("Response: " + response);
-    }
     
+    String response = serialESP.readStringUntil('\r');
+    response.trim();
+
+    Serial.println("RESPONSE:'" + response + "'");
+    lcdPrint("Server response", response); delay(2e3);
+
     if(response.toInt() == 0){
       lcdPrint("ERROR", "Invalid token");
       Serial.println("Invalid token");
@@ -91,12 +91,12 @@ void payment(){
     lcdPrint("ERROR", "Time out");
     Serial.println("Time out");
   }
-  
+  delay(2e3);
 }
 
 
 void operation(){
-  units -= usage()/100;
+  units -= usage()/10;
   if(units <= 0.0){
     units = 0.0;
     digitalWrite(valve_pin, LOW);

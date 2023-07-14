@@ -5,56 +5,38 @@
 const char* ssid = "VicTech Electronics";
 const char* password = "#Electronics98";
 
-// Replace with your server URL and port
-const char* serverURL = "161.35.210.153";
-const int serverPort = 8000;
-
 // Create an instance of WiFiClient0 to establish connection
 WiFiClient client;
+HTTPClient http;
 
-// Decralation of usefull variables
-String end_point = "/device-update-portal";
+void postData(String string_data){
+  if(WiFi.status() == WL_CONNECTED){
+   http.begin(client, "http://161.35.210.153:8000/device-update-portal");
+   http.addHeader("Content-Type", "application/json");
 
-// Method to post data
-void postData(String json_data){
-  if (WiFi.status() == WL_CONNECTED) {
-    if (client.connect(serverURL, serverPort)) {
+   int httpCode = http.POST(string_data);
+   String payload = http.getString();
 
-      // Make an HTTPS POST request
-      client.print(String("POST "  + end_point + " HTTP/1.1\r\n") +
-                   "Host: " + serverURL + "\r\n" +
-                   "Content-Type: application/json\r\n" +
-                   "Content-Length: " + json_data.length() + "\r\n" +
-                   "Connection: close\r\n\r\n" +
-                   json_data);
+   if(httpCode == HTTP_CODE_OK) Serial.println(payload);
+   else Serial.println("Error: " + http.errorToString(httpCode));
 
-      // Wait for the server's response
-      while (client.connected()) {
-        if (client.available()) {
-          String response = client.readStringUntil('\r');
-          Serial.println(response);
-        }
-      }
-      // Disconnect from the server
-      client.stop();
-    } else {
-      Serial.println("Connection to server failed");
-    }
-  }
+   string_data = "" ; payload = "";
+   http.end();
+ }
 }
 
 void setup() {
   Serial.begin(9600);
-  delay(100);
+  delay(3e3);
 
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
+    delay(100);
+    Serial.print(".");
   }
+  Serial.println("CONNECTED");
 
-  Serial.println("Connected to WiFi");
 }
 
 void loop() {
