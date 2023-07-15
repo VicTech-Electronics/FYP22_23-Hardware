@@ -49,7 +49,7 @@ void loop() {
     Serial.print(latitude, 5);
     Serial.print(",\"longitude\": ");
     Serial.print(longitude, 5);
-    Serial.println(",\"description\": \"Information stored in the BlackBox from the car\"}");
+    Serial.println(",\"description\": \"Readings\"}");
 
     // Send data to the site
     serialESP.print("{\"vehicle_number\": \"");
@@ -59,7 +59,7 @@ void loop() {
     serialESP.print(latitude, 5);
     serialESP.print(",\"longitude\": ");
     serialESP.print(longitude, 5);
-    serialESP.println(",\"description\": \"Information stored in the BlackBox from the car\"}");
+    serialESP.println(",\"description\": \"Readings\"}");
     
     
     while(!serialESP.available());
