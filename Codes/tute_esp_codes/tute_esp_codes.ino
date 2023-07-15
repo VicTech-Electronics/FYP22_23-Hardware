@@ -5,7 +5,7 @@
 const char* ssid = "VicTech Electronics";
 const char* password = "#Electronics98";
 
-const char* server = "tute-fyp22-23.herokuapp.com";
+const char* server = "tute-fyp22-23-c169130615c7.herokuapp.com";
 const int httpsPort = 443;
 
 WiFiClientSecure client;
@@ -16,7 +16,7 @@ String serial_data, endPoint, requestBody;
 
 
 // Method to post json data to the server
-void postJSONData(String json_data){
+String postJSONData(String json_data){
   // Wait for a connection to be established
   if (WiFi.status() == WL_CONNECTED) {
     // Create the request body
@@ -35,10 +35,12 @@ void postJSONData(String json_data){
       // Read and print the response
       while (client.available()) {
         String line = client.readStringUntil('\r');
-        Serial.println(line);
+        if(line.indexOf("[") != -1) return line;
       }client.stop();
     }
   }
+
+  return "FAIL";
 }
 
 
@@ -63,8 +65,9 @@ void loop() {
     while(Serial.available()){
       serial_data += Serial.readString();
     }
-
     serial_data.trim();
-    postJSONData(serial_data);
+
+    String response = postJSONData(serial_data);
+    Serial.println(response);
   }
 }
