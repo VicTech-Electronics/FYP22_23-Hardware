@@ -12,12 +12,10 @@ WiFiClientSecure client;
 
 // Decralation of useful varibles
 JSONVar json_object, modified_json_object;
-String serial_data, json_string, endPoint, requestBody, server_response;
-String responses[4] = {"\"Detected\"", "\"SUCCESS\"", "\"FAIL\"", "\"Vehicle not registered\""};
+String serial_data, json_string, endPoint, requestBody;
 
 // Method to receive server response
 String serverResponse(){
-  server_response = "";
   // Make the HTTPS request
   if (client.connect(server, httpsPort)) {
     client.print(requestBody);
@@ -25,16 +23,10 @@ String serverResponse(){
     // Read and print the response
     while (client.available()) {
       String line = client.readStringUntil('\r');
-      line.trim();
-      for(byte i=0; i<4; i++){
-        if(responses[i] == line){
-          server_response = line;
-          break;
-        }
-      }
+      if(line.indexOf("[") != -1) return line
     }client.stop();
   }
-  return server_response;
+  return "Fail";
 }
 
 // Method to post json data to the server
@@ -87,7 +79,7 @@ void loop() {
   serial_data = Serial.readString();
   serial_data.trim();
   
-  if(serial_data.indexOf("{") != 0){
+  if(serial_data.indexOf("{") != -1){
     json_object = JSON.parse(serial_data);
     JSONVar keys = json_object.keys(); // Get the keys of the original JSON object
     for(byte i=0; i<json_object.length(); i++){
