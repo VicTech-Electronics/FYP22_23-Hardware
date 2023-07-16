@@ -11,28 +11,35 @@ void cashReturn(int amount){
   if(amount >= 200){
     i = amount/200;
     while(i>=1){
-      servoRotate(servo3);
-      delay(1e3);
-      i -= 1;
-    }
-    if(i!=0) servoRotate(servo2);
-  }else if(amount >= 100){
-    i = amount/100;
-    while(i>=1){
       servoRotate(servo2);
       delay(1e3);
       i -= 1;
     }
     if(i!=0) servoRotate(servo1);
+  }else if(amount >= 100){
+    i = amount/100;
+    while(i>=1){
+      servoRotate(servo1);
+      delay(1e3);
+      i -= 1;
+    }
+    // if(i!=0) servoRotate(servo1);
   }
 }
 
 // Method to control the whole operation
 void operation(){
-  while(getCoin() == 0)
-    lcdPrint("Please", "Insert coin");
+  while(true){
+    int coin = getCoin();
+    if(coin == 0)
+      lcdPrint("Please", "Insert coin");
+    else
+      break;
+  }
 
+  Serial.println("Coin received successfull");
   int i=0;
+  
   while(!confirm){
     lcdPrint("Select service:", services[i]);
     if(digitalRead(btn2_pin) == LOW){
@@ -57,6 +64,5 @@ void operation(){
     delay(2e3);
     digitalWrite(lock_pin, LOW);
   }
-
   confirm = false;
 }

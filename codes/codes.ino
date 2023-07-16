@@ -12,7 +12,8 @@ void setup() {
 
   servo1.attach(servo1_pin);
   servo2.attach(servo2_pin);
-  servo3.attach(servo3_pin);
+  servo1.write(0);
+  servo2.write(0);
 
   lcdPrint("Welcome", ""); delay(2e3);
   lcdPrint("Coin change", "Provider"); delay(2e3);
