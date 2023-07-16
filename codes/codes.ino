@@ -20,9 +20,9 @@ void setup() {
 
   attachInterrupt(digitalPinToInterrupt(btn1_pin), confirmIRS, FALLING);
   attachInterrupt(digitalPinToInterrupt(coin_acceptor_pin), countPulseISR, FALLING);
-
 }
 
 void loop() {
+  confirm = false;
   operation();
 }
