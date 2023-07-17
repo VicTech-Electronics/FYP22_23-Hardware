@@ -11,9 +11,5 @@ void setup() {
 }
 
 void loop(){
-  // operation();
-  // float turbidity_value = readTurbidity();
-  float turbidity_value = analogRead(turbidity_pin);
-  Serial.println("Turbidity: " + String(turbidity_value));
-  delay(1e3);
+  operation();
 }
