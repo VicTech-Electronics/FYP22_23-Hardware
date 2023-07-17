@@ -26,9 +26,9 @@ float round_to_dp( float in_value, int decimal_place ){
 // Method to rotate converyer
 void converyerRotate(){
   digitalWrite(step_pin, HIGH);
-  delayMicroseconds(500);
+  delayMicroseconds(1000);
   digitalWrite(step_pin, LOW);
-  delayMicroseconds(500);
+  delayMicroseconds(1000);
 }
 
 

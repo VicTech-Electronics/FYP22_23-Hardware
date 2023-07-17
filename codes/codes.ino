@@ -7,7 +7,7 @@ void setup() {
   pinMode(ir1_pin, INPUT);
   
   Serial.begin(9600);
-  digitalWrite(dir_pin, HIGH);
+  digitalWrite(dir_pin, LOW);
 }
 
 void loop(){
