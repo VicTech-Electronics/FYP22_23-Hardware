@@ -39,7 +39,6 @@ void nrfSend(uint8_t code, char nrf_data){
 String getCardNumber(){
   if (mfrc522.PICC_IsNewCardPresent()) {
     if (mfrc522.PICC_ReadCardSerial()) {
-      Serial.print("Card UID: ");
       String cardNumber = "";
       // Concatenate the UID bytes to form the card number
       for (byte i = 0; i < mfrc522.uid.size; i++) {

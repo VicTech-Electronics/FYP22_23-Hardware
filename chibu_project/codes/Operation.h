@@ -16,9 +16,11 @@ bool confirm, cancel;
 
 // Methode to handle confirm and cancel interrupt
 void confirmation(){
+  Serial.println("Confirmation button is pressed");
   confirm = true;
 }
 void cancelation(){
+  Serial.println("Cancelation button is pressed");
   cancel = true;
 }
 
@@ -26,16 +28,18 @@ void cancelation(){
 void operation(){
   lcdPrint("Please", "Scan your card");
   card_number = "";
+  Serial.println("Wait for card number");
   while(card_number == ""){
-    Serial.println("Wait for card number");
     card_number = getCardNumber();
   } // Wait for card to be scanned
+  Serial.println("Card number: " + String(card_number));
     
 
+  confirm = false;
   byte counter = 0;
   while(!confirm){
     lcdPrint("Select service", services[counter]);
-    if(!cancel){ 
+    if(cancel){ 
       delay(1e3); // Wait for debouce of the button
       counter++; 
       cancel=false;
@@ -46,7 +50,7 @@ void operation(){
   if(counter == 3) return; // Cancel proccess if no service requied
   
   jsonObject["customer"] = card_number;
-  jsonObject["details"] = "Requested for " + services[counter] + " service";
+  jsonObject["details"] = services[counter];
   jsonObject["amount"] = serviceCost[counter];
   String serial_data = JSON.stringify(jsonObject);
 
@@ -59,7 +63,10 @@ void operation(){
     sprintf(formated_password, "%04d", password);
     password = int(formated_password);
 
+    Serial.println("Password: " + String(password));
+
     lcdPrint("Press", "Confirm button");
+    confirm = false;
     while(!confirm); confirm = false; // Wait for confirmation
 
     if(counter == 0) nrfSend(password, 'U');
