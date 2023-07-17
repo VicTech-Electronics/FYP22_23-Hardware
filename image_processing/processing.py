@@ -12,4 +12,5 @@ def recognition(image_path):
 
     #Render result
     text = result[0][-2]
-    print(f'Serial number: {text}') 
+    print(f'Serial number: {text}')
+    return text
