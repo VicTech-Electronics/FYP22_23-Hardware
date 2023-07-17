@@ -1,7 +1,7 @@
 #include <Wire.h>
 
 // Definition of pin connection
-const uint8_t smoke_pin=A0, flame_pin=A1, vibration_pin=A2, alcohol_pin=A3;
+const uint8_t flame_pin=A0, smoke_pin=A1, vibration_pin=A2, alcohol_pin=A3;
 const int MPU_addr=0x68;  // I2C address of the MPU-6050
 
 // Decralation of useful variables
