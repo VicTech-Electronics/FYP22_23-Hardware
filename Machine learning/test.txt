@@ -1,0 +1,10 @@
+{
+"vehicle": "T123-ABC", 
+"flame": 1, 
+"smoke": 12.1231, 
+"vibration": 12.23, 
+"gyroscope": 21.2, 
+"latitude": -6.213121, 
+"longitude": 39.123114, 
+"brake": 1
+}

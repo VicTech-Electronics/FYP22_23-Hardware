@@ -22,7 +22,6 @@ void setup() {
   Wire.endTransmission(true);
 
   Serial.begin(9600);
-  serial.begin(9600);
   serialESP.begin(9600);
 
   delay(3e3);
@@ -40,18 +39,19 @@ void setup() {
 
   Serial.println("Program start");
   digitalWrite(buzzer_pin, HIGH);
-  delay(3e3);
+  delay(100);
   digitalWrite(buzzer_pin, LOW);
 
   Serial.println("smokeCal: " + String(smokeCalVal));
   Serial.println("vibrationCal: " + String(vibrationCalVal));
 
-  attachInterrupt(digitalPinToInterrupt(confirm_BTN), confirm, FALLING);
-  attachInterrupt(digitalPinToInterrupt(cancel_BTN), cancel, FALLING);
+  attachInterrupt(digitalPinToInterrupt(confirm_BTN), confirmISR, FALLING);
+  attachInterrupt(digitalPinToInterrupt(cancel_BTN), cancelISR, FALLING);
 }
 
 void loop() {
-  serial.listen();
   if(checkAccident()) postAccientData();
+  confirmation();
+  cancelation();
   delay(100);
 }

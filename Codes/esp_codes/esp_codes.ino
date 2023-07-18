@@ -23,7 +23,7 @@ String serverResponse(){
     // Read and print the response
     while (client.available()) {
       String line = client.readStringUntil('\r');
-      if(line.indexOf("[") != -1) return line
+      if(line.indexOf("[") != -1) return line;
     }client.stop();
   }
   return "Fail";
@@ -49,7 +49,7 @@ void postJSONData(String endpoint, String json_data){
 void postDeleteRequest(String endpoint){
   if (WiFi.status() == WL_CONNECTED) {
     // Create the request body
-    requestBody = "DELETE " + endpoint + " HTTP/1.1\r\n";
+    requestBody = "GET " + endpoint + " HTTP/1.1\r\n";
     requestBody += "Host: " + String(server) + "\r\n";
     requestBody += "Content-Length: 0\r\n"; // No JSON data in the request body for DELETE
     requestBody += "\r\n";

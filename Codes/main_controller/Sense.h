@@ -56,15 +56,14 @@ float analogSensor(uint8_t pin){
 bool checkAccident(){
   getGyroData();
   if( roll >= 30 || pitch > 30 || 
-      // digitalRead(flame_pin) == HIGH || 
-      // digitalRead(brake_pin) == HIGH || 
-      abs(analogSensor(smoke_pin) - smokeCalVal) >= smokeMaxError || 
-      abs(analogSensor(vibration_pin) - vibrationCalVal) >= vibrationMaxError
-    ){
-      Serial.println("Return true");
-      return true;
-    }
-  else{
+    digitalRead(flame_pin) == LOW || 
+    digitalRead(brake_pin) == LOW || 
+    abs(analogSensor(smoke_pin) - smokeCalVal) >= smokeMaxError || 
+    abs(analogSensor(vibration_pin) - vibrationCalVal) >= vibrationMaxError
+  ){
+    Serial.println("Return true");
+    return true;
+  }else{
     Serial.println("Return false");
     return false;
   }

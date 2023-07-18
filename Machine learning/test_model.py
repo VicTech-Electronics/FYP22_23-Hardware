@@ -1,31 +1,44 @@
-from linear_regression import LinearRegression
-import numpy as np
+from linear_regression import LinearRegressionModel
 import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
 
-csv_training_data = pd.read_csv('csv_train_data_file.csv')
-csv_test_data = pd.read_csv('csv_test_data_file.csv')
+data = pd.read_csv('csv_data_file.csv')
+X = data[['frame','smoke','vibration','gyroscope','brake']]  # Replace with your feature column names
+y = data[['result']]  # Replace with your target column name
 
-X_train = csv_training_data.drop('result', axis=1).values
-y_train = csv_training_data['result']
-y_train = np.array(y_train).reshape(-1, 1)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Drop rows with NaN values
+data.dropna(subset=['result'], inplace=True)
+# Fill NaN values with the mean value
+y_train.fillna(y_train.mean(), inplace=True)
 
-X_test = csv_test_data.drop('result', axis=1).values
-y_test = csv_test_data['result']
-y_test = np.array(y_test).reshape(-1, 1)
+print(f'y_train: {y_train}')
+print(f'X_train: {X_train}')
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+predicted = model.predict(X_test)
+
+mse = np.mean((predicted - y_test) ** 2)
+rmse = np.sqrt(mse)
+r2_score = model.score(X_test, y_test)
+
+print("Mean Squared Error:", mse)
+print("Root Mean Squared Error:", rmse)
+print("R^2 Score:", r2_score)
 
 
-print(f'y_train: {y_test.shape}')
-print(f'X_train: {X_test.shape}')
+# regressor = LinearRegressionModel()
+# regressor.fit(X_train, y_train)
+
+# predicted = regressor.predict(X_test)
+
+# def mse(y_true, y_predicted):
+#     return np.mean((y_true - y_predicted) ** 2)
 
 
-regressor = LinearRegression()
-regressor.fit(X_train, y_train)
-
-predicted = regressor.predict(X_test)
-
-def mse(y_true, y_predicted):
-    return np.mean((y_true - y_predicted) ** 2)
-
-
-mse_value = mse(y_test, predicted)
-print(mse_value)
+# mse_value = mse(y_test, predicted)
+# print(mse_value)
