@@ -23,6 +23,5 @@ void setup() {
 }
 
 void loop() {
-  confirm = false;
   operation();
 }

@@ -16,7 +16,7 @@ String cutString(String str, int col) {
 // Method to simplify printing in LCD
 void lcdPrint(String str0, String str1){
   lcd.clear();  const int columns = 16;
-  if (str0.length() > columns) str0 = cutString(str0, columns);
+  if (str0.length() > columns) str0 = cutString(str0, columns);                  
   if (str1.length() > columns) str1 = cutString(str1, columns);
 
   int pre_space0 = int((columns - str0.length()) / 2),
