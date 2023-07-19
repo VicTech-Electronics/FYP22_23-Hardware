@@ -24,7 +24,7 @@ void setup() {
   Serial.begin(9600);
   serialESP.begin(9600);
 
-  delay(3e3);
+  delay(10e3);
 
   // Calculate the calibration for analog sensors
   smokeCalVal=0.0; vibrationCalVal=0.0;

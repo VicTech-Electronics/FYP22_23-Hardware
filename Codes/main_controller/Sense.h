@@ -62,6 +62,7 @@ bool checkAccident(){
     abs(analogSensor(vibration_pin) - vibrationCalVal) >= vibrationMaxError
   ){
     Serial.println("Return true");
+    delay(1e3);
     return true;
   }else{
     Serial.println("Return false");

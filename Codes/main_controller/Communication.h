@@ -43,17 +43,33 @@ void getLocation(){
 // Functions to handle accident confirmation and cancelation Interrupts
 void confirmation(){
   if(confirm){
+    Serial.println("Confirmation is proccessed");
+
     getLocation();
-    jsonObject["endpoint"] = "/api/confirm/";
-    jsonObject["vehicle"] = vehicle_number;
-    jsonObject["latitude"] = latitude;
-    jsonObject["longitude"] = longitude;
-    json_string = JSON.stringify(jsonObject);
+    // Send data to the site
+    Serial.print("# {\"vehicle\": \"");
+    Serial.print(vehicle_number);
+    Serial.print("\"");
+    Serial.print(",\"latitude\": ");
+    Serial.print(latitude, 5);
+    Serial.print(",\"longitude\": ");
+    Serial.print(longitude, 5);
+    Serial.println("}");
 
-    serialESP.println(json_string);
-    while(!serialESP.available())
-      Serial.println("Wait for ESP response");
+    // Send data to the site
+    serialESP.print("# {\"vehicle\": \"");
+    serialESP.print(vehicle_number);
+    serialESP.print("\"");
+    serialESP.print(",\"latitude\": ");
+    serialESP.print(latitude, 5);
+    serialESP.print(",\"longitude\": ");
+    serialESP.print(longitude, 5);
+    serialESP.println("}");
 
+    serial_data = "";
+    while(serialESP.available()){
+      serial_data += serialESP.readString();
+    }
     serial_data = serialESP.readString();
     serial_data.trim();
     Serial.println("serialESP data: " + serial_data);
@@ -65,6 +81,7 @@ void confirmation(){
 
 void cancelation(){ 
   if(cancel){
+    Serial.println("Cancellation is processed");
     serialESP.println("/api/cancel/" + vehicle_number);
     delay(2e3);
     cancel = false; 
@@ -80,22 +97,49 @@ void postAccientData(){
     else gyrospcopic_data = pitch;
 
     getLocation();
-    jsonObject["endpoint"] = "/api/create/";
-    jsonObject["vehicle"] = vehicle_number;
-    jsonObject["flame"] = digitalRead(flame_pin);
-    jsonObject["smoke"] = analogSensor(smoke_pin);
-    jsonObject["vibration"] = analogSensor(vibration_pin);
-    jsonObject["gyroscope"] = gyrospcopic_data;
-    jsonObject["latitude"] = latitude;
-    jsonObject["longitude"] = longitude;
-    jsonObject["brake"] = digitalRead(brake_pin);
-    json_string = JSON.stringify(jsonObject);
+    // Send data to the site
+    Serial.print("@ {\"vehicle\": \"");
+    Serial.print(vehicle_number);
+    Serial.print("\"");
+    Serial.print(",\"flame\": ");
+    Serial.print(digitalRead(flame_pin));
+    Serial.print(",\"smoke\": ");
+    Serial.print(analogSensor(smoke_pin));
+    Serial.print(",\"vib\": ");
+    Serial.print(analogSensor(vibration_pin));
+    Serial.print(",\"gyro\": ");
+    Serial.print(gyrospcopic_data);
+    Serial.print(",\"lat\": ");
+    Serial.print(latitude, 5);
+    Serial.print(",\"long\": ");
+    Serial.print(longitude, 5);
+    Serial.println("}");
 
-    serialESP.println(json_string);
+    // Send data to the site
+    serialESP.print("@ {\"vehicle\": \"");
+    serialESP.print(vehicle_number);
+    serialESP.print("\"");
+    serialESP.print(",\"flame\": ");
+    serialESP.print(digitalRead(flame_pin));
+    serialESP.print(",\"smoke\": ");
+    serialESP.print(analogSensor(smoke_pin));
+    serialESP.print(",\"vib\": ");
+    serialESP.print(analogSensor(vibration_pin));
+    serialESP.print(",\"gyro\": ");
+    serialESP.print(gyrospcopic_data);
+    serialESP.print(",\"lat\": ");
+    serialESP.print(latitude, 5);
+    serialESP.print(",\"long\": ");
+    serialESP.print(longitude, 5);
+    serialESP.println("}");
+
     while(!serialESP.available())
       Serial.println("Wait for ESP response");
 
-    serial_data = serialESP.readString();
+    serial_data = "";
+    while(serialESP.available()){
+      serial_data += serialESP.readString();
+    }
     serial_data.trim();
     Serial.println("serialESP data: " + serial_data);
     if(serial_data.indexOf("Detected") != -1) digitalWrite(buzzer_pin, HIGH);

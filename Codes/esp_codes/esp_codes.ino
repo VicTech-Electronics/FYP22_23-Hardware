@@ -1,6 +1,5 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
-#include <Arduino_JSON.h>
 
 const char* ssid = "VicTech Electronics";
 const char* password = "#Electronics98";
@@ -11,23 +10,7 @@ const int httpsPort = 443;
 WiFiClientSecure client;
 
 // Decralation of useful varibles
-JSONVar json_object, modified_json_object;
-String serial_data, json_string, endPoint, requestBody;
-
-// Method to receive server response
-String serverResponse(){
-  // Make the HTTPS request
-  if (client.connect(server, httpsPort)) {
-    client.print(requestBody);
-    delay(500);
-    // Read and print the response
-    while (client.available()) {
-      String line = client.readStringUntil('\r');
-      if(line.indexOf("[") != -1) return line;
-    }client.stop();
-  }
-  return "Fail";
-}
+String serial_data, requestBody, data_to_send;
 
 // Method to post json data to the server
 void postJSONData(String endpoint, String json_data){
@@ -41,8 +24,18 @@ void postJSONData(String endpoint, String json_data){
     requestBody += "\r\n";
     requestBody += json_data;
     
-    Serial.println(serverResponse());
-  }
+    // Make the HTTPS request
+    if (client.connect(server, httpsPort)) {
+      client.print(requestBody);
+      delay(500);
+
+      // Read and print the response
+      while (client.available()) {
+        String line = client.readStringUntil('\r');
+        if(line.indexOf("[") != -1) Serial.println(line);
+      }client.stop();
+    }
+  } Serial.println("FAIL");
 }
 
 // Method to handle Delete equest
@@ -54,8 +47,18 @@ void postDeleteRequest(String endpoint){
     requestBody += "Content-Length: 0\r\n"; // No JSON data in the request body for DELETE
     requestBody += "\r\n";
     
-    Serial.println(serverResponse());
-  }
+    // Make the HTTPS request
+    if (client.connect(server, httpsPort)) {
+      client.print(requestBody);
+      delay(500);
+
+      // Read and print the response
+      while (client.available()) {
+        String line = client.readStringUntil('\r');
+        if(line.indexOf("[") != -1) Serial.println(line);
+      }client.stop();
+    }
+  }  Serial.println("FAIL");
 }
 
 void setup() {
@@ -75,20 +78,20 @@ void setup() {
 }
 
 void loop() {
-  while(!Serial.available()); // Wait for the data in serial buffer
-  serial_data = Serial.readString();
-  serial_data.trim();
-  
-  if(serial_data.indexOf("{") != -1){
-    json_object = JSON.parse(serial_data);
-    JSONVar keys = json_object.keys(); // Get the keys of the original JSON object
-    for(byte i=0; i<json_object.length(); i++){
-      String key = keys[i];
-      if(key != "endpoint")
-        modified_json_object[key] = json_object[key];
-      else endPoint = (const char*)json_object["endpoint"];
-    }
-    json_string = JSON.stringify(modified_json_object);
-    postJSONData(endPoint, json_string);
-  }else postDeleteRequest(serial_data);
+  if(Serial.available()){
+    serial_data = "";
+    while(Serial.available()){
+      serial_data += Serial.readString();
+    } serial_data.trim();
+
+    if(serial_data.indexOf("@") != -1){
+      data_to_send = serial_data.substring(1);
+      data_to_send.trim();
+      postJSONData("/api/create/", data_to_send);
+    }else if(serial_data.indexOf("#") != -1){
+      data_to_send = serial_data.substring(1);
+      data_to_send.trim();
+      postJSONData("/api/confirm/", data_to_send);
+    } else postDeleteRequest(serial_data);
+  }
 }
