@@ -54,6 +54,10 @@ String getCardNumber(){
 String espRequest(String esp_data){
   serialESP.println(esp_data);
   lcdPrint("Please wait...", "");
-  while(!serialESP.available()); // Wait for response
-  return serialESP.readString();
+
+  while(!serialESP.available()){}; // Wait for response
+  String esp_response = serialESP.readString();
+  Serial.println("ESP response: " + esp_response);
+  delay(2e3);
+  return esp_response;
 }

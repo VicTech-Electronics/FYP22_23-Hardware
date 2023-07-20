@@ -6,7 +6,7 @@ const char* ssid = "VicTech Electronics";
 const char* password = "#Electronics98";
 
 // Replace with your server URL and port
-const char* serverURL = "https://chibu-fyp22-23-fd8685b2b409.herokuapp.com";
+const char* serverURL = "chibu-fyp22-23-fd8685b2b409.herokuapp.com";
 const int serverPort = 443;
 
 // Create an instance of WiFiClientSecure to establish a secure connection
@@ -28,13 +28,18 @@ void postData(String end_point, String json_data){
       while (client.connected()) {
         if (client.available()) {
           String response = client.readStringUntil('\r');
-          if (response.indexOf("[") != -1) Serial.println(response);
+          if (response.indexOf("[") != -1){
+            Serial.println(response);
+            return;
+          } 
         }
       }
       // Disconnect from the server
       client.stop();
     }
   }
+
+  Serial.println("ESP found no data");
 }
 
 void setup() {

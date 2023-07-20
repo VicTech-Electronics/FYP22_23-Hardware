@@ -1,12 +1,15 @@
 #include "Interface.h"
-#include "Communication.h"
-
-// Definition of pin connection
-const uint8_t door1_pin=5, door2_pin=6, led1_pin=3, led2_pin=4;
 
 // Method to handle the whole operation of the system 
 void operation(){
   if(receiveData()){
+    digitalWrite(led1_pin, HIGH);
+    digitalWrite(led2_pin, HIGH);
+    delay(2e3);
+    digitalWrite(led1_pin, LOW);
+    digitalWrite(led2_pin, LOW);
+
+    Serial.println("Data received form circuit 1");
     insertPassword();
 
     if(code = password){

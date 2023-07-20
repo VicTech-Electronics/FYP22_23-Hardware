@@ -17,6 +17,7 @@ void setup() {
   SPI.begin();
   mfrc522.PCD_Init();
   Serial.begin(9600);
+  serialESP.begin(9600);
   lcd.begin(16, 2);
 
   if (!radio.init(RADIO_ID, PIN_RADIO_CE, PIN_RADIO_CSN)){

@@ -54,6 +54,7 @@ void operation(){
   jsonObject["amount"] = serviceCost[counter];
   String serial_data = JSON.stringify(jsonObject);
 
+  Serial.println("Data to send to ESP: " + String(serial_data));
   String response = espRequest(serial_data);
 
   if(response.indexOf("SUCCESS") != -1){
@@ -67,7 +68,13 @@ void operation(){
 
     lcdPrint("Press", "Confirm button");
     confirm = false;
-    while(!confirm); confirm = false; // Wait for confirmation
+    while(!confirm){
+      Serial.println("Wait confirm btn");
+      delay(2e3);
+    } 
+    Serial.println("Confirm btn is pressed SUCCESSFUL");
+    confirm = false; // Wait for confirmation
+    lcdPrint("Please wait...", ""); 
 
     if(counter == 0) nrfSend(password, 'U');
     if(counter == 1) nrfSend(password, 'D');
@@ -75,8 +82,15 @@ void operation(){
 
     lcdPrint("Password", String(password));
     delay(5e3);
-  }else if(response.indexOf("Cardnumber not exist") != -1)
-    lcdPrint("Error", "Cardnumber not exist");
-  else
-    lcdPrint("Sorry", "Operation failed");
+  }else if(response.indexOf("LOW BALANCE") != -1){    
+    lcdPrint("Sorry:", "Low balance"); 
+    delay(3e3);
+  }else if(response.indexOf("Cardnumber not exist") != -1){
+    lcdPrint("Sorry:", "Cardnumber not exist"); 
+    delay(3e3);
+  }else{
+    lcdPrint("ERROR", ""); 
+    delay(3e3);
+  }
+    
 }
