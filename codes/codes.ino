@@ -10,9 +10,14 @@ void setup() {
   servo2.attach(6);
   Serial.begin(9600);
 
+  pinMode(buzzer_pin, OUTPUT);
+  pinMode(btn1_pin, INPUT_PULLUP);
+  pinMode(btn2_pin, INPUT_PULLUP);
+
+  attachInterrupt(digitalPinToInterrupt(btn1_pin), doorBtnISR, FALLING);
+  attachInterrupt(digitalPinToInterrupt(btn2_pin), gateBtnISR, FALLING);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  operation();
 }

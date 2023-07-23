@@ -18,6 +18,15 @@ UltraSonicDistanceSensor ultrasonic2(TRIG_PIN2, ECHO_PIN2);
 
 // Decralation of usefull variables
 uint8_t detection_distance = 10;
+bool doorStateISR, gateStateISR;
+
+// Method to handle ISR function
+void doorBtnISR(){
+  doorStateISR = true;
+}
+void gateBtnISR(){
+  gateStateISR = true;
+}
 
 // Method to read card number from rfid card reader
 String getCardNumber(){
