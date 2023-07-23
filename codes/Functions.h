@@ -4,10 +4,10 @@
 #include <MFRC522.h>
 #define SS_PIN 10
 #define RST_PIN 9
-#define TRIG_PIN1
-#define ECHO_PIN1
-#define TRIG_PIN2
-#define ECHO_PIN2
+#define TRIG_PIN1 A3
+#define ECHO_PIN1 A2
+#define TRIG_PIN2 A1
+#define ECHO_PIN2 A0
 
 Servo servo;
 Servo servo1;
@@ -15,6 +15,10 @@ Servo servo2;
 MFRC522 rfid(SS_PIN, RST_PIN);
 UltraSonicDistanceSensor ultrasonic1(TRIG_PIN1, ECHO_PIN1);
 UltraSonicDistanceSensor ultrasonic2(TRIG_PIN2, ECHO_PIN2);
+
+
+// Definition of pins connections
+const uint8_t btn1_pin=2, btn2_pin=3, buzzer_pin=4;
 
 // Decralation of usefull variables
 uint8_t detection_distance = 10;
@@ -58,13 +62,21 @@ void open(bool door){
 
   for(byte i=0; i<=90; i++){
     servo.write(i);
-    delay(20)
+    delay(20);
   }
 
   while(true) if(getDistance(door) > detection_distance) break;
   
   for(byte i=90; i>0; i--){
     servo.write(i);
-    delay(20)
+    delay(20);
   }
+}
+
+
+// Method to sound buzzer
+void buzzerSound(){
+  digitalWrite(buzzer_pin, HIGH);
+  delay(1e3);
+  digitalWrite(buzzer_pin, LOW);
 }

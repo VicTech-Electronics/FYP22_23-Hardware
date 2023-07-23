@@ -4,10 +4,10 @@ void setup() {
   lcd.init();
   lcd.backlight();
   rfid.PCD_Init();
-  servo1.write(0);
-  servo2.write(0);
   servo1.attach(5);
   servo2.attach(6);
+  servo1.write(0);
+  servo2.write(0);
   Serial.begin(9600);
 
   pinMode(buzzer_pin, OUTPUT);
